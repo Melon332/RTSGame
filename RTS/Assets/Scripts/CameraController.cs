@@ -29,4 +29,9 @@ public class CameraController : MonoBehaviour
             }
         }
     }
+
+    private void CameraMove()
+    {
+
+    }
 }
