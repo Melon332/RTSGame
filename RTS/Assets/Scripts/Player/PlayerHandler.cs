@@ -5,25 +5,35 @@ using UnityEngine;
 
 public class PlayerHandler : MonoBehaviour
 {
-    private CameraController _cameraController;
+    [HideInInspector] public CameraController cameraController;
 
-    private CharacterInput _characterInput;
-    // Start is called before the first frame update
-    void Awake()
+    [HideInInspector] public CharacterInput characterInput;
+    
+    
+    private static PlayerHandler _instance;
+
+    public static PlayerHandler PlayerHandlerInstance
     {
-        _cameraController = GetComponent<CameraController>();
-        _characterInput = GetComponent<CharacterInput>();
-        Debug.Log(_characterInput);
-        Debug.Log(_cameraController);
+        get
+        {
+            if(_instance == null)
+            {
+                _instance = FindObjectOfType<PlayerHandler>();
+            }
+
+            return _instance;
+        }
     }
-
-    private void OnEnable()
+    
+    
+    // Start is called before the first frame update
+    void Start()
     {
-        _cameraController.Subscribe(_characterInput);
+        cameraController = GetComponent<CameraController>();
     }
 
     private void OnDisable()
     {
-        _cameraController?.UnSubscribe(_characterInput);
+        cameraController.UnSubscribe(characterInput);
     }
 }

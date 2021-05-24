@@ -5,6 +5,12 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [HideInInspector] public bool KeyboardOrMouseCamera;
+    [HideInInspector] public bool hasChosenTypeOfCamera;
+    
+    
+    [HideInInspector] public GameObject player;
+    
+    
     private static GameManager _instance;
 
     public static GameManager Instance
@@ -13,7 +19,7 @@ public class GameManager : MonoBehaviour
         {
             if(_instance == null)
             {
-                _instance = GameObject.FindObjectOfType<GameManager>();
+                _instance = FindObjectOfType<GameManager>();
             }
 
             return _instance;
@@ -23,5 +29,6 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
+        player = GameObject.Find("Main Camera");
     }
 }
