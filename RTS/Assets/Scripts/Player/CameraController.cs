@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Interactable;
 using UnityEngine;
 
-public class CameraController : MonoBehaviour
+public class CameraController : MonoBehaviour, ISubscriber
 {
     [SerializeField] float panSpeed;
     [SerializeField] float panBorderThickness = 10f;
@@ -24,8 +24,7 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ClickedOnSomething();  
-        CameraMove();
+        ClickedOnSomething();
     }
 
     private void ClickedOnSomething()
@@ -45,29 +44,45 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    private void CameraMove()
+    private void CameraMove(Vector2 directon)
     {
         Vector3 pos = _rtsCamera.transform.position;
-        
-        if (Input.GetKey(KeyCode.W) || Input.mousePosition.y >= Screen.height-panBorderThickness)
+        if (GameManager.Instance.KeyboardOrMouseCamera)
         {
-            pos.z += panSpeed * Time.deltaTime;
+            if (directon.y >= Screen.height - panBorderThickness)
+            {
+                pos.z += panSpeed * Time.deltaTime;
+            }
+            if (directon.y <= panBorderThickness)
+            {
+                pos.z -= panSpeed * Time.deltaTime;
+            }
+            if (directon.x <= panBorderThickness)
+            {
+                pos.x -= panSpeed * Time.deltaTime;
+            }
+            if (directon.x >= Screen.width - panBorderThickness)
+            {
+                pos.x += panSpeed * Time.deltaTime;
+            }
         }
-        if (Input.GetKey(KeyCode.S) || Input.mousePosition.y <= panBorderThickness)
+        else
         {
-            pos.z -= panSpeed * Time.deltaTime;
-        }
-        if (Input.GetKey(KeyCode.A) || Input.mousePosition.x <= panBorderThickness)
-        {
-            pos.x -= panSpeed * Time.deltaTime;
-        }
-        if (Input.GetKey(KeyCode.D) || Input.mousePosition.x >= Screen.width-panBorderThickness)
-        {
-            pos.x += panSpeed * Time.deltaTime;
+            
         }
 
         pos.x = Mathf.Clamp(pos.x, -panLimit.x, panLimit.x);
         pos.z = Mathf.Clamp(pos.z, -panLimit.y, panLimit.y);
         transform.position = pos;
+    }
+
+    public void Subscribe(CharacterInput publisher)
+    {
+        publisher._cameraMovement += CameraMove;
+    }
+
+    public void UnSubscribe(CharacterInput publisher)
+    {
+        publisher._cameraMovement -= CameraMove;
     }
 }
