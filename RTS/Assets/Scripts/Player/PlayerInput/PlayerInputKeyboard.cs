@@ -10,6 +10,5 @@ public class PlayerInputKeyboard : CharacterInput
     private void Update()
     {
         CameraMovement(new Vector2(Input.GetAxis(xMoveAxis),Input.GetAxis(yMoveAxis)));
-        Debug.Log(new Vector2(Input.GetAxis(xMoveAxis),Input.GetAxis(yMoveAxis)));
     }
 }

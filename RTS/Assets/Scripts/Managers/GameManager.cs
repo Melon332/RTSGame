@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [HideInInspector] public bool KeyboardOrMouseCamera;
     [HideInInspector] public bool hasChosenTypeOfCamera;
     
     

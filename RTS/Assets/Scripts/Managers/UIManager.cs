@@ -16,19 +16,16 @@ public class UIManager : MonoBehaviour
     {
         if (!GameManager.Instance.hasChosenTypeOfCamera)
         {
-            StartCoroutine(AddMouseOrKeyboardMoveset());
+            AddMouseOrKeyboardMoveset();
         }
     }
 
-     IEnumerator AddMouseOrKeyboardMoveset()
+     private void AddMouseOrKeyboardMoveset()
     {
 
             if (Input.GetKeyDown(KeyCode.M))
             {
-                GameManager.Instance.player.AddComponent<PlayerInputMouse>();
-                yield return new WaitForSecondsRealtime(2f);
-                PlayerHandler.PlayerHandlerInstance.characterInput = GetComponent<CharacterInput>();
-                Debug.Log(PlayerHandler.PlayerHandlerInstance.characterInput);
+                PlayerHandler.PlayerHandlerInstance.characterInput = GameManager.Instance.player.AddComponent<PlayerInputMouse>();
                 PlayerHandler.PlayerHandlerInstance.cameraController?.Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
                 GameManager.Instance.hasChosenTypeOfCamera = true;
                 mouseOrKeyboardText.SetActive(false);
@@ -37,9 +34,7 @@ public class UIManager : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.K))
             {
-                GameManager.Instance.player.AddComponent<PlayerInputKeyboard>();
-                yield return new WaitForSeconds(2f);
-                PlayerHandler.PlayerHandlerInstance.characterInput = GetComponent<CharacterInput>();
+                PlayerHandler.PlayerHandlerInstance.characterInput = GameManager.Instance.player.AddComponent<PlayerInputKeyboard>();
                 PlayerHandler.PlayerHandlerInstance.cameraController?.Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
                 GameManager.Instance.hasChosenTypeOfCamera = true;
                 mouseOrKeyboardText.SetActive(false);

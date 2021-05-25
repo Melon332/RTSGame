@@ -7,7 +7,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour, ISubscriber
 {
     [SerializeField] float panSpeed;
-    [SerializeField] float panBorderThickness = 10f;
+    private Vector2 cameraDirection;
 
     [SerializeField] private Vector2 panLimit;
     
@@ -25,6 +25,25 @@ public class CameraController : MonoBehaviour, ISubscriber
     void Update()
     {
         ClickedOnSomething();
+        if (cameraDirection == Vector2.zero)
+        {
+            return;
+        }
+        MoveCamera(cameraDirection);
+    }
+
+    private void MoveCamera(Vector2 direction)
+    {
+        Vector3 pos = _rtsCamera.transform.position; 
+        
+        
+        pos.z += direction.y * panSpeed * Time.deltaTime;
+        pos.x += direction.x * panSpeed * Time.deltaTime;
+                
+
+        pos.x = Mathf.Clamp(pos.x, -panLimit.x, panLimit.x);
+        pos.z = Mathf.Clamp(pos.z, -panLimit.y, panLimit.y);
+        transform.position = pos;
     }
 
     private void ClickedOnSomething()
@@ -44,45 +63,18 @@ public class CameraController : MonoBehaviour, ISubscriber
         }
     }
 
-    private void CameraMove(Vector2 directon)
+    private void OnCameraMove(Vector2 direction)
     {
-        Vector3 pos = _rtsCamera.transform.position;
-        if (GameManager.Instance.KeyboardOrMouseCamera)
-        {
-            if (directon.y >= Screen.height - panBorderThickness)
-            {
-                pos.z += panSpeed * Time.deltaTime;
-            }
-            if (directon.y <= panBorderThickness)
-            {
-                pos.z -= panSpeed * Time.deltaTime;
-            }
-            if (directon.x <= panBorderThickness)
-            {
-                pos.x -= panSpeed * Time.deltaTime;
-            }
-            if (directon.x >= Screen.width - panBorderThickness)
-            {
-                pos.x += panSpeed * Time.deltaTime;
-            }
-        }
-        else
-        {
-            
-        }
-
-        pos.x = Mathf.Clamp(pos.x, -panLimit.x, panLimit.x);
-        pos.z = Mathf.Clamp(pos.z, -panLimit.y, panLimit.y);
-        transform.position = pos;
+        cameraDirection = direction;
     }
 
     public void Subscribe(CharacterInput publisher)
     {
-        publisher._cameraMovement += CameraMove;
+        publisher._cameraMovement += OnCameraMove;
     }
 
     public void UnSubscribe(CharacterInput publisher)
     {
-        publisher._cameraMovement -= CameraMove;
+        publisher._cameraMovement -= OnCameraMove;
     }
 }
