@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerInputMouse : CharacterInput
 {
@@ -14,6 +12,7 @@ public class PlayerInputMouse : CharacterInput
         var direction = CameraDirection();
         CameraMovement(direction);
         HasClicked(Input.GetKeyDown(mouseButton));
+        HasHeldDownButton(Input.GetMouseButton(0),MouseDirection());
     }
 
     private Vector2 CameraDirection()
@@ -40,5 +39,10 @@ public class PlayerInputMouse : CharacterInput
         }
 
         return direction;
+    }
+
+    private Vector2 MouseDirection()
+    {
+        return Input.mousePosition;
     }
 }

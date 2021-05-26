@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterInput : MonoBehaviour
 {
     public Action<Vector2> cameraMovement;
     public Action<bool> hasClicked;
+    public Action<bool, Vector2> hasHeldDownButton;
 
     protected Vector2 PastCameraMovement;
     protected bool PastHasClicked;
@@ -26,6 +25,14 @@ public class CharacterInput : MonoBehaviour
         {
             hasClicked?.Invoke(_hasClicked);
             PastHasClicked = _hasClicked;
+        }
+    }
+
+    protected void HasHeldDownButton(bool _hasHeldDownButton, Vector2 mousePos)
+    {
+        if (_hasHeldDownButton)
+        {
+            hasHeldDownButton?.Invoke(_hasHeldDownButton, mousePos);
         }
     }
 }
