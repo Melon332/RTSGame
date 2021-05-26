@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [HideInInspector] public bool hasChosenTypeOfCamera;
+    [HideInInspector] public bool GameIsPaused => Time.deltaTime == 0;
     
     
     [HideInInspector] public GameObject player;

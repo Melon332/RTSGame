@@ -23,20 +23,17 @@ public class UIManager : MonoBehaviour
      private void AddMouseOrKeyboardMoveset()
     {
 
-            if (Input.GetKeyDown(KeyCode.M))
+            if (Input.GetKeyDown(KeyCode.Y))
             {
-                PlayerHandler.PlayerHandlerInstance.characterInput = GameManager.Instance.player.AddComponent<PlayerInputMouse>();
+                PlayerHandler.PlayerHandlerInstance.characterInput = GameManager.Instance.player.AddComponent<PlayerInputKeyboard>();
                 PlayerHandler.PlayerHandlerInstance.cameraController?.Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
                 GameManager.Instance.hasChosenTypeOfCamera = true;
                 mouseOrKeyboardText.SetActive(false);
                 Time.timeScale = 1;
             }
 
-            if (Input.GetKeyDown(KeyCode.K))
+            if (Input.GetKeyDown(KeyCode.N))
             {
-                PlayerHandler.PlayerHandlerInstance.characterInput = GameManager.Instance.player.AddComponent<PlayerInputKeyboard>();
-                PlayerHandler.PlayerHandlerInstance.cameraController?.Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
-                GameManager.Instance.hasChosenTypeOfCamera = true;
                 mouseOrKeyboardText.SetActive(false);
                 Time.timeScale = 1;
             }

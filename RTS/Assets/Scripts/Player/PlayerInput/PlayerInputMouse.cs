@@ -5,20 +5,30 @@ using UnityEngine;
 public class PlayerInputMouse : CharacterInput
 {
     [SerializeField] float panBorderThickness = 50f;
+
+    private KeyCode mouseButton = KeyCode.Mouse0;
     
     // Update is called once per frame
     private void Update()
     {
-        Vector2 mousePos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        var direction = CameraDirection();
+        CameraMovement(direction);
+        HasClicked(Input.GetKeyDown(mouseButton));
+    }
+
+    private Vector2 CameraDirection()
+    {
         Vector2 direction = Vector2.zero;
         if (Input.mousePosition.y >= Screen.height - panBorderThickness)
         {
             direction.y += 1;
         }
+
         if (Input.mousePosition.y <= panBorderThickness)
         {
             direction.y -= 1;
         }
+
         if (Input.mousePosition.x <= panBorderThickness)
         {
             direction.x -= 1;
@@ -28,7 +38,7 @@ public class PlayerInputMouse : CharacterInput
         {
             direction.x += 1;
         }
-        Debug.Log(direction);
-        CameraMovement(direction);
+
+        return direction;
     }
 }

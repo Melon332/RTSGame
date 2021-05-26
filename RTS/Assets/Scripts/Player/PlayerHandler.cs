@@ -8,6 +8,7 @@ public class PlayerHandler : MonoBehaviour
     [HideInInspector] public CameraController cameraController;
 
     [HideInInspector] public CharacterInput characterInput;
+    private PlayerSelectedUnits _playerSelectedUnits;
     
     
     private static PlayerHandler _instance;
@@ -29,11 +30,17 @@ public class PlayerHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        characterInput = GetComponent<CharacterInput>();
         cameraController = GetComponent<CameraController>();
+        _playerSelectedUnits = GetComponent<PlayerSelectedUnits>();
+        
+        cameraController?.Subscribe(characterInput);
+        _playerSelectedUnits?.Subscribe(characterInput);
     }
 
     private void OnDisable()
     {
         cameraController.UnSubscribe(characterInput);
+        _playerSelectedUnits?.UnSubscribe(characterInput);
     }
 }

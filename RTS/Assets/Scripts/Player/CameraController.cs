@@ -7,9 +7,8 @@ using UnityEngine;
 public class CameraController : MonoBehaviour, ISubscriber
 {
     [SerializeField] float panSpeed;
-    private Vector2 cameraDirection;
-
     [SerializeField] private Vector2 panLimit;
+    private Vector2 cameraDirection;
     
     Camera _rtsCamera;
 
@@ -17,14 +16,20 @@ public class CameraController : MonoBehaviour, ISubscriber
     // Start is called before the first frame update
     void Start()
     {
+        SetCameraPanLimit();
         _rtsCamera = GetComponent<Camera>(); 
         ray = _rtsCamera.ScreenPointToRay(Input.mousePosition);
+    }
+
+    private void SetCameraPanLimit()
+    {
+        panLimit.x = MapManager.Instance.ReturnSizeOfMap().x;
+        panLimit.y = MapManager.Instance.ReturnSizeOfMap().y;
     }
 
     // Update is called once per frame
     void Update()
     {
-        ClickedOnSomething();
         if (cameraDirection == Vector2.zero)
         {
             return;
@@ -46,23 +51,6 @@ public class CameraController : MonoBehaviour, ISubscriber
         transform.position = pos;
     }
 
-    private void ClickedOnSomething()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            RaycastHit hit;
-            ray = _rtsCamera.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit))
-            {
-                Debug.DrawLine(ray.origin,hit.point,Color.blue,5f);
-                if (hit.collider.GetComponent<IInteractable>() != null)
-                {
-                    hit.collider.GetComponent<IInteractable>().OnClicked();
-                }
-            }
-        }
-    }
-
     private void OnCameraMove(Vector2 direction)
     {
         cameraDirection = direction;
@@ -70,11 +58,11 @@ public class CameraController : MonoBehaviour, ISubscriber
 
     public void Subscribe(CharacterInput publisher)
     {
-        publisher._cameraMovement += OnCameraMove;
+        publisher.cameraMovement += OnCameraMove;
     }
 
     public void UnSubscribe(CharacterInput publisher)
     {
-        publisher._cameraMovement -= OnCameraMove;
+        publisher.cameraMovement -= OnCameraMove;
     }
 }
