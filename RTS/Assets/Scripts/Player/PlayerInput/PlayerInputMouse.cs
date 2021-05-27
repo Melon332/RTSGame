@@ -13,6 +13,8 @@ public class PlayerInputMouse : CharacterInput
         CameraMovement(direction);
         HasClicked(Input.GetKeyDown(mouseButton));
         HasHeldDownButton(Input.GetMouseButton(0),MouseDirection());
+        hasReleasedButton(Input.GetMouseButtonUp(0));
+        HasLeftClickedMouseButton(Input.GetMouseButton(1));
     }
 
     private Vector2 CameraDirection()

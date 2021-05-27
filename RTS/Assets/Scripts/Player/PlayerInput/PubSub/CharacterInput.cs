@@ -6,6 +6,8 @@ public class CharacterInput : MonoBehaviour
     public Action<Vector2> cameraMovement;
     public Action<bool> hasClicked;
     public Action<bool, Vector2> hasHeldDownButton;
+    public Action<bool> hasReleasedButton;
+    public Action<bool> hasLeftClickedMouse;
 
     protected Vector2 PastCameraMovement;
     protected bool PastHasClicked;
@@ -28,11 +30,18 @@ public class CharacterInput : MonoBehaviour
         }
     }
 
-    protected void HasHeldDownButton(bool _hasHeldDownButton, Vector2 mousePos)
+    protected void HasHeldDownButton(bool hasHeldDownMouseButton, Vector2 mousePos)
     {
-        if (_hasHeldDownButton)
-        {
-            hasHeldDownButton?.Invoke(_hasHeldDownButton, mousePos);
-        }
+        hasHeldDownButton?.Invoke(hasHeldDownMouseButton, mousePos);
+    }
+
+    protected void HasReleaseButton(bool hasReleaseButton)
+    {
+        hasReleasedButton?.Invoke(hasReleaseButton);
+    }
+
+    protected void HasLeftClickedMouseButton(bool hasLeftClickedMouseButton)
+    {
+        hasLeftClickedMouse?.Invoke(hasLeftClickedMouseButton);
     }
 }

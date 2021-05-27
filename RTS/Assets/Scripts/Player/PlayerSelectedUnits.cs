@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Interactable;
 using UnityEngine;
 
 namespace Player
 {
-    public class PlayerSelectedUnits : MonoBehaviour,ISubscriber
+    public class PlayerSelectedUnits : MonoBehaviour, ISubscriber
     {
+        
         [SerializeField] private RectTransform selectionBox;
         private Ray _ray;
         private Camera _rtsCamera;
@@ -13,11 +15,17 @@ namespace Player
         private Vector2 _startPos;
 
         [SerializeField] private List<GameObject> selectedUnits = new List<GameObject>();
+        public static List<GameObject> selectableUnits = new List<GameObject>();
+        public static bool holdingDownButton;
+        
+
         // Start is called before the first frame update
         void Start()
         {
             _rtsCamera = GetComponent<Camera>();
+            Debug.Log(selectableUnits.Count);
         }
+
         private void ClickedOnSomething(bool hasClicked)
         {
             if (hasClicked)
@@ -34,27 +42,23 @@ namespace Player
                             hit.collider.GetComponent<MeshRenderer>().material.color = Color.blue;
                             hit.collider.GetComponent<IInteractable>().OnClicked();
                         }
+
+                        Debug.Log("You have: " + selectedUnits.Count + " units selected!");
                     }
                     
-                    else
-                    {
-                        for (int i = 0; i < selectedUnits.Count; i++)
-                        {
-                            selectedUnits[i].GetComponent<MeshRenderer>().material.color = Color.black;
-                        }
-                        selectedUnits.Clear();
-                    }
                 }
 
                 _startPos = Input.mousePosition;
             }
         }
 
-        private void SelectingMultipleUnits(bool hasBeenHeldDown,Vector2 currMousePos)
+        private void SelectingMultipleUnits(bool hasBeenHeldDown, Vector2 currMousePos)
         {
             if (hasBeenHeldDown)
             {
-                if(!selectionBox.gameObject.activeInHierarchy)
+                holdingDownButton = true;
+                Debug.Log(holdingDownButton);
+                if (!selectionBox.gameObject.activeInHierarchy)
                     selectionBox.gameObject.SetActive(true);
 
                 float width = currMousePos.x - _startPos.x;
@@ -65,15 +69,62 @@ namespace Player
             }
         }
 
+        private void ReleaseSelectionBox(bool hasReleaseButton)
+        {
+            if (hasReleaseButton)
+            {
+                holdingDownButton = false;
+                selectionBox.gameObject.SetActive(false);
+
+                Vector2 min = selectionBox.anchoredPosition-(selectionBox.sizeDelta / 2);
+                Vector2 max = selectionBox.anchoredPosition+(selectionBox.sizeDelta / 2);
+
+                foreach (var unit in selectableUnits)
+                {
+                    Vector3 screenPos = _rtsCamera.WorldToScreenPoint(unit.transform.position);
+                    if (screenPos.x > min.x && screenPos.x < max.x && screenPos.y > min.y && screenPos.y < max.y)
+                    {
+                        selectedUnits.Add(unit.gameObject);
+                        unit.GetComponent<MeshRenderer>().material.color = Color.blue;
+                        unit.GetComponent<IInteractable>().OnClicked();
+                    }
+                }
+            }
+        }
+
+        private void DeSelectUnits(bool hasLeftClicked)
+        {
+            if (hasLeftClicked)
+            {
+                foreach (var units in selectedUnits)
+                {
+                    units.GetComponent<MeshRenderer>().material.color = Color.gray;
+                    units.GetComponent<Units>().DeSelected();
+                }
+                selectedUnits.Clear();
+            }
+        }
+
         public void Subscribe(CharacterInput publisher)
         {
             publisher.hasClicked += ClickedOnSomething;
             publisher.hasHeldDownButton += SelectingMultipleUnits;
+            publisher.hasReleasedButton += ReleaseSelectionBox;
+            publisher.hasLeftClickedMouse += DeSelectUnits;
         }
 
         public void UnSubscribe(CharacterInput publisher)
         {
             publisher.hasClicked -= ClickedOnSomething;
+        }
+
+        private void OnDrawGizmos()
+        {
+            
+            Vector2 min = selectionBox.anchoredPosition - (selectionBox.sizeDelta / 2);
+            RaycastHit[] ray = Physics.BoxCastAll(transform.position, selectionBox.gameObject.transform.lossyScale, Vector3.down);
+            
+            Gizmos.DrawCube(selectionBox.pivot,min);
         }
     }
 }

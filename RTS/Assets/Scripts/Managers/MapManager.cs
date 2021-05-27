@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class MapManager : MonoBehaviour
 {
@@ -21,8 +22,8 @@ public class MapManager : MonoBehaviour
     [SerializeField]
     private List<GameObject> mapsToChooseFrom = new List<GameObject>();
     
-    [HideInInspector] public GameObject currentlyActiveMap;
-    
+    public GameObject currentlyActiveMap;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -37,7 +38,8 @@ public class MapManager : MonoBehaviour
             currentlyActiveMap.SetActive(false);   
         }
 
-        var mapChosen = Instantiate(mapsToChooseFrom[mapSelected]);
+        var mapChosen = mapsToChooseFrom[mapSelected];
+        mapChosen.SetActive(true);
         currentlyActiveMap = mapChosen;
     }
 

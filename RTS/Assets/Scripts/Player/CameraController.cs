@@ -6,7 +6,7 @@ public class CameraController : MonoBehaviour, ISubscriber
     [SerializeField] private Vector2 panLimit;
     private Vector2 _cameraDirection;
     
-    Camera _rtsCamera;
+    private static Camera _rtsCamera;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +28,20 @@ public class CameraController : MonoBehaviour, ISubscriber
             return;
         }
         MoveCamera(_cameraDirection);
+    }
+
+    public static Vector3 GetMousePosition()
+    {
+        var ray = _rtsCamera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
+        {
+            return hit.point;
+        }
+        else
+        {
+            return new Vector3(0,0,0);
+        }
     }
 
     private void MoveCamera(Vector2 direction)
