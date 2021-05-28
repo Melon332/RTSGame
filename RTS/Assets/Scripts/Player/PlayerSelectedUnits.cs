@@ -23,7 +23,6 @@ namespace Player
         void Start()
         {
             _rtsCamera = GetComponent<Camera>();
-            Debug.Log(selectableUnits.Count);
         }
 
         private void ClickedOnUnit(bool hasClicked)
@@ -34,7 +33,7 @@ namespace Player
                 _ray = _rtsCamera.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(_ray, out hit))
                 {
-                    if (hit.collider.GetComponent<IInteractable>() != null)
+                    if (hit.collider.CompareTag("Units"))
                     {
                         if (!selectedUnits.Contains(hit.collider.gameObject))
                         {

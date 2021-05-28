@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using Player;
 using UnityEngine;
 using UnityEngine.AI;
@@ -11,41 +12,39 @@ namespace Interactable
     {
         public int hitPoints;
         public float minRangeToAttack;
+        public float attackTimer;
         
         public string nameOfUnit;
-        private NavMeshAgent agent;
+        [HideInInspector] public NavMeshAgent agent;
         private RaycastHit hit;
-        private Coroutine thisCoolNewCoorutine;
+        private Coroutine AttackAndMove;
         
 
-        private void Start()
+        public virtual void Start()
         {
             PlayerSelectedUnits.selectableUnits.Add(gameObject);
-            Debug.Log(PlayerSelectedUnits.selectableUnits.Count);
             agent = GetComponent<NavMeshAgent>();
             agent.stoppingDistance = minRangeToAttack - 3;
         }
 
         public virtual void OnClicked()
         {
-            Debug.Log("This is the unit: " + nameOfUnit);
             Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
         }
 
         public void DeSelected()
         {
-            Debug.Log("I have now been deselected");
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
         }
 
         private void MoveToClick(bool hasClicked)
         {
             var found = CameraController.GetMousePosition(out hit); 
-            if(thisCoolNewCoorutine != null)
-                StopCoroutine(thisCoolNewCoorutine);
+            if(AttackAndMove != null)
+                StopCoroutine(AttackAndMove);
             if (found && hit.collider.GetComponent<Enemy>())
             {
-                thisCoolNewCoorutine = StartCoroutine(MoveToTargetThenAttack(hit));
+                AttackAndMove = StartCoroutine(MoveToTargetThenAttack(hit));
                 
             }
             else if(hasClicked && !PlayerSelectedUnits.holdingDownButton && found)
@@ -64,7 +63,6 @@ namespace Interactable
             while (hit2.collider.GetComponent<Enemy>().hitPoints >= 0)
             {
                 var distance = (transform.position - hit2.transform.position).sqrMagnitude;
-                Debug.Log(distance);
                 if (distance > minRangeToAttack)
                 {
                     agent.destination = hit2.transform.position;
@@ -72,10 +70,10 @@ namespace Interactable
                 else
                 {   
                     hit2.collider.GetComponent<Enemy>().hitPoints -= 10;
-                    yield return new WaitForSeconds(0.1f);
+                    yield return new WaitForSeconds(attackTimer);
                 }   
                 
-                yield return new WaitForSeconds(0.01f);
+                yield return new WaitForSeconds(attackTimer);
             }
         }
 
