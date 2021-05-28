@@ -3,6 +3,7 @@ using System.Collections;
 using Player;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
 
 namespace Interactable
 {
@@ -13,12 +14,16 @@ namespace Interactable
         
         public string nameOfUnit;
         private NavMeshAgent agent;
+        private RaycastHit hit;
+        private Coroutine thisCoolNewCoorutine;
         
 
         private void Start()
         {
             PlayerSelectedUnits.selectableUnits.Add(gameObject);
+            Debug.Log(PlayerSelectedUnits.selectableUnits.Count);
             agent = GetComponent<NavMeshAgent>();
+            agent.stoppingDistance = minRangeToAttack - 3;
         }
 
         public virtual void OnClicked()
@@ -35,19 +40,17 @@ namespace Interactable
 
         private void MoveToClick(bool hasClicked)
         {
-            var found = CameraController.GetMousePosition(out RaycastHit hit);
-            if (hasClicked && !PlayerSelectedUnits.holdingDownButton && found)
+            var found = CameraController.GetMousePosition(out hit); 
+            if(thisCoolNewCoorutine != null)
+                StopCoroutine(thisCoolNewCoorutine);
+            if (found && hit.collider.GetComponent<Enemy>())
+            {
+                thisCoolNewCoorutine = StartCoroutine(MoveToTargetThenAttack(hit));
+                
+            }
+            else if(hasClicked && !PlayerSelectedUnits.holdingDownButton && found)
             {
                 MoveToTarget(hit);
-            }
-        }
-
-        private void MoveToAttack(bool hasClicked)
-        {
-            var found = CameraController.GetMousePosition(out RaycastHit hit);
-            if (hasClicked && !PlayerSelectedUnits.holdingDownButton && found)
-            {
-                
             }
         }
 
@@ -56,26 +59,29 @@ namespace Interactable
             agent.SetDestination(hit.point);
         }
 
-        IEnumerator MoveToTargetThenAttack(RaycastHit hit)
+        IEnumerator MoveToTargetThenAttack(RaycastHit hit2)
         {
-            var distance = (transform.position - hit.transform.position).sqrMagnitude;
-            while (distance > minRangeToAttack)
+            while (hit2.collider.GetComponent<Enemy>().hitPoints >= 0)
             {
-                agent.SetDestination(hit.point);
-                if (distance < minRangeToAttack)
+                var distance = (transform.position - hit2.transform.position).sqrMagnitude;
+                Debug.Log(distance);
+                if (distance > minRangeToAttack)
                 {
-                    
+                    agent.destination = hit2.transform.position;
                 }
+                else
+                {   
+                    hit2.collider.GetComponent<Enemy>().hitPoints -= 10;
+                    yield return new WaitForSeconds(0.1f);
+                }   
+                
+                yield return new WaitForSeconds(0.01f);
             }
-        
-            yield return new WaitForSeconds(1f);
-            Debug.Log("I shoot pew pew at the guy!");
         }
 
         public void Subscribe(CharacterInput publisher)
         {
             publisher.hasClicked += MoveToClick;
-            publisher.hasClicked += MoveToAttack;
         }
 
         public void UnSubscribe(CharacterInput publisher)
