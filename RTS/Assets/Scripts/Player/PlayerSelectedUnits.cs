@@ -26,7 +26,7 @@ namespace Player
             Debug.Log(selectableUnits.Count);
         }
 
-        private void ClickedOnSomething(bool hasClicked)
+        private void ClickedOnUnit(bool hasClicked)
         {
             if (hasClicked)
             {
@@ -57,7 +57,6 @@ namespace Player
             if (hasBeenHeldDown)
             {
                 holdingDownButton = true;
-                Debug.Log(holdingDownButton);
                 if (!selectionBox.gameObject.activeInHierarchy)
                     selectionBox.gameObject.SetActive(true);
 
@@ -73,7 +72,6 @@ namespace Player
         {
             if (hasReleaseButton)
             {
-                holdingDownButton = false;
                 selectionBox.gameObject.SetActive(false);
 
                 Vector2 min = selectionBox.anchoredPosition-(selectionBox.sizeDelta / 2);
@@ -89,6 +87,7 @@ namespace Player
                         unit.GetComponent<IInteractable>().OnClicked();
                     }
                 }
+                holdingDownButton = false;
             }
         }
 
@@ -107,7 +106,7 @@ namespace Player
 
         public void Subscribe(CharacterInput publisher)
         {
-            publisher.hasClicked += ClickedOnSomething;
+            publisher.hasClicked += ClickedOnUnit;
             publisher.hasHeldDownButton += SelectingMultipleUnits;
             publisher.hasReleasedButton += ReleaseSelectionBox;
             publisher.hasLeftClickedMouse += DeSelectUnits;
@@ -115,16 +114,7 @@ namespace Player
 
         public void UnSubscribe(CharacterInput publisher)
         {
-            publisher.hasClicked -= ClickedOnSomething;
-        }
-
-        private void OnDrawGizmos()
-        {
-            
-            Vector2 min = selectionBox.anchoredPosition - (selectionBox.sizeDelta / 2);
-            RaycastHit[] ray = Physics.BoxCastAll(transform.position, selectionBox.gameObject.transform.lossyScale, Vector3.down);
-            
-            Gizmos.DrawCube(selectionBox.pivot,min);
+            publisher.hasClicked -= ClickedOnUnit;
         }
     }
 }

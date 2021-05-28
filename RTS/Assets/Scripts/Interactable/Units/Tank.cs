@@ -2,7 +2,7 @@
 
 namespace Interactable
 {
-    public class Tank : Units
+    public class Tank : GroundUnits
     {
         public override void OnClicked()
         {

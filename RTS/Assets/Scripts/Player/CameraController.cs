@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Managers;
 
 public class CameraController : MonoBehaviour, ISubscriber
 {
@@ -30,18 +31,15 @@ public class CameraController : MonoBehaviour, ISubscriber
         MoveCamera(_cameraDirection);
     }
 
-    public static Vector3 GetMousePosition()
+    public static bool GetMousePosition(out RaycastHit hit)
     {
         var ray = _rtsCamera.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
-            return hit.point;
+            return true;
         }
-        else
-        {
-            return new Vector3(0,0,0);
-        }
+
+        return false;
     }
 
     private void MoveCamera(Vector2 direction)

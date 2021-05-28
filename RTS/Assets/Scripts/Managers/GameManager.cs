@@ -2,33 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+namespace Managers
 {
-    [HideInInspector] public bool hasChosenTypeOfCamera;
-    [HideInInspector] public bool GameIsPaused => Time.deltaTime == 0;
-    
-    
-    [HideInInspector] public GameObject player;
-    
-    
-    private static GameManager _instance;
-
-    public static GameManager Instance
+    public class GameManager : MonoBehaviour
     {
-        get
+        [HideInInspector] public bool hasChosenTypeOfCamera;
+        [HideInInspector] public bool GameIsPaused => Time.deltaTime == 0;
+
+
+        [HideInInspector] public GameObject player;
+
+
+        private static GameManager _instance;
+
+        public static GameManager Instance
         {
-            if(_instance == null)
+            get
             {
-                _instance = FindObjectOfType<GameManager>();
+                if (_instance == null)
+                {
+                    _instance = FindObjectOfType<GameManager>();
+                }
+
+                return _instance;
             }
-
-            return _instance;
         }
-    }
 
-    void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-        player = GameObject.Find("Main Camera");
+        void Awake()
+        {
+            DontDestroyOnLoad(gameObject);
+            player = GameObject.Find("Main Camera");
+        }
     }
 }

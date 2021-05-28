@@ -8,7 +8,7 @@ namespace Player
     {
         [HideInInspector] public CameraController cameraController;
 
-        [HideInInspector] public CharacterInput characterInput;
+        public CharacterInput characterInput;
         private PlayerSelectedUnits _playerSelectedUnits;
 
 
