@@ -6,10 +6,6 @@ namespace Player
 
     public class PlayerHandler : MonoBehaviour
     {
-        [HideInInspector] public CameraController cameraController;
-
-        public CharacterInput characterInput;
-        private PlayerSelectedUnits _playerSelectedUnits;
 
 
         private static PlayerHandler _instance;
@@ -26,7 +22,10 @@ namespace Player
                 return _instance;
             }
         }
+        [HideInInspector] public CameraController cameraController;
 
+        public CharacterInput characterInput;
+        private PlayerSelectedUnits _playerSelectedUnits;
 
         // Start is called before the first frame update
         void Start()

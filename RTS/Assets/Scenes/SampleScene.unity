@@ -640,7 +640,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitPoints: 0
   minRangeToAttack: 0
+  attackTimer: 0
   nameOfUnit: Helicopter
+  agent: {fileID: 0}
 --- !u!135 &950465379
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1003,7 +1005,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitPoints: 0
   minRangeToAttack: 5
+  attackTimer: 1
   nameOfUnit: Tank
+  agent: {fileID: 0}
 --- !u!65 &1335830982
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1214,9 +1218,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c1650ad38b5a6f4c9bf4148bc69c2e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitPoints: 100
+  hitPoints: 10000000
   minRangeToAttack: 0
+  attackTimer: 0
   nameOfUnit: 
+  agent: {fileID: 0}
 --- !u!195 &1556403071
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1348,7 +1354,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitPoints: 0
   minRangeToAttack: 5
+  attackTimer: 0.2
   nameOfUnit: Tank
+  agent: {fileID: 0}
 --- !u!195 &1840133528
 NavMeshAgent:
   m_ObjectHideFlags: 0

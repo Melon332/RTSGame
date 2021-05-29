@@ -39,13 +39,12 @@ namespace Interactable
 
         private void MoveToClick(bool hasClicked)
         {
-            var found = CameraController.GetMousePosition(out hit); 
+            var found = PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out hit); 
             if(AttackAndMove != null)
                 StopCoroutine(AttackAndMove);
             if (found && hit.collider.GetComponent<Enemy>())
             {
                 AttackAndMove = StartCoroutine(MoveToTargetThenAttack(hit));
-                
             }
             else if(hasClicked && !PlayerSelectedUnits.holdingDownButton && found)
             {
@@ -55,7 +54,17 @@ namespace Interactable
 
         private void MoveToTarget(RaycastHit hit)
         {
-            agent.SetDestination(hit.point);
+            var isLookingAtTarget = (int)Vector3.Dot(transform.position, hit.point);
+            Mathf.Abs(isLookingAtTarget);
+            Debug.Log(isLookingAtTarget);
+            if (isLookingAtTarget != 1)
+            {
+                transform.LookAt(hit.point);
+            }
+            else
+            {
+                agent.SetDestination(hit.point);   
+            }
         }
 
         IEnumerator MoveToTargetThenAttack(RaycastHit hit2)

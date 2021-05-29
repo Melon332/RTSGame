@@ -29,9 +29,8 @@ namespace Player
         {
             if (hasClicked)
             {
-                RaycastHit hit;
                 _ray = _rtsCamera.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(_ray, out hit))
+                if (PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out var hit))
                 {
                     if (hit.collider.CompareTag("Units"))
                     {

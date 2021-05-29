@@ -31,7 +31,7 @@ public class CameraController : MonoBehaviour, ISubscriber
         MoveCamera(_cameraDirection);
     }
 
-    public static bool GetMousePosition(out RaycastHit hit)
+    public bool GetMousePosition(out RaycastHit hit)
     {
         var ray = _rtsCamera.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit))
