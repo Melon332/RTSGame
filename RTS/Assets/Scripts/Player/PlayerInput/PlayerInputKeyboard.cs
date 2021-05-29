@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Enums;
+using UnityEngine;
 
 public class PlayerInputKeyboard : CharacterInput
 {
@@ -8,5 +9,21 @@ public class PlayerInputKeyboard : CharacterInput
     private void Update()
     {
         CameraMovement(new Vector2(Input.GetAxis(xMoveAxis),Input.GetAxis(yMoveAxis)));
+        if (Input.GetAxis(yMoveAxis) > 0)
+        {
+            HUD.SetCursor(CursorStates.PanUp);
+        }
+        else if (Input.GetAxis(yMoveAxis) < 0)
+        {
+            HUD.SetCursor(CursorStates.PanDown);
+        }
+        else if (Input.GetAxis(xMoveAxis) > 0)
+        {
+             HUD.SetCursor(CursorStates.PanRight);
+        }
+        else if (Input.GetAxis(xMoveAxis) < 0)
+        {
+             HUD.SetCursor(CursorStates.PanLeft);
+        }
     }
 }

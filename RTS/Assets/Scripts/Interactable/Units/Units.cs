@@ -1,28 +1,28 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using Player;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UIElements;
-
 namespace Interactable
 {
-    public class Units : MonoBehaviour, IInteractable,ISubscriber
+    [RequireComponent(typeof(NavMeshAgent))]
+    public abstract class Units : MonoBehaviour, IInteractable,ISubscriber
     {
+        #region Unit Variables
         public int hitPoints;
         public float minRangeToAttack;
         public float attackTimer;
-        
         public string nameOfUnit;
+        #endregion
+
         [HideInInspector] public NavMeshAgent agent;
         private RaycastHit hit;
+        
         private Coroutine AttackAndMove;
         
 
         public virtual void Start()
         {
-            PlayerSelectedUnits.selectableUnits.Add(gameObject);
+            PlayerSelectedUnits.SelectableUnits.Add(gameObject);
             agent = GetComponent<NavMeshAgent>();
             agent.stoppingDistance = minRangeToAttack - 3;
         }
@@ -39,11 +39,13 @@ namespace Interactable
 
         private void MoveToClick(bool hasClicked)
         {
+            //Gets the mouse position whenever you click
             var found = PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out hit); 
             if(AttackAndMove != null)
                 StopCoroutine(AttackAndMove);
             if (found && hit.collider.GetComponent<Enemy>())
             {
+                //Sets the coroutine variable to store it and stop it.
                 AttackAndMove = StartCoroutine(MoveToTargetThenAttack(hit));
             }
             else if(hasClicked && !PlayerSelectedUnits.holdingDownButton && found)
@@ -52,33 +54,24 @@ namespace Interactable
             }
         }
 
-        private void MoveToTarget(RaycastHit hit)
+        protected virtual void MoveToTarget(RaycastHit target)
         {
-            var isLookingAtTarget = (int)Vector3.Dot(transform.position, hit.point);
-            Mathf.Abs(isLookingAtTarget);
-            Debug.Log(isLookingAtTarget);
-            if (isLookingAtTarget != 1)
-            {
-                transform.LookAt(hit.point);
-            }
-            else
-            {
-                agent.SetDestination(hit.point);   
-            }
+            transform.LookAt(target.point);
+            agent.SetDestination(target.point);
         }
 
-        IEnumerator MoveToTargetThenAttack(RaycastHit hit2)
+        IEnumerator MoveToTargetThenAttack(RaycastHit enemyHit)
         {
-            while (hit2.collider.GetComponent<Enemy>().hitPoints >= 0)
+            while (enemyHit.collider.GetComponent<Enemy>().hitPoints >= 0)
             {
-                var distance = (transform.position - hit2.transform.position).sqrMagnitude;
+                var distance = (transform.position - enemyHit.transform.position).sqrMagnitude;
                 if (distance > minRangeToAttack)
                 {
-                    agent.destination = hit2.transform.position;
+                    agent.destination = enemyHit.transform.position;
                 }
                 else
                 {   
-                    hit2.collider.GetComponent<Enemy>().hitPoints -= 10;
+                    enemyHit.collider.GetComponent<Enemy>().hitPoints -= 10;
                     yield return new WaitForSeconds(attackTimer);
                 }   
                 

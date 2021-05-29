@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Enums;
+using Player;
+using UnityEngine;
 
 public class PlayerInputMouse : CharacterInput
 {
@@ -15,6 +17,7 @@ public class PlayerInputMouse : CharacterInput
         HasHeldDownButton(Input.GetMouseButton(0),MouseDirection());
         hasReleasedButton(Input.GetMouseButtonUp(0));
         HasLeftClickedMouseButton(Input.GetMouseButton(1));
+        HasUsedMouseScrollWheel(Input.GetAxis("Mouse ScrollWheel"));
     }
 
     private Vector2 CameraDirection()
@@ -23,21 +26,33 @@ public class PlayerInputMouse : CharacterInput
         if (Input.mousePosition.y >= Screen.height - panBorderThickness)
         {
             direction.y += 1;
+            HUD.SetCursor(CursorStates.PanUp);
         }
 
-        if (Input.mousePosition.y <= panBorderThickness)
+        else if (Input.mousePosition.y <= panBorderThickness)
         {
             direction.y -= 1;
+            HUD.SetCursor(CursorStates.PanDown);
         }
 
-        if (Input.mousePosition.x <= panBorderThickness)
+        else if (Input.mousePosition.x <= panBorderThickness)
         {
             direction.x -= 1;
+            HUD.SetCursor(CursorStates.PanLeft);
         }
 
-        if (Input.mousePosition.x >= Screen.width - panBorderThickness)
+        else if (Input.mousePosition.x >= Screen.width - panBorderThickness)
         {
             direction.x += 1;
+            HUD.SetCursor(CursorStates.PanRight);
+        }
+        else if(PlayerSelectedUnits.hasSelectedUnits)
+        {
+            HUD.SetCursor(CursorStates.Move);
+        }
+        else
+        {
+            HUD.SetCursor(CursorStates.Select);
         }
 
         return direction;

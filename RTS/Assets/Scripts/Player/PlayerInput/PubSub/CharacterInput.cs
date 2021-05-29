@@ -8,6 +8,7 @@ public class CharacterInput : MonoBehaviour
     public Action<bool, Vector2> hasHeldDownButton;
     public Action<bool> hasReleasedButton;
     public Action<bool> hasLeftClickedMouse;
+    public Action<float> mouseScrollWheel;
 
     protected Vector2 PastCameraMovement;
     protected bool PastHasClicked;
@@ -43,5 +44,10 @@ public class CharacterInput : MonoBehaviour
     protected void HasLeftClickedMouseButton(bool hasLeftClickedMouseButton)
     {
         hasLeftClickedMouse?.Invoke(hasLeftClickedMouseButton);
+    }
+
+    protected void HasUsedMouseScrollWheel(float scrollWheel)
+    {
+        mouseScrollWheel?.Invoke(scrollWheel);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Enums;
 using Interactable;
 using UnityEngine;
 
@@ -15,8 +16,9 @@ namespace Player
         private Vector2 _startPos;
 
         [SerializeField] private List<GameObject> selectedUnits = new List<GameObject>();
-        public static List<GameObject> selectableUnits = new List<GameObject>();
+        public static readonly List<GameObject> SelectableUnits = new List<GameObject>();
         public static bool holdingDownButton;
+        public static bool hasSelectedUnits = false;
         
 
         // Start is called before the first frame update
@@ -42,6 +44,8 @@ namespace Player
                         }
 
                         Debug.Log("You have: " + selectedUnits.Count + " units selected!");
+                        hasSelectedUnits = true;
+                        HUD.SetCursor(CursorStates.Move);
                     }
                     
                 }
@@ -75,7 +79,7 @@ namespace Player
                 Vector2 min = selectionBox.anchoredPosition-(selectionBox.sizeDelta / 2);
                 Vector2 max = selectionBox.anchoredPosition+(selectionBox.sizeDelta / 2);
 
-                foreach (var unit in selectableUnits)
+                foreach (var unit in SelectableUnits)
                 {
                     Vector3 screenPos = _rtsCamera.WorldToScreenPoint(unit.transform.position);
                     if (screenPos.x > min.x && screenPos.x < max.x && screenPos.y > min.y && screenPos.y < max.y)
@@ -83,8 +87,11 @@ namespace Player
                         selectedUnits.Add(unit.gameObject);
                         unit.GetComponent<MeshRenderer>().material.color = Color.blue;
                         unit.GetComponent<IInteractable>().OnClicked();
+                        hasSelectedUnits = true;
+                        Debug.Log("You have: " + selectedUnits.Count + " units selected!");
                     }
                 }
+                HUD.SetCursor(CursorStates.Move);
                 holdingDownButton = false;
             }
         }
@@ -97,6 +104,7 @@ namespace Player
                 {
                     units.GetComponent<MeshRenderer>().material.color = Color.gray;
                     units.GetComponent<Units>().DeSelected();
+                    hasSelectedUnits = false;
                 }
                 selectedUnits.Clear();
             }

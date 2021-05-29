@@ -3,7 +3,7 @@
 namespace Player
 {
 
-
+[RequireComponent(typeof(PlayerInputMouse))]
     public class PlayerHandler : MonoBehaviour
     {
 
@@ -24,7 +24,7 @@ namespace Player
         }
         [HideInInspector] public CameraController cameraController;
 
-        public CharacterInput characterInput;
+        [HideInInspector] public CharacterInput characterInput;
         private PlayerSelectedUnits _playerSelectedUnits;
 
         // Start is called before the first frame update
