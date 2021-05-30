@@ -11,6 +11,8 @@ namespace Interactable
         private RaycastHit hit;
         
         private Coroutine AttackAndMove;
+        
+        private bool hasSubscribed = false;
 
         protected override void Start()
         {
@@ -47,9 +49,12 @@ namespace Interactable
 
         protected virtual void MoveToTarget(RaycastHit target)
         {
-            transform.LookAt(target.point);
-            agent.SetDestination(target.point);
-            agent.isStopped = false;
+            if (!target.collider.CompareTag("Units"))
+            {
+                transform.LookAt(target.point);
+                agent.SetDestination(target.point);
+                agent.isStopped = false;
+            }
         }
 
         IEnumerator MoveToTargetThenAttack(RaycastHit enemyHit)
@@ -65,6 +70,7 @@ namespace Interactable
                 else
                 {   
                     agent.isStopped = true;
+                    Debug.Log(distance);
                     enemyHit.collider.GetComponent<IDestructable>().OnHit(10);
                     yield return new WaitForSeconds(attackTimer);
                 }
@@ -74,12 +80,17 @@ namespace Interactable
 
         public override void Subscribe(CharacterInput publisher)
         {
-            publisher.hasClicked += MoveToClick;
+            if (!hasSubscribed)
+            {
+                publisher.hasClicked += MoveToClick;
+                hasSubscribed = true;
+            }
         }
 
         public override void UnSubscribe(CharacterInput publisher)
         {
             publisher.hasClicked -= MoveToClick;
+            hasSubscribed = false;
         }
     }
 }

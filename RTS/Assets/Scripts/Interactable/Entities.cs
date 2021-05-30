@@ -6,7 +6,7 @@ using Interactable;
 using UnityEngine.AI;
 using Player;
 
-public class Entities : MonoBehaviour, IInteractable,ISubscriber,IDestructable
+public abstract class Entities : MonoBehaviour, IInteractable,ISubscriber,IDestructable
 {
     #region Unit Variables
     public int hitPoints;

@@ -7,6 +7,7 @@ namespace Interactable
         public override void OnClicked()
         {
             base.OnClicked();
+            Debug.Log("I am a tank");
         }
     }
 }

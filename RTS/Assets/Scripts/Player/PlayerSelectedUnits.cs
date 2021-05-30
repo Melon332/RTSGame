@@ -8,7 +8,6 @@ namespace Player
 {
     public class PlayerSelectedUnits : MonoBehaviour, ISubscriber
     {
-        
         [SerializeField] private RectTransform selectionBox;
         private Ray _ray;
         private Camera _rtsCamera;

@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 6873584369581392637}
   - component: {fileID: 6873584369581392636}
   - component: {fileID: 6873584369581392635}
-  - component: {fileID: 6873584369581392634}
   - component: {fileID: 6873584369581392639}
+  - component: {fileID: 3951079835701443426}
   m_Layer: 0
   m_Name: Helicopter
   m_TagString: Units
@@ -95,20 +95,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6873584369581392634
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6873584369581392633}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48309e20f40187b4c96a1c0fac4d163e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hitPoints: 0
-  nameOfUnit: Helicopter
 --- !u!195 &6873584369581392639
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -131,3 +117,21 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &3951079835701443426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6873584369581392633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48309e20f40187b4c96a1c0fac4d163e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitPoints: 0
+  minRangeToAttack: 0
+  attackTimer: 0
+  nameOfUnit: 
+  canBeAttacked: 0
+  agent: {fileID: 0}
