@@ -37,10 +37,12 @@ namespace Player
                     hit.collider.GetComponent<IInteractable>().OnClicked();
                     if (!selectedUnits.Contains(hit.collider.gameObject))
                     {
+                        if (hit.collider.CompareTag("Units"))
+                        {
+                            hasSelectedUnits = true;
+                        }
                         selectedUnits.Add(hit.collider.gameObject);
                         Debug.Log("You have: " + selectedUnits.Count + " units selected!");
-                        hasSelectedUnits = true;
-                        HUD.SetCursor(CursorStates.Move);
                     }
                 }
             }
@@ -79,10 +81,12 @@ namespace Player
                 {
                     if (selectedUnits.Contains(unit.gameObject)) continue;
                     selectedUnits.Add(unit.gameObject);
+                    if (unit.CompareTag("Units"))
+                    {
+                        hasSelectedUnits = true;
+                    }
                     unit.GetComponent<IInteractable>().OnClicked();
-                    hasSelectedUnits = true;
                     Debug.Log("You have: " + selectedUnits.Count + " units selected!");
-                    HUD.SetCursor(CursorStates.Move);
                 }
             }
             holdingDownButton = false;
