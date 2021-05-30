@@ -79,7 +79,7 @@ namespace Interactable
                 else
                 {   
                     agent.isStopped = true;
-                    transform.LookAt(enemyHit.point);
+                    transform.LookAt(enemyHit.transform.position);
                     Attack();
                     yield return new WaitForSeconds(attackTimer);
                 }
@@ -87,10 +87,10 @@ namespace Interactable
             }
         }
 
-        protected virtual void Attack()
+        private void Attack()
         {
-            Instantiate(bullet, bulletSpawnPosition.transform);
-            Debug.Log("Hello");
+            var bulletObject = Instantiate(bullet, bulletSpawnPosition.transform);
+            bulletObject.GetComponent<Bullet>().Setup(bulletSpawnPosition.transform.forward);
         }
 
         public override void Subscribe(CharacterInput publisher)

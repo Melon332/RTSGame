@@ -9,18 +9,22 @@ public class Bullet : MonoBehaviour
 
     [SerializeField] private float bulletSpeed;
 
-    private Rigidbody _rb;
-    // Start is called before the first frame update
-    void Start()
+    private Vector3 shootDir;
+
+    private void Start()
     {
-        _rb = GetComponent<Rigidbody>();
+        Destroy(gameObject,5f);
     }
 
     private void Update()
     {
-        _rb.velocity = transform.forward * bulletSpeed;
+        transform.position += shootDir * (bulletSpeed * Time.deltaTime);
     }
 
+    public void Setup(Vector3 _shootDir)
+    {
+        shootDir = _shootDir;
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.GetComponent<Entities>())
