@@ -50,4 +50,9 @@ public class Entities : MonoBehaviour, IInteractable,ISubscriber,IDestructable
     {
         throw new System.NotImplementedException();
     }
+
+    public virtual void OnDeselect()
+    {
+        throw new NotImplementedException();
+    }
 }

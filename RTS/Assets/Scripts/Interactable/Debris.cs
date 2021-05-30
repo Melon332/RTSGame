@@ -8,5 +8,10 @@ namespace Interactable
         {
             canBeAttacked = true;
         }
+
+        public override void OnClicked()
+        {
+            Debug.Log("I am a debris look at me!");
+        }
     }
 }

@@ -3,5 +3,6 @@
     public interface IInteractable
     {
         void OnClicked();
+        void OnDeselect();
     }
 }

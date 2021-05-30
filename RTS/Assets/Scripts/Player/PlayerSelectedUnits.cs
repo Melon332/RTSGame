@@ -29,29 +29,29 @@ namespace Player
 
         private void ClickedOnUnit(bool hasClicked)
         {
-            if (hasClicked)
+            if (!hasClicked) return;
+            _ray = _rtsCamera.ScreenPointToRay(Input.mousePosition);
+            if (PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out var hit))
             {
-                _ray = _rtsCamera.ScreenPointToRay(Input.mousePosition);
-                if (PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out var hit))
+                if (hit.collider.GetComponent<IInteractable>() != null)
                 {
+                    hit.collider.GetComponent<IInteractable>().OnClicked();
                     if (hit.collider.CompareTag("Units"))
                     {
                         if (!selectedUnits.Contains(hit.collider.gameObject))
                         {
                             selectedUnits.Add(hit.collider.gameObject);
                             hit.collider.GetComponent<MeshRenderer>().material.color = Color.blue;
-                            hit.collider.GetComponent<IInteractable>().OnClicked();
+                            Debug.Log("You have: " + selectedUnits.Count + " units selected!");
+                            hasSelectedUnits = true;
+                            HUD.SetCursor(CursorStates.Move);
                         }
-
-                        Debug.Log("You have: " + selectedUnits.Count + " units selected!");
-                        hasSelectedUnits = true;
-                        HUD.SetCursor(CursorStates.Move);
                     }
                     
                 }
-
-                _startPos = Input.mousePosition;
             }
+
+            _startPos = Input.mousePosition;
         }
 
         private void SelectingMultipleUnits(bool hasBeenHeldDown, Vector2 currMousePos)
@@ -106,7 +106,7 @@ namespace Player
                 foreach (var units in selectedUnits)
                 {
                     units.GetComponent<MeshRenderer>().material.color = Color.gray;
-                    units.GetComponent<Units>().DeSelected();
+                    units.GetComponent<IInteractable>().OnDeselect();
                     hasSelectedUnits = false;
                 }
                 selectedUnits.Clear();

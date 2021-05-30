@@ -12,7 +12,6 @@ namespace Interactable
         
         private Coroutine AttackAndMove;
 
-
         protected override void Start()
         {
             base.Start();
@@ -24,7 +23,7 @@ namespace Interactable
             Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
         }
 
-        public void DeSelected()
+        public override void OnDeselect()
         {
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
         }
