@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Interactable
 {
 
-    public class Helicopter : Units
+    public class Helicopter : AirUnits
     {
 
         public override void OnClicked()

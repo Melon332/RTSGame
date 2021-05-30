@@ -2,7 +2,7 @@
 
 namespace Interactable
 {
-    public class Debris : Entities, IDestructable
+    public class Debris : Entities
     {
         protected override void Start()
         {

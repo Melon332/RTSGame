@@ -41,6 +41,7 @@ namespace Player
                         {
                             selectedUnits.Add(hit.collider.gameObject);
                             hit.collider.GetComponent<MeshRenderer>().material.color = Color.blue;
+                            hit.collider.GetComponent<Units>()._selectionBox.SetActive(true);
                             Debug.Log("You have: " + selectedUnits.Count + " units selected!");
                             hasSelectedUnits = true;
                             HUD.SetCursor(CursorStates.Move);
@@ -89,6 +90,7 @@ namespace Player
                             unit.GetComponent<MeshRenderer>().material.color = Color.blue;
                             unit.GetComponent<IInteractable>().OnClicked();
                             hasSelectedUnits = true;
+                            unit.GetComponent<Units>()._selectionBox.SetActive(true);
                             Debug.Log("You have: " + selectedUnits.Count + " units selected!");
                         }
                     }
@@ -100,16 +102,15 @@ namespace Player
 
         private void DeSelectUnits(bool hasLeftClicked)
         {
-            if (hasLeftClicked)
+            if (!hasLeftClicked) return;
+            foreach (var units in selectedUnits)
             {
-                foreach (var units in selectedUnits)
-                {
-                    units.GetComponent<MeshRenderer>().material.color = Color.gray;
-                    units.GetComponent<IInteractable>().OnDeselect();
-                    hasSelectedUnits = false;
-                }
-                selectedUnits.Clear();
+                units.GetComponent<MeshRenderer>().material.color = Color.gray;
+                units.GetComponent<IInteractable>().OnDeselect();
+                units.GetComponent<Units>()._selectionBox.SetActive(false);
+                hasSelectedUnits = false;
             }
+            selectedUnits.Clear();
         }
 
         public void Subscribe(CharacterInput publisher)

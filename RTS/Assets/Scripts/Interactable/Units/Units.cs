@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Player;
 using UnityEngine;
 using UnityEngine.AI;
@@ -8,6 +9,12 @@ namespace Interactable
     [RequireComponent(typeof(NavMeshAgent))]
     public abstract class Units : Entities, IInteractable
     {
+        [HideInInspector] public GameObject _selectionBox;
+        [SerializeField] protected GameObject bullet;
+        [SerializeField] protected GameObject bulletSpawnPosition;
+        public float minRangeToAttack;
+        public float attackTimer;
+        
         private RaycastHit hit;
         
         private Coroutine AttackAndMove;
@@ -18,6 +25,8 @@ namespace Interactable
         {
             base.Start();
             canBeAttacked = false;
+            _selectionBox = GetComponentInChildren<SelectionBox>().gameObject;
+            _selectionBox.SetActive(false);
         }
 
         public override void OnClicked()
@@ -34,6 +43,7 @@ namespace Interactable
         {
             //Gets the mouse position whenever you click
             var found = PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out hit); 
+            if (!gameObject.activeSelf) return;
             if(AttackAndMove != null)
                 StopCoroutine(AttackAndMove);
             if (found && hit.collider.GetComponent<Entities>() && hit.collider.GetComponent<Entities>().canBeAttacked)
@@ -49,12 +59,11 @@ namespace Interactable
 
         protected virtual void MoveToTarget(RaycastHit target)
         {
-            if (!target.collider.CompareTag("Units"))
-            {
-                transform.LookAt(target.point);
-                agent.SetDestination(target.point);
-                agent.isStopped = false;
-            }
+            if (target.collider.CompareTag("Units")) return;
+            if (agent == null) return;
+            transform.Rotate(target.point);
+            agent.SetDestination(target.point);
+            agent.isStopped = false;
         }
 
         IEnumerator MoveToTargetThenAttack(RaycastHit enemyHit)
@@ -70,27 +79,38 @@ namespace Interactable
                 else
                 {   
                     agent.isStopped = true;
-                    Debug.Log(distance);
-                    enemyHit.collider.GetComponent<IDestructable>().OnHit(10);
+                    transform.LookAt(enemyHit.point);
+                    Attack();
                     yield return new WaitForSeconds(attackTimer);
                 }
                 yield return new WaitForSeconds(attackTimer);
             }
         }
 
+        protected virtual void Attack()
+        {
+            Instantiate(bullet, bulletSpawnPosition.transform);
+            Debug.Log("Hello");
+        }
+
         public override void Subscribe(CharacterInput publisher)
         {
-            if (!hasSubscribed)
-            {
-                publisher.hasClicked += MoveToClick;
-                hasSubscribed = true;
-            }
+            if (hasSubscribed) return;
+            publisher.hasClicked += MoveToClick;
+            hasSubscribed = true;
         }
 
         public override void UnSubscribe(CharacterInput publisher)
         {
             publisher.hasClicked -= MoveToClick;
             hasSubscribed = false;
+        }
+
+        private void OnDisable()
+        {
+            if (!gameObject.activeSelf) return;
+            UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
+            agent = null;
         }
     }
 }

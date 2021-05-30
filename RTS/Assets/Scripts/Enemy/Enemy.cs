@@ -4,7 +4,7 @@ using Interactable;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : Entities
+public class Enemy : Units
 {
     protected override void Start()
     {
@@ -22,6 +22,5 @@ public class Enemy : Entities
     {
         damage += 50;
         base.OnHit(damage);
-        Debug.Log(damage);
     }
 }

@@ -10,8 +10,6 @@ public abstract class Entities : MonoBehaviour, IInteractable,ISubscriber,IDestr
 {
     #region Unit Variables
     public int hitPoints;
-    public float minRangeToAttack;
-    public float attackTimer;
     public string nameOfUnit;
     public bool canBeAttacked;
     #endregion
