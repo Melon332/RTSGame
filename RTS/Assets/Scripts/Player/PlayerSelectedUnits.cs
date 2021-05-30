@@ -35,19 +35,13 @@ namespace Player
                 if (hit.collider.GetComponent<IInteractable>() != null)
                 {
                     hit.collider.GetComponent<IInteractable>().OnClicked();
-                    if (hit.collider.CompareTag("Units"))
+                    if (!selectedUnits.Contains(hit.collider.gameObject))
                     {
-                        if (!selectedUnits.Contains(hit.collider.gameObject))
-                        {
-                            selectedUnits.Add(hit.collider.gameObject);
-                            hit.collider.GetComponent<MeshRenderer>().material.color = Color.blue;
-                            hit.collider.GetComponent<Units>()._selectionBox.SetActive(true);
-                            Debug.Log("You have: " + selectedUnits.Count + " units selected!");
-                            hasSelectedUnits = true;
-                            HUD.SetCursor(CursorStates.Move);
-                        }
+                        selectedUnits.Add(hit.collider.gameObject);
+                        Debug.Log("You have: " + selectedUnits.Count + " units selected!");
+                        hasSelectedUnits = true;
+                        HUD.SetCursor(CursorStates.Move);
                     }
-                    
                 }
             }
 
@@ -72,32 +66,26 @@ namespace Player
 
         private void ReleaseSelectionBox(bool hasReleaseButton)
         {
-            if (hasReleaseButton)
+            if (!hasReleaseButton) return;
+            selectionBox.gameObject.SetActive(false);
+
+            Vector2 min = selectionBox.anchoredPosition-(selectionBox.sizeDelta / 2);
+            Vector2 max = selectionBox.anchoredPosition+(selectionBox.sizeDelta / 2);
+
+            foreach (var unit in SelectableUnits)
             {
-                selectionBox.gameObject.SetActive(false);
-
-                Vector2 min = selectionBox.anchoredPosition-(selectionBox.sizeDelta / 2);
-                Vector2 max = selectionBox.anchoredPosition+(selectionBox.sizeDelta / 2);
-
-                foreach (var unit in SelectableUnits)
+                Vector3 screenPos = _rtsCamera.WorldToScreenPoint(unit.transform.position);
+                if (screenPos.x > min.x && screenPos.x < max.x && screenPos.y > min.y && screenPos.y < max.y)
                 {
-                    Vector3 screenPos = _rtsCamera.WorldToScreenPoint(unit.transform.position);
-                    if (screenPos.x > min.x && screenPos.x < max.x && screenPos.y > min.y && screenPos.y < max.y)
-                    {
-                        if (!selectedUnits.Contains(unit.gameObject))
-                        {
-                            selectedUnits.Add(unit.gameObject);
-                            unit.GetComponent<MeshRenderer>().material.color = Color.blue;
-                            unit.GetComponent<IInteractable>().OnClicked();
-                            hasSelectedUnits = true;
-                            unit.GetComponent<Units>()._selectionBox.SetActive(true);
-                            Debug.Log("You have: " + selectedUnits.Count + " units selected!");
-                        }
-                    }
+                    if (selectedUnits.Contains(unit.gameObject)) continue;
+                    selectedUnits.Add(unit.gameObject);
+                    unit.GetComponent<IInteractable>().OnClicked();
+                    hasSelectedUnits = true;
+                    Debug.Log("You have: " + selectedUnits.Count + " units selected!");
+                    HUD.SetCursor(CursorStates.Move);
                 }
-                HUD.SetCursor(CursorStates.Move);
-                holdingDownButton = false;
             }
+            holdingDownButton = false;
         }
 
         private void DeSelectUnits(bool hasLeftClicked)
@@ -105,9 +93,8 @@ namespace Player
             if (!hasLeftClicked) return;
             foreach (var units in selectedUnits)
             {
-                units.GetComponent<MeshRenderer>().material.color = Color.gray;
                 units.GetComponent<IInteractable>().OnDeselect();
-                units.GetComponent<Units>()._selectionBox.SetActive(false);
+                units.GetComponent<Entities>()._selectionBox.SetActive(false);
                 hasSelectedUnits = false;
             }
             selectedUnits.Clear();

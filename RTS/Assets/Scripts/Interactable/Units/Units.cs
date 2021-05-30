@@ -9,7 +9,6 @@ namespace Interactable
     [RequireComponent(typeof(NavMeshAgent))]
     public abstract class Units : Entities, IInteractable
     {
-        [HideInInspector] public GameObject _selectionBox;
         [SerializeField] protected GameObject bullet;
         [SerializeField] protected GameObject bulletSpawnPosition;
         public float minRangeToAttack;
@@ -24,18 +23,19 @@ namespace Interactable
         protected override void Start()
         {
             base.Start();
+            PlayerSelectedUnits.SelectableUnits.Add(gameObject);
             canBeAttacked = false;
-            _selectionBox = GetComponentInChildren<SelectionBox>().gameObject;
-            _selectionBox.SetActive(false);
         }
 
         public override void OnClicked()
         {
+            base.OnClicked();
             Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
         }
 
         public override void OnDeselect()
         {
+            base.OnDeselect();
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
         }
 

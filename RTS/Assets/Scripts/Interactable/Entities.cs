@@ -15,11 +15,16 @@ public abstract class Entities : MonoBehaviour, IInteractable,ISubscriber,IDestr
     #endregion
 
     [HideInInspector] public NavMeshAgent agent;
+    [HideInInspector] public GameObject _selectionBox;
 
     protected virtual void Start()
     {
-        PlayerSelectedUnits.SelectableUnits.Add(gameObject);
         agent = GetComponent<NavMeshAgent>();
+        _selectionBox = GetComponentInChildren<SelectionBox>().gameObject;
+        if (_selectionBox != null)
+        {
+            _selectionBox.SetActive(false);
+        }
     }
 
     public virtual void Subscribe(CharacterInput publisher)
@@ -46,11 +51,11 @@ public abstract class Entities : MonoBehaviour, IInteractable,ISubscriber,IDestr
 
     public virtual void OnClicked()
     {
-        throw new System.NotImplementedException();
+        _selectionBox.SetActive(true);
     }
 
     public virtual void OnDeselect()
     {
-        throw new NotImplementedException();
+       _selectionBox.SetActive(false);
     }
 }
