@@ -29,12 +29,12 @@ public abstract class Entities : MonoBehaviour, IInteractable,ISubscriber,IDestr
 
     public virtual void Subscribe(CharacterInput publisher)
     {
-        publisher.hasClicked += null;
+        
     }
 
     public virtual void UnSubscribe(CharacterInput publisher)
     {
-        publisher.hasClicked -= null;
+        
     }
 
     public virtual void OnHit(int damage)

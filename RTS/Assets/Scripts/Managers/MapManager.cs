@@ -31,7 +31,7 @@ namespace Managers
         // Start is called before the first frame update
         void Awake()
         {
-            SelectMap(0);
+            SelectMap(1);
         }
 
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Interactable;
+using Player;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -18,9 +19,10 @@ public class Enemy : Units
 
     public override void OnClicked()
     {
+        if (PlayerSelectedUnits.hasSelectedUnits) return;
         Debug.Log("This is an enemy, you cannot select it");
-        
         _selectionBox.SetActive(true);
+        Debug.Log(hitPoints);
     }
 
     public override void OnDeselect()
