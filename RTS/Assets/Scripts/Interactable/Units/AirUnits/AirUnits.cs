@@ -6,13 +6,20 @@ using UnityEngine;
 public class AirUnits : Units
 {
     // Start is called before the first frame update
-    public override void Start()
+    protected override void Start()
     {
+        base.Start();
         Debug.Log("I am an air unit :D");
+        Invoke("FlyToAir",2f);
     }
 
     protected override void MoveToTarget(RaycastHit target)
     {
-        transform.Translate(target.point.x,transform.position.y,target.point.z);
+        base.MoveToTarget(target);
+    }
+
+    private void FlyToAir()
+    {
+        transform.position = new Vector3(transform.position.x, 5f, transform.position.z); 
     }
 }

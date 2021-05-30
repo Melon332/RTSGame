@@ -84,11 +84,14 @@ namespace Player
                     Vector3 screenPos = _rtsCamera.WorldToScreenPoint(unit.transform.position);
                     if (screenPos.x > min.x && screenPos.x < max.x && screenPos.y > min.y && screenPos.y < max.y)
                     {
-                        selectedUnits.Add(unit.gameObject);
-                        unit.GetComponent<MeshRenderer>().material.color = Color.blue;
-                        unit.GetComponent<IInteractable>().OnClicked();
-                        hasSelectedUnits = true;
-                        Debug.Log("You have: " + selectedUnits.Count + " units selected!");
+                        if (!selectedUnits.Contains(unit.gameObject))
+                        {
+                            selectedUnits.Add(unit.gameObject);
+                            unit.GetComponent<MeshRenderer>().material.color = Color.blue;
+                            unit.GetComponent<IInteractable>().OnClicked();
+                            hasSelectedUnits = true;
+                            Debug.Log("You have: " + selectedUnits.Count + " units selected!");
+                        }
                     }
                 }
                 HUD.SetCursor(CursorStates.Move);

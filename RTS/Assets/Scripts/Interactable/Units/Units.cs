@@ -2,32 +2,24 @@
 using Player;
 using UnityEngine;
 using UnityEngine.AI;
+
 namespace Interactable
 {
     [RequireComponent(typeof(NavMeshAgent))]
-    public abstract class Units : MonoBehaviour, IInteractable,ISubscriber
+    public abstract class Units : Entities, IInteractable
     {
-        #region Unit Variables
-        public int hitPoints;
-        public float minRangeToAttack;
-        public float attackTimer;
-        public string nameOfUnit;
-        #endregion
-
-        [HideInInspector] public NavMeshAgent agent;
         private RaycastHit hit;
         
         private Coroutine AttackAndMove;
-        
 
-        public virtual void Start()
+
+        protected override void Start()
         {
-            PlayerSelectedUnits.SelectableUnits.Add(gameObject);
-            agent = GetComponent<NavMeshAgent>();
-            agent.stoppingDistance = minRangeToAttack - 3;
+            base.Start();
+            canBeAttacked = false;
         }
 
-        public virtual void OnClicked()
+        public override void OnClicked()
         {
             Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
         }
@@ -43,7 +35,7 @@ namespace Interactable
             var found = PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out hit); 
             if(AttackAndMove != null)
                 StopCoroutine(AttackAndMove);
-            if (found && hit.collider.GetComponent<Enemy>())
+            if (found && hit.collider.GetComponent<Entities>() && hit.collider.GetComponent<Entities>().canBeAttacked)
             {
                 //Sets the coroutine variable to store it and stop it.
                 AttackAndMove = StartCoroutine(MoveToTargetThenAttack(hit));
@@ -58,33 +50,35 @@ namespace Interactable
         {
             transform.LookAt(target.point);
             agent.SetDestination(target.point);
+            agent.isStopped = false;
         }
 
         IEnumerator MoveToTargetThenAttack(RaycastHit enemyHit)
         {
-            while (enemyHit.collider.GetComponent<Enemy>().hitPoints >= 0)
+            while (enemyHit.collider.GetComponent<Entities>().hitPoints >= 0)
             {
                 var distance = (transform.position - enemyHit.transform.position).sqrMagnitude;
                 if (distance > minRangeToAttack)
                 {
+                    agent.isStopped = false;
                     agent.destination = enemyHit.transform.position;
                 }
                 else
                 {   
-                    enemyHit.collider.GetComponent<Enemy>().hitPoints -= 10;
+                    agent.isStopped = true;
+                    enemyHit.collider.GetComponent<IDestructable>().OnHit(10);
                     yield return new WaitForSeconds(attackTimer);
-                }   
-                
+                }
                 yield return new WaitForSeconds(attackTimer);
             }
         }
 
-        public void Subscribe(CharacterInput publisher)
+        public override void Subscribe(CharacterInput publisher)
         {
             publisher.hasClicked += MoveToClick;
         }
 
-        public void UnSubscribe(CharacterInput publisher)
+        public override void UnSubscribe(CharacterInput publisher)
         {
             publisher.hasClicked -= MoveToClick;
         }
