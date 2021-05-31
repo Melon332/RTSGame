@@ -11,14 +11,12 @@ namespace Managers
     {
         [SerializeField] private GameObject mouseOrKeyboardText;
         public Texture2D[] cursors;
-        public static Texture2D[] cursorsStatic;
-
-        // Start is called before the first frame update
+        private static Texture2D[] _cursorsStatic;
         void Awake()
         {
-            if (cursorsStatic == null)
+            if (_cursorsStatic == null)
             {
-                cursorsStatic = cursors;
+                _cursorsStatic = cursors;
             }
             Time.timeScale = 0;
             SetCursorState((int)CursorStates.Select);
@@ -39,23 +37,22 @@ namespace Managers
             if (Input.GetKeyDown(KeyCode.Y))
             {
                 PlayerHandler.PlayerHandlerInstance.characterInput = GameManager.Instance.player.AddComponent<PlayerInputKeyboard>();
-                PlayerHandler.PlayerHandlerInstance.cameraController?.Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
+                PlayerHandler.PlayerHandlerInstance.cameraController.Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
                 PlayerHandler.PlayerHandlerInstance.characterInput = GameManager.Instance.player.GetComponent<PlayerInputMouse>();
                 GameManager.Instance.hasChosenTypeOfCamera = true;
                 mouseOrKeyboardText.SetActive(false);
-                Time.timeScale = 1;
             }
 
             if (Input.GetKeyDown(KeyCode.N))
             {
                 mouseOrKeyboardText.SetActive(false);
-                Time.timeScale = 1;
             }
+            Time.timeScale = 1;
         }
 
         public static void SetCursorState(int currentlySelectedState)
         {
-            Cursor.SetCursor(cursorsStatic[currentlySelectedState],Vector2.zero, CursorMode.ForceSoftware);
+            Cursor.SetCursor(_cursorsStatic[currentlySelectedState],Vector2.zero, CursorMode.ForceSoftware);
         }
     }
 }

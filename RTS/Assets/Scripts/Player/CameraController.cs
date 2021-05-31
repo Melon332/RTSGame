@@ -12,12 +12,12 @@ public class CameraController : MonoBehaviour, ISubscriber
     [HideInInspector] public float maxYScroll;
     public float minYScroll;
     
-    private static Camera _rtsCamera;
+    public static Camera rtsCamera;
     // Start is called before the first frame update
     void Start()
     {
         SetCameraPanLimit();
-        _rtsCamera = GetComponent<Camera>();
+        rtsCamera = GetComponent<Camera>();
         maxYScroll = transform.position.y;
     }
 
@@ -40,13 +40,13 @@ public class CameraController : MonoBehaviour, ISubscriber
     public bool GetMousePosition(out RaycastHit hit)
     {
         //Sends a ray to wherever the mouse position is.
-        var ray = _rtsCamera.ScreenPointToRay(Input.mousePosition);
+        var ray = rtsCamera.ScreenPointToRay(Input.mousePosition);
         return Physics.Raycast(ray, out hit);
     }
 
     private void MoveCamera(Vector2 direction)
     {
-        _cameraPos = _rtsCamera.transform.position; 
+        _cameraPos = rtsCamera.transform.position; 
         
         
         _cameraPos.z += direction.y * panSpeed * Time.deltaTime;
@@ -65,7 +65,7 @@ public class CameraController : MonoBehaviour, ISubscriber
 
     private void ScrollCamera(float scrollAmount)
     {
-        _cameraPos = _rtsCamera.transform.position;
+        _cameraPos = rtsCamera.transform.position;
         _cameraPos.y -= scrollAmount * scrollSpeed * 100f * Time.deltaTime;
         _cameraPos.y = Mathf.Clamp(_cameraPos.y, minYScroll, maxYScroll);
         transform.position = _cameraPos;

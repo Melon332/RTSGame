@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Enums;
 using Interactable;
+using Managers;
 using UnityEngine;
 
 namespace Player
@@ -13,9 +14,7 @@ namespace Player
         private Camera _rtsCamera;
 
         private Vector2 _startPos;
-
-        [SerializeField] private List<GameObject> selectedUnits = new List<GameObject>();
-        public static readonly List<GameObject> SelectableUnits = new List<GameObject>();
+        
         public static bool holdingDownButton;
         public static bool hasSelectedUnits = false;
         
@@ -35,14 +34,14 @@ namespace Player
                 if (hit.collider.GetComponent<IInteractable>() != null)
                 {
                     hit.collider.GetComponent<IInteractable>().OnClicked();
-                    if (!selectedUnits.Contains(hit.collider.gameObject))
+                    if (!UnitManager.Instance.selectedUnits.Contains(hit.collider.gameObject))
                     {
                         if (hit.collider.CompareTag("Units"))
                         {
                             hasSelectedUnits = true;
                         }
-                        selectedUnits.Add(hit.collider.gameObject);
-                        Debug.Log("You have: " + selectedUnits.Count + " units selected!");
+                        UnitManager.Instance.selectedUnits.Add(hit.collider.gameObject);
+                        Debug.Log("You have: " + UnitManager.Instance.selectedUnits.Count + " units selected!");
                     }
                 }
             }
@@ -74,19 +73,19 @@ namespace Player
             Vector2 min = selectionBox.anchoredPosition-(selectionBox.sizeDelta / 2);
             Vector2 max = selectionBox.anchoredPosition+(selectionBox.sizeDelta / 2);
 
-            foreach (var unit in SelectableUnits)
+            foreach (var unit in UnitManager.SelectableUnits)
             {
                 Vector3 screenPos = _rtsCamera.WorldToScreenPoint(unit.transform.position);
                 if (screenPos.x > min.x && screenPos.x < max.x && screenPos.y > min.y && screenPos.y < max.y)
                 {
-                    if (selectedUnits.Contains(unit.gameObject)) continue;
-                    selectedUnits.Add(unit.gameObject);
+                    if (UnitManager.Instance.selectedUnits.Contains(unit.gameObject)) continue;
+                    UnitManager.Instance.selectedUnits.Add(unit.gameObject);
                     if (unit.CompareTag("Units"))
                     {
                         hasSelectedUnits = true;
                     }
                     unit.GetComponent<IInteractable>().OnClicked();
-                    Debug.Log("You have: " + selectedUnits.Count + " units selected!");
+                    Debug.Log("You have: " + UnitManager.Instance.selectedUnits.Count + " units selected!");
                 }
             }
             holdingDownButton = false;
@@ -95,13 +94,12 @@ namespace Player
         private void DeSelectUnits(bool hasLeftClicked)
         {
             if (!hasLeftClicked) return;
-            foreach (var units in selectedUnits)
+            foreach (var units in UnitManager.Instance.selectedUnits)
             {
                 units.GetComponent<IInteractable>().OnDeselect();
-                units.GetComponent<Entities>()._selectionBox.SetActive(false);
                 hasSelectedUnits = false;
             }
-            selectedUnits.Clear();
+            UnitManager.Instance.selectedUnits.Clear();
         }
 
         public void Subscribe(CharacterInput publisher)

@@ -21,10 +21,9 @@ public abstract class Entities : MonoBehaviour, IInteractable,ISubscriber,IDestr
     {
         agent = GetComponent<NavMeshAgent>();
         _selectionBox = GetComponentInChildren<SelectionBox>().gameObject;
-        if (_selectionBox != null)
-        {
-            _selectionBox.SetActive(false);
-        }
+        if (_selectionBox == null) return;
+        _selectionBox.SetActive(false);
+        _selectionBox.transform.localScale = gameObject.transform.localScale * 2;
     }
 
     public virtual void Subscribe(CharacterInput publisher)
@@ -39,7 +38,7 @@ public abstract class Entities : MonoBehaviour, IInteractable,ISubscriber,IDestr
 
     public virtual void OnHit(int damage)
     {
-        if (hitPoints > 0)
+        if (hitPoints >= 0)
         {
             hitPoints -= damage;   
         }

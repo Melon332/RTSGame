@@ -9,6 +9,7 @@ public class CharacterInput : MonoBehaviour
     public Action<bool> hasReleasedButton;
     public Action<bool> hasLeftClickedMouse;
     public Action<float> mouseScrollWheel;
+    public Action<RaycastHit> mousePosition;
 
     protected Vector2 PastCameraMovement;
     protected bool PastHasClicked;
@@ -49,5 +50,10 @@ public class CharacterInput : MonoBehaviour
     protected void HasUsedMouseScrollWheel(float scrollWheel)
     {
         mouseScrollWheel?.Invoke(scrollWheel);
+    }
+
+    protected void IsMouseUnderAUnit(RaycastHit mousePos)
+    {
+        mousePosition?.Invoke(mousePos);
     }
 }

@@ -1,5 +1,7 @@
-﻿using Enums;
+﻿using System;
+using Enums;
 using Player;
+using UnityEditor;
 using UnityEngine;
 
 public class PlayerInputMouse : CharacterInput
@@ -7,6 +9,7 @@ public class PlayerInputMouse : CharacterInput
     [SerializeField] float panBorderThickness = 50f;
 
     private KeyCode mouseButton = KeyCode.Mouse0;
+    private readonly Vector3 sizeOfBox = new Vector3(50,0,50);
     
     // Update is called once per frame
     private void Update()
@@ -18,6 +21,8 @@ public class PlayerInputMouse : CharacterInput
         hasReleasedButton(Input.GetMouseButtonUp(0));
         HasLeftClickedMouseButton(Input.GetMouseButton(1));
         HasUsedMouseScrollWheel(Input.GetAxis("Mouse ScrollWheel"));
+        Physics.Raycast(CameraController.rtsCamera.ScreenPointToRay(Input.mousePosition), out RaycastHit hit);
+        IsMouseUnderAUnit(hit);
     }
 
     private Vector2 CameraDirection()
@@ -62,4 +67,5 @@ public class PlayerInputMouse : CharacterInput
     {
         return Input.mousePosition;
     }
+    
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Managers;
 using Player;
 using UnityEngine;
 using UnityEngine.AI;
@@ -23,7 +24,7 @@ namespace Interactable
         protected override void Start()
         {
             base.Start();
-            PlayerSelectedUnits.SelectableUnits.Add(gameObject);
+            UnitManager.SelectableUnits.Add(gameObject);
             canBeAttacked = false;
         }
 
