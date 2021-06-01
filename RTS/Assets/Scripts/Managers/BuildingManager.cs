@@ -32,11 +32,9 @@ public class BuildingManager : MonoBehaviour
 
     public GameObject CreateBuilding(int buildingIndex)
     {
+        PlayerManager.Instance.hasBuildingInHand = true;
         var buildingToCreate = Instantiate(Buildings[buildingIndex]);
-        foreach (var _renderer in buildingToCreate.GetComponentsInChildren<MeshRenderer>())
-        {
-            _renderer.material = canPlaceBuilding;
-        }
+
         return buildingToCreate;
     }
 }

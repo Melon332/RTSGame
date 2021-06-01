@@ -34,12 +34,10 @@ public class CharacterInput : MonoBehaviour
 
     protected void HasHeldDownButton(bool hasHeldDownMouseButton, Vector2 mousePos)
     {
-        hasHeldDownButton?.Invoke(hasHeldDownMouseButton, mousePos);
-    }
-
-    protected void HasReleaseButton(bool hasReleaseButton)
-    {
-        hasReleasedButton?.Invoke(hasReleaseButton);
+        if (!PlayerManager.Instance.hasBuildingInHand)
+        {
+            hasHeldDownButton?.Invoke(hasHeldDownMouseButton, mousePos);
+        }
     }
 
     protected void HasLeftClickedMouseButton(bool hasLeftClickedMouseButton)

@@ -19,7 +19,7 @@ public class Enemy : Units
 
     public override void OnClicked()
     {
-        if (PlayerSelectedUnits.hasSelectedUnits) return;
+        if (PlayerManager.Instance.hasSelectedUnits) return;
         Debug.Log("This is an enemy, you cannot select it");
         _selectionBox.SetActive(true);
         Debug.Log(hitPoints);

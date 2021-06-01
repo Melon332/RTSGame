@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Interactable;
+using Managers;
 using UnityEngine.AI;
 using Player;
 
@@ -12,6 +13,7 @@ public abstract class Entities : MonoBehaviour, IInteractable,ISubscriber,IDestr
     public int hitPoints;
     public string nameOfUnit;
     public bool canBeAttacked;
+    [HideInInspector] public bool isDead = false;
     #endregion
 
     [HideInInspector] public NavMeshAgent agent;
@@ -38,13 +40,16 @@ public abstract class Entities : MonoBehaviour, IInteractable,ISubscriber,IDestr
 
     public virtual void OnHit(int damage)
     {
-        if (hitPoints >= 0)
+        if (hitPoints <= 0)
         {
-            hitPoints -= damage;   
+            OnDeselect();
+            GetComponent<MeshRenderer>().enabled = false;
+            isDead = true;
+            Destroy(gameObject,2f);
         }
         else
         {
-            gameObject.SetActive(false);
+            hitPoints -= damage;
         }
     }
 

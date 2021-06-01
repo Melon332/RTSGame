@@ -13,6 +13,7 @@ namespace Enums
                         PanDown,
                         Move,
                         Harvest,
-                        Attack
+                        Attack,
+                        Default
                 }
 }

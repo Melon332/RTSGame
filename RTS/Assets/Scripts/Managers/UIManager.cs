@@ -42,23 +42,28 @@ namespace Managers
                 PlayerHandler.PlayerHandlerInstance.characterInput = GameManager.Instance.player.GetComponent<PlayerInputMouse>();
                 GameManager.Instance.hasChosenTypeOfCamera = true;
                 mouseOrKeyboardText.SetActive(false);
+                Time.timeScale = 1;
             }
 
             if (Input.GetKeyDown(KeyCode.N))
             {
                 mouseOrKeyboardText.SetActive(false);
+                Time.timeScale = 1;
             }
-            Time.timeScale = 1;
         }
 
         public static void SetCursorState(int currentlySelectedState)
         {
             Cursor.SetCursor(_cursorsStatic[currentlySelectedState],Vector2.zero, CursorMode.ForceSoftware);
+            if (currentlySelectedState == 8)
+            {
+                Cursor.SetCursor(null,Vector2.zero, CursorMode.ForceSoftware);
+            }
         }
 
         public void BuildFactoryBuilding(int buildingIndex)
         {
-            if(Buildings.hasBuildingInHand) return;
+            if(PlayerManager.Instance.hasBuildingInHand) return;
             BuildingManager.Instance.CreateBuilding(buildingIndex);
         }
     }

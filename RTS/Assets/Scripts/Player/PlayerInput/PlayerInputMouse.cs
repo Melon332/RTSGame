@@ -1,9 +1,7 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using Enums;
-using Player;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.EventSystems;
 
 public class PlayerInputMouse : CharacterInput
 {
@@ -55,10 +53,13 @@ public class PlayerInputMouse : CharacterInput
             direction.x += 1;
             HUD.SetCursor(CursorStates.PanRight);
         }
-
-        else if (PlayerSelectedUnits.hasSelectedUnits)
+        else if (PlayerManager.Instance.hasSelectedUnits)
         {
             HUD.SetCursor(CursorStates.Move);
+        }
+        else if (IsPointerOverUIObject())
+        {
+            HUD.SetCursor(CursorStates.Default);
         }
         else
         {
@@ -67,6 +68,14 @@ public class PlayerInputMouse : CharacterInput
 
         return direction;
         
+    }
+    public static bool IsPointerOverUIObject()
+    {
+        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+        eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+        return results.Count > 0;
     }
 
     public static bool IsMouseInGameView()

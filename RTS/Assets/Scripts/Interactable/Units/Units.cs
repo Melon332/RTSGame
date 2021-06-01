@@ -20,7 +20,7 @@ namespace Interactable
         private Coroutine AttackAndMove;
         
         private bool hasSubscribed = false;
-
+        
         protected override void Start()
         {
             base.Start();

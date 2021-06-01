@@ -10,7 +10,6 @@ public class Buildings : Entities
     [SerializeField] protected bool canProduceUnits;
     protected bool canPlace = true;
     protected bool hasFinishedBuilding = false;
-    public static bool hasBuildingInHand = false;
 
     private MeshRenderer[] buildingRenderer;
 
@@ -20,13 +19,13 @@ public class Buildings : Entities
     protected override void Start()
     {
         base.Start();
-        buildingRenderer = GetComponentsInChildren<MeshRenderer>();
+        buildingRenderer = GetComponentsInChildren<MeshRenderer>(true);
         if (canProduceUnits)
         {
             buildableUnits = UnitManager.Instance.buildableUnits;
         }
         Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
-        _selectionBox.transform.localScale = transform.localScale * 2;
+        _selectionBox.transform.localScale = transform.localScale * 3;
     }
     
 
@@ -55,12 +54,10 @@ public class Buildings : Entities
     {
         if (hasFinishedBuilding) return;
         transform.position = new Vector3(mousePos.point.x, 0, mousePos.point.z);
-        hasBuildingInHand = true;
-        if (canPlace)
+        if (canPlace && !PlayerInputMouse.IsPointerOverUIObject())
         {
             foreach (var buildingBlocks in buildingRenderer)
             {
-                Debug.Log(!buildingBlocks.GetComponent<SelectionBox>());
                 if (!buildingBlocks.GetComponent<SelectionBox>())
                 {
                     buildingBlocks.material = BuildingManager.Instance.canPlaceBuilding;
@@ -80,11 +77,10 @@ public class Buildings : Entities
     }
     private void PlaceBuilding(bool place)
     {
-        if (place && canPlace)
+        if (place && canPlace && !PlayerInputMouse.IsPointerOverUIObject())
         {
-            Debug.Log("Test");
             hasFinishedBuilding = true;
-            hasBuildingInHand = false;
+            PlayerManager.Instance.hasBuildingInHand = false;
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
         }
         else
@@ -97,7 +93,7 @@ public class Buildings : Entities
     {
         if (!hasClicked) return;
         UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
-        hasBuildingInHand = false;
+        PlayerManager.Instance.hasBuildingInHand = false;
         Destroy(gameObject,0.5f);
     }
 
@@ -105,7 +101,6 @@ public class Buildings : Entities
     {
         if (other.CompareTag("Ground")) return;
         canPlace = false;
-        Debug.Log(canPlace);
     }
 
     private void OnTriggerExit(Collider other)

@@ -16,8 +16,7 @@ namespace Player
         private Vector2 _startPos;
         
         public static bool holdingDownButton;
-        public static bool hasSelectedUnits = false;
-        
+
 
         // Start is called before the first frame update
         void Start()
@@ -27,7 +26,7 @@ namespace Player
 
         private void ClickedOnUnit(bool hasClicked)
         {
-            if (Buildings.hasBuildingInHand) return;
+            if (PlayerManager.Instance.hasBuildingInHand) return;
             if (!hasClicked) return;
             _ray = _rtsCamera.ScreenPointToRay(Input.mousePosition);
             if (PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out var hit))
@@ -39,40 +38,45 @@ namespace Player
                     {
                         if (hit.collider.CompareTag("Units"))
                         {
-                            hasSelectedUnits = true;
+                            PlayerManager.Instance.hasSelectedUnits = true;
                         }
                         UnitManager.Instance.selectedUnits.Add(hit.collider.gameObject);
-                        Debug.Log("You have: " + UnitManager.Instance.selectedUnits.Count + " units selected!");
                     }
                 }
             }
 
-            _startPos = Input.mousePosition;
+            if (!PlayerInputMouse.IsPointerOverUIObject())
+            {
+                _startPos = Input.mousePosition;
+            }
         }
 
         private void SelectingMultipleUnits(bool hasBeenHeldDown, Vector2 currMousePos)
         {
-            if (Buildings.hasBuildingInHand) return;
             if (!hasBeenHeldDown) return;
-            holdingDownButton = true;
-            if (!selectionBox.gameObject.activeInHierarchy)
-                selectionBox.gameObject.SetActive(true);
+            if (_startPos != Vector2.zero)
+            {
+                holdingDownButton = true;
 
-            float width = currMousePos.x - _startPos.x;
-            float height = currMousePos.y - _startPos.y;
+                var width = currMousePos.x - _startPos.x;
+                var height = currMousePos.y - _startPos.y;
+                
+                if (!selectionBox.gameObject.activeInHierarchy)
+                    selectionBox.gameObject.SetActive(true);
 
-            selectionBox.sizeDelta = new Vector2(Mathf.Abs(width), Mathf.Abs(height));
-            selectionBox.anchoredPosition = _startPos + new Vector2(width / 2, height / 2);
+                selectionBox.sizeDelta = new Vector2(Mathf.Abs(width), Mathf.Abs(height));
+                selectionBox.anchoredPosition = _startPos + new Vector2(width / 2, height / 2);
+            }
         }
 
         private void ReleaseSelectionBox(bool hasReleaseButton)
         {
-            if (Buildings.hasBuildingInHand) return;
             if (!hasReleaseButton) return;
             selectionBox.gameObject.SetActive(false);
 
-            Vector2 min = selectionBox.anchoredPosition-(selectionBox.sizeDelta / 2);
-            Vector2 max = selectionBox.anchoredPosition+(selectionBox.sizeDelta / 2);
+            Vector2 min = selectionBox.anchoredPosition - (selectionBox.sizeDelta / 2);
+            Vector2 max = selectionBox.anchoredPosition + (selectionBox.sizeDelta / 2);
+
 
             foreach (var unit in UnitManager.SelectableUnits)
             {
@@ -83,12 +87,13 @@ namespace Player
                     UnitManager.Instance.selectedUnits.Add(unit.gameObject);
                     if (unit.CompareTag("Units"))
                     {
-                        hasSelectedUnits = true;
+                        PlayerManager.Instance.hasSelectedUnits = true;
                     }
                     unit.GetComponent<IInteractable>().OnClicked();
                     Debug.Log("You have: " + UnitManager.Instance.selectedUnits.Count + " units selected!");
                 }
             }
+            _startPos = Vector2.zero;
             holdingDownButton = false;
         }
 
@@ -98,7 +103,7 @@ namespace Player
             foreach (var units in UnitManager.Instance.selectedUnits)
             {
                 units.GetComponent<IInteractable>().OnDeselect();
-                hasSelectedUnits = false;
+                PlayerManager.Instance.hasSelectedUnits  = false;
             }
             UnitManager.Instance.selectedUnits.Clear();
         }
@@ -114,6 +119,9 @@ namespace Player
         public void UnSubscribe(CharacterInput publisher)
         {
             publisher.hasClicked -= ClickedOnUnit;
+            publisher.hasHeldDownButton -= SelectingMultipleUnits;
+            publisher.hasReleasedButton -= ReleaseSelectionBox;
+            publisher.hasLeftClickedMouse -= DeSelectUnits;
         }
     }
 }

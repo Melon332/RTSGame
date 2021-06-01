@@ -13,7 +13,7 @@ namespace Interactable
 
         public override void OnClicked()
         {
-            if (PlayerSelectedUnits.hasSelectedUnits) return;
+            if (PlayerManager.Instance.hasSelectedUnits) return;
             base.OnClicked();
             Debug.Log("I am a debris look at me!");
         }
