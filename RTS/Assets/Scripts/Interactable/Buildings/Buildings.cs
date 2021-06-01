@@ -7,9 +7,10 @@ using UnityEngine;
 
 public class Buildings : Entities
 {
-    protected bool canProduceUnits;
+    [SerializeField] protected bool canProduceUnits;
     protected bool canPlace = true;
     protected bool hasFinishedBuilding = false;
+    public static bool hasBuildingInHand = false;
 
     private MeshRenderer[] buildingRenderer;
 
@@ -20,7 +21,6 @@ public class Buildings : Entities
     {
         base.Start();
         buildingRenderer = GetComponentsInChildren<MeshRenderer>();
-        canProduceUnits = true;
         if (canProduceUnits)
         {
             buildableUnits = UnitManager.Instance.buildableUnits;
@@ -32,6 +32,7 @@ public class Buildings : Entities
 
     public override void Subscribe(CharacterInput publisher)
     {
+        publisher.hasClicked += PlaceBuilding;
         publisher.mousePosition += CanPlaceBuilding;
         publisher.hasLeftClickedMouse += CancelBuilding;
     }
@@ -40,54 +41,63 @@ public class Buildings : Entities
     {
         publisher.mousePosition -= CanPlaceBuilding;
         publisher.hasLeftClickedMouse -= CancelBuilding;
+        publisher.hasClicked -= PlaceBuilding;
     }
 
     public override void OnClicked()
     {
+        if (!hasFinishedBuilding) return;
         base.OnClicked();
         Debug.Log("This is a building");
     }
 
     private void CanPlaceBuilding(RaycastHit mousePos)
     {
-        if (!hasFinishedBuilding)
+        if (hasFinishedBuilding) return;
+        transform.position = new Vector3(mousePos.point.x, 0, mousePos.point.z);
+        hasBuildingInHand = true;
+        if (canPlace)
         {
-            transform.position = new Vector3(mousePos.point.x, 0, mousePos.point.z);
-            if (canPlace)
+            foreach (var buildingBlocks in buildingRenderer)
             {
-                foreach (var buildingBlocks in buildingRenderer)
+                Debug.Log(!buildingBlocks.GetComponent<SelectionBox>());
+                if (!buildingBlocks.GetComponent<SelectionBox>())
                 {
-                    Debug.Log(!buildingBlocks.GetComponent<SelectionBox>());
-                    if (!buildingBlocks.GetComponent<SelectionBox>())
-                    {
-                        buildingBlocks.material = BuildingManager.Instance.canPlaceBuilding;
-                    }
+                    buildingBlocks.material = BuildingManager.Instance.canPlaceBuilding;
                 }
-            }
-            else
-            {
-                foreach (var buildingBlocks in buildingRenderer)
-                {
-                    if (!buildingBlocks.GetComponent<SelectionBox>())
-                    {
-                        buildingBlocks.material = BuildingManager.Instance.cantPlaceBuilding;
-                    }
-                }
-            }
-
-            if (GameManager.HasClickedMouseButton())
-            {
-                Debug.Log("Test");
-                hasFinishedBuilding = true;
-                UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
             }
         }
+        else
+        {
+            foreach (var buildingBlocks in buildingRenderer)
+            {
+                if (!buildingBlocks.GetComponent<SelectionBox>())
+                {
+                    buildingBlocks.material = BuildingManager.Instance.cantPlaceBuilding;
+                }
+            }
+        }
+    }
+    private void PlaceBuilding(bool place)
+    {
+        if (place && canPlace)
+        {
+            Debug.Log("Test");
+            hasFinishedBuilding = true;
+            hasBuildingInHand = false;
+            UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
+        }
+        else
+        {
+            Debug.Log("Sorry sir, I cant build there");
+        } 
     }
 
     private void CancelBuilding(bool hasClicked)
     {
         if (!hasClicked) return;
         UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
+        hasBuildingInHand = false;
         Destroy(gameObject,0.5f);
     }
 

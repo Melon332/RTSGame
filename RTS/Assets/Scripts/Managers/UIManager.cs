@@ -12,6 +12,7 @@ namespace Managers
         [SerializeField] private GameObject mouseOrKeyboardText;
         public Texture2D[] cursors;
         private static Texture2D[] _cursorsStatic;
+        [SerializeField] private GameObject buildBuildings;
         void Awake()
         {
             if (_cursorsStatic == null)
@@ -53,6 +54,12 @@ namespace Managers
         public static void SetCursorState(int currentlySelectedState)
         {
             Cursor.SetCursor(_cursorsStatic[currentlySelectedState],Vector2.zero, CursorMode.ForceSoftware);
+        }
+
+        public void BuildFactoryBuilding(int buildingIndex)
+        {
+            if(Buildings.hasBuildingInHand) return;
+            BuildingManager.Instance.CreateBuilding(buildingIndex);
         }
     }
 }

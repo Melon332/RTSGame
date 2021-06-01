@@ -27,6 +27,7 @@ namespace Player
 
         private void ClickedOnUnit(bool hasClicked)
         {
+            if (Buildings.hasBuildingInHand) return;
             if (!hasClicked) return;
             _ray = _rtsCamera.ScreenPointToRay(Input.mousePosition);
             if (PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out var hit))
@@ -51,22 +52,22 @@ namespace Player
 
         private void SelectingMultipleUnits(bool hasBeenHeldDown, Vector2 currMousePos)
         {
-            if (hasBeenHeldDown)
-            {
-                holdingDownButton = true;
-                if (!selectionBox.gameObject.activeInHierarchy)
-                    selectionBox.gameObject.SetActive(true);
+            if (Buildings.hasBuildingInHand) return;
+            if (!hasBeenHeldDown) return;
+            holdingDownButton = true;
+            if (!selectionBox.gameObject.activeInHierarchy)
+                selectionBox.gameObject.SetActive(true);
 
-                float width = currMousePos.x - _startPos.x;
-                float height = currMousePos.y - _startPos.y;
+            float width = currMousePos.x - _startPos.x;
+            float height = currMousePos.y - _startPos.y;
 
-                selectionBox.sizeDelta = new Vector2(Mathf.Abs(width), Mathf.Abs(height));
-                selectionBox.anchoredPosition = _startPos + new Vector2(width / 2, height / 2);
-            }
+            selectionBox.sizeDelta = new Vector2(Mathf.Abs(width), Mathf.Abs(height));
+            selectionBox.anchoredPosition = _startPos + new Vector2(width / 2, height / 2);
         }
 
         private void ReleaseSelectionBox(bool hasReleaseButton)
         {
+            if (Buildings.hasBuildingInHand) return;
             if (!hasReleaseButton) return;
             selectionBox.gameObject.SetActive(false);
 

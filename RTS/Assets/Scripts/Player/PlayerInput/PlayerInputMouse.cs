@@ -3,9 +3,12 @@ using Enums;
 using Player;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerInputMouse : CharacterInput
 {
+    static bool IsMouseOverGameWindow => !(0 > Input.mousePosition.x || 0 > Input.mousePosition.y || Screen.width < Input.mousePosition.x || Screen.height < Input.mousePosition.y);
+
     [SerializeField] float panBorderThickness = 50f;
 
     private KeyCode mouseButton = KeyCode.Mouse0;
@@ -28,6 +31,7 @@ public class PlayerInputMouse : CharacterInput
     private Vector2 CameraDirection()
     {
         Vector2 direction = Vector2.zero;
+        if (!IsMouseInGameView()) return direction;
         if (Input.mousePosition.y >= Screen.height - panBorderThickness)
         {
             direction.y += 1;
@@ -51,7 +55,8 @@ public class PlayerInputMouse : CharacterInput
             direction.x += 1;
             HUD.SetCursor(CursorStates.PanRight);
         }
-        else if(PlayerSelectedUnits.hasSelectedUnits)
+
+        else if (PlayerSelectedUnits.hasSelectedUnits)
         {
             HUD.SetCursor(CursorStates.Move);
         }
@@ -61,11 +66,16 @@ public class PlayerInputMouse : CharacterInput
         }
 
         return direction;
+        
     }
 
+    public static bool IsMouseInGameView()
+    {
+        return IsMouseOverGameWindow;
+    }
     private Vector2 MouseDirection()
     {
         return Input.mousePosition;
     }
-    
+
 }

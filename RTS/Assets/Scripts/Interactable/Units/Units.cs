@@ -27,18 +27,7 @@ namespace Interactable
             UnitManager.SelectableUnits.Add(gameObject);
             canBeAttacked = false;
         }
-
-        public override void OnClicked()
-        {
-            base.OnClicked();
-            Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
-        }
-
-        public override void OnDeselect()
-        {
-            base.OnDeselect();
-            UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
-        }
+        
 
         private void MoveToClick(bool hasClicked)
         {
@@ -92,6 +81,17 @@ namespace Interactable
         {
             var bulletObject = Instantiate(bullet, bulletSpawnPosition.transform);
             bulletObject.GetComponent<Bullet>().Setup(bulletSpawnPosition.transform.forward);
+        }
+        public override void OnClicked()
+        {
+            base.OnClicked();
+            Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
+        }
+
+        public override void OnDeselect()
+        {
+            base.OnDeselect();
+            UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
         }
 
         public override void Subscribe(CharacterInput publisher)
