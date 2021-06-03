@@ -89,6 +89,8 @@ namespace Interactable
                 }
                 yield return new WaitForSeconds(0.1f);
             }
+
+            hasFoundTarget = false;
         }
 
         private void Attack()

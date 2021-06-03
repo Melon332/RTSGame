@@ -548,6 +548,7 @@ MonoBehaviour:
   nameOfUnit: 
   canBeAttacked: 0
   isDead: 0
+  hasFoundTarget: 0
   agent: {fileID: 0}
   _selectionBox: {fileID: 0}
   bullet: {fileID: 0}
@@ -1744,7 +1745,7 @@ PrefabInstance:
     - target: {fileID: 7527830751576967965, guid: 4161cd0bfcfd1d94ab8c36370f7e886e,
         type: 3}
       propertyPath: attackTimer
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7527830751576967965, guid: 4161cd0bfcfd1d94ab8c36370f7e886e,
         type: 3}
@@ -2475,6 +2476,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Cube
+      objectReference: {fileID: 0}
+    - target: {fileID: 1983499340796504894, guid: e74a7d8052196a441b05dd7644ab2e14,
+        type: 3}
+      propertyPath: hitPoints
+      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e74a7d8052196a441b05dd7644ab2e14, type: 3}
