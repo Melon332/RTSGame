@@ -34,7 +34,7 @@ namespace Player
                 if (hit.collider.GetComponent<IInteractable>() != null)
                 {
                     hit.collider.GetComponent<IInteractable>().OnClicked();
-                    if (!UnitManager.Instance.selectedUnits.Contains(hit.collider.gameObject))
+                    if (!UnitManager.Instance.selectedUnits.Contains(hit.collider.gameObject) && !hit.collider.GetComponent<Entities>().canBeAttacked)
                     {
                         if (hit.collider.CompareTag("Units"))
                         {
@@ -90,7 +90,6 @@ namespace Player
                         PlayerManager.Instance.hasSelectedUnits = true;
                     }
                     unit.GetComponent<IInteractable>().OnClicked();
-                    Debug.Log("You have: " + UnitManager.Instance.selectedUnits.Count + " units selected!");
                 }
             }
             _startPos = Vector2.zero;

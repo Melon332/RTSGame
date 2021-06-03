@@ -14,6 +14,7 @@ public abstract class Entities : MonoBehaviour, IInteractable,ISubscriber,IDestr
     public string nameOfUnit;
     public bool canBeAttacked;
     [HideInInspector] public bool isDead = false;
+    [SerializeField] protected bool hasFoundTarget = false;
     #endregion
 
     [HideInInspector] public NavMeshAgent agent;

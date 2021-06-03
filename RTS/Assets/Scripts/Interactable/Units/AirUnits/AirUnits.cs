@@ -9,7 +9,6 @@ public class AirUnits : Units
     protected override void Start()
     {
         base.Start();
-        Debug.Log("I am an air unit :D");
         Invoke("FlyToAir",2f);
     }
 
