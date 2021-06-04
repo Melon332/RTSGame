@@ -550,6 +550,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitPoints: 1000
+  maxHitPoints: 0
   nameOfUnit: 
   canBeAttacked: 0
   isDead: 0
@@ -1133,7 +1134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 055058041ada3ba48b5cf7f92d5d491b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panBorderThickness: 50
+  panBorderThickness: 75
 --- !u!114 &963194231
 MonoBehaviour:
   m_ObjectHideFlags: 0
