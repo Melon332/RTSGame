@@ -10,11 +10,14 @@ namespace Interactable
     [RequireComponent(typeof(NavMeshAgent))]
     public abstract class Units : Entities, IInteractable
     {
+        //BULLET SPAWNING
         [SerializeField] protected GameObject bullet;
         [SerializeField] protected GameObject bulletSpawnPosition;
+        //UNIT VARIABLES
         protected bool isFriendlyUnit = false;
         public float minRangeToAttack;
         public float attackTimer;
+        public int damageAmount;
         
         private RaycastHit hit;
         private RaycastHit enemyHit;
@@ -79,7 +82,7 @@ namespace Interactable
         {
             if (enemyHit.collider.GetComponent<Entities>())
             {
-                while (enemyHit.collider.GetComponent<Entities>().hitPoints >= 0)
+                while (enemyHit.collider.GetComponent<Entities>().hitPoints >= 0 && !enemyHit.collider.GetComponent<Entities>().isDead )
                 {
                     var distance = (transform.position - enemyHit.transform.position).sqrMagnitude;
                     if (distance > minRangeToAttack)
@@ -97,7 +100,7 @@ namespace Interactable
                     }
                 }
             }
-
+            
             if (AttackAndMove != null)
             {
                 StopCoroutine(AttackAndMove);
@@ -109,17 +112,20 @@ namespace Interactable
         {
             var bulletObject = Instantiate(bullet, bulletSpawnPosition.transform);
             bulletObject.GetComponent<Bullet>().Setup(bulletSpawnPosition.transform.forward);
+            bulletObject.GetComponent<Bullet>().damageAmount = damageAmount;
         }
         public override void OnClicked()
         {
             base.OnClicked();
             Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
+            Debug.Log("Hello");
         }
 
         public override void OnDeselect()
         {
             base.OnDeselect();
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
+            Debug.Log("hello");
         }
 
         public override void OnHit(int damage)
@@ -128,6 +134,7 @@ namespace Interactable
             if (hitPoints <= 0)
             {
                 UnitManager.SelectableUnits.Remove(gameObject);
+                UnitManager.Instance.selectedUnits.Remove(gameObject);
             }
         }
 

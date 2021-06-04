@@ -405,7 +405,12 @@ PrefabInstance:
     - target: {fileID: 7527830751576967965, guid: 4161cd0bfcfd1d94ab8c36370f7e886e,
         type: 3}
       propertyPath: attackTimer
-      value: 0.5
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7527830751576967965, guid: 4161cd0bfcfd1d94ab8c36370f7e886e,
+        type: 3}
+      propertyPath: damageAmount
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 7527830751576967965, guid: 4161cd0bfcfd1d94ab8c36370f7e886e,
         type: 3}
@@ -548,13 +553,13 @@ MonoBehaviour:
   nameOfUnit: 
   canBeAttacked: 0
   isDead: 0
-  hasFoundTarget: 0
   agent: {fileID: 0}
   _selectionBox: {fileID: 0}
   bullet: {fileID: 0}
   bulletSpawnPosition: {fileID: 0}
   minRangeToAttack: 10
   attackTimer: 0.5
+  damageAmount: 0
 --- !u!195 &334404307
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1340,6 +1345,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7527280172784828549, guid: 22bf8c63e1205bb4aa45eaceedf40124,
         type: 3}
+      propertyPath: hitPoints
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 7527280172784828549, guid: 22bf8c63e1205bb4aa45eaceedf40124,
+        type: 3}
       propertyPath: canBeAttacked
       value: 1
       objectReference: {fileID: 0}
@@ -1497,7 +1507,12 @@ PrefabInstance:
     - target: {fileID: 7527830751576967965, guid: 4161cd0bfcfd1d94ab8c36370f7e886e,
         type: 3}
       propertyPath: attackTimer
-      value: 0.5
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7527830751576967965, guid: 4161cd0bfcfd1d94ab8c36370f7e886e,
+        type: 3}
+      propertyPath: damageAmount
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 7527830751576967965, guid: 4161cd0bfcfd1d94ab8c36370f7e886e,
         type: 3}
@@ -1749,6 +1764,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7527830751576967965, guid: 4161cd0bfcfd1d94ab8c36370f7e886e,
         type: 3}
+      propertyPath: damageAmount
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7527830751576967965, guid: 4161cd0bfcfd1d94ab8c36370f7e886e,
+        type: 3}
       propertyPath: minRangeToAttack
       value: 50
       objectReference: {fileID: 0}
@@ -1799,8 +1819,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Buildings:
   - {fileID: 7394037084603925105, guid: ad966ee006438e4478e0079383cd9d5e, type: 3}
-  canPlaceBuilding: {fileID: 2100000, guid: be819e748cf4c3841a92d26a8a3e559c, type: 2}
-  cantPlaceBuilding: {fileID: 2100000, guid: 49888df458d8f4f42b6d827fa4609bdb, type: 2}
+  canPlaceBuildingMaterial: {fileID: 2100000, guid: be819e748cf4c3841a92d26a8a3e559c,
+    type: 2}
+  cantPlaceBuildingMaterial: {fileID: 2100000, guid: 49888df458d8f4f42b6d827fa4609bdb,
+    type: 2}
+  normalBuildingMaterial: {fileID: 2100000, guid: 0d2fa56995c02b641a3ad094bb43e435,
+    type: 2}
 --- !u!1 &1753243513
 GameObject:
   m_ObjectHideFlags: 0
@@ -2010,7 +2034,12 @@ PrefabInstance:
     - target: {fileID: 7527830751576967965, guid: 4161cd0bfcfd1d94ab8c36370f7e886e,
         type: 3}
       propertyPath: attackTimer
-      value: 0.5
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7527830751576967965, guid: 4161cd0bfcfd1d94ab8c36370f7e886e,
+        type: 3}
+      propertyPath: damageAmount
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 7527830751576967965, guid: 4161cd0bfcfd1d94ab8c36370f7e886e,
         type: 3}
@@ -2218,7 +2247,12 @@ PrefabInstance:
     - target: {fileID: 7527830751576967965, guid: 4161cd0bfcfd1d94ab8c36370f7e886e,
         type: 3}
       propertyPath: attackTimer
-      value: 0.5
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7527830751576967965, guid: 4161cd0bfcfd1d94ab8c36370f7e886e,
+        type: 3}
+      propertyPath: damageAmount
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 7527830751576967965, guid: 4161cd0bfcfd1d94ab8c36370f7e886e,
         type: 3}

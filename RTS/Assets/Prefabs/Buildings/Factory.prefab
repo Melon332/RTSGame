@@ -296,11 +296,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitPoints: 0
+  maxHitPoints: 150
   nameOfUnit: 
   canBeAttacked: 1
+  isDead: 0
   agent: {fileID: 0}
   _selectionBox: {fileID: 0}
+  amountOfHpPerSecond: 3
   canProduceUnits: 0
+  dropBuildingIntoFloor: {x: 0, y: -2, z: 0}
+  floatingText: {fileID: 6182403648814924256, guid: 323a8abd9a11abe41b6d3974294c53af,
+    type: 3}
   buildableUnits: []
 --- !u!65 &-636849560501242975
 BoxCollider:

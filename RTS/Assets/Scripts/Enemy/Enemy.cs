@@ -30,10 +30,4 @@ public class Enemy : Units
         base.OnClicked();
         Debug.Log(hitPoints);
     }
-
-    public override void OnHit(int damage)
-    {
-        damage += 50;
-        base.OnHit(damage);
-    }
 }

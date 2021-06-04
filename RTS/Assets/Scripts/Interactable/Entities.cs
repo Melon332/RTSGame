@@ -10,7 +10,8 @@ using Player;
 public abstract class Entities : MonoBehaviour, IInteractable,ISubscriber,IDestructable
 {
     #region Unit Variables
-    public int hitPoints;
+    public float hitPoints;
+    public float maxHitPoints;
     public string nameOfUnit;
     public bool canBeAttacked;
     [HideInInspector] public bool isDead = false;
@@ -42,11 +43,14 @@ public abstract class Entities : MonoBehaviour, IInteractable,ISubscriber,IDestr
     public virtual void OnHit(int damage)
     {
         if (hitPoints <= 0)
-        {
-            OnDeselect();
-            GetComponent<MeshRenderer>().enabled = false;
+        {  
             isDead = true;
+            Debug.Log("I am dead!");
+            OnDeselect();
             Destroy(gameObject,2f);
+            gameObject.SetActive(false);
+            UnitManager.SelectableUnits.Remove(gameObject);
+            UnitManager.Instance.selectedUnits.Remove(gameObject);
         }
         else
         {

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Player;
+using Managers;
 
 namespace Interactable
 {
@@ -19,6 +20,13 @@ namespace Interactable
             if (PlayerManager.Instance.hasSelectedUnits) return;
             base.OnClicked();
             Debug.Log("I am a debris look at me!");
+        }
+
+        public override void OnHit(int damage)
+        {
+            base.OnHit(damage);
+            UnitManager.SelectableUnits.Remove(gameObject);
+            UnitManager.Instance.selectedUnits.Remove(gameObject);
         }
     }
 }
