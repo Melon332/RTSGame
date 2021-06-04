@@ -122,10 +122,14 @@ public class Buildings : Entities
         targetToMoveBuilding = new Vector3(transform.position.x,0.25f,transform.position.z);
         var positionToSpawnTextObject = new Vector3(transform.position.x, 3, transform.position.z);
         var textObject = Instantiate(floatingText, positionToSpawnTextObject, Quaternion.Euler(90,0,0), transform);
-        
-        
-        while (transform.position != new Vector3(transform.position.x,0,transform.position.z) && hitPoints != maxHitPoints)
+
+        while (transform.position != new Vector3(transform.position.x,0,transform.position.z) && hitPoints <= maxHitPoints)
         {
+            if (isDead)
+            {
+                StopCoroutine(BuildBuilding());
+                Destroy(gameObject);
+            }
             Mathf.Clamp(hitPoints, 0, maxHitPoints);
             hitPoints += amountOfHpPerSecond;
             var equation = (hitPoints/maxHitPoints) * 100;

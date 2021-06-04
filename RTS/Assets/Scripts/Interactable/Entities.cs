@@ -45,7 +45,6 @@ public abstract class Entities : MonoBehaviour, IInteractable,ISubscriber,IDestr
         if (hitPoints <= 0)
         {  
             isDead = true;
-            Debug.Log("I am dead!");
             OnDeselect();
             Destroy(gameObject,2f);
             gameObject.SetActive(false);
