@@ -19,6 +19,6 @@ public class PlayerManager : MonoBehaviour
         }
     }
    [HideInInspector] public bool hasSelectedUnits = false;
-   public bool hasBuildingInHand = false;
+   [HideInInspector] public bool hasBuildingInHand = false;
    
 }

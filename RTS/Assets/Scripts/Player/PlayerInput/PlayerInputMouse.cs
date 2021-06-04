@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 using Enums;
+using Player;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class PlayerInputMouse : CharacterInput
 {
-    static bool IsMouseOverGameWindow => !(0 > Input.mousePosition.x || 0 > Input.mousePosition.y || Screen.width < Input.mousePosition.x || Screen.height < Input.mousePosition.y);
+    private static bool IsMouseOverGameWindow => !(0 > Input.mousePosition.x || 0 > Input.mousePosition.y || Screen.width < Input.mousePosition.x || Screen.height < Input.mousePosition.y);
 
     [SerializeField] float panBorderThickness = 50f;
 
     private KeyCode mouseButton = KeyCode.Mouse0;
-    private readonly Vector3 sizeOfBox = new Vector3(50,0,50);
-    
+
     // Update is called once per frame
     private void Update()
     {
@@ -65,7 +65,10 @@ public class PlayerInputMouse : CharacterInput
         {
             HUD.SetCursor(CursorStates.Select);
         }
-
+        if (IsMouseOverEnemy())
+        {
+            HUD.SetCursor(CursorStates.Attack);
+        }
         return direction;
         
     }
@@ -81,6 +84,12 @@ public class PlayerInputMouse : CharacterInput
     public static bool IsMouseInGameView()
     {
         return IsMouseOverGameWindow;
+    }
+
+    private static bool IsMouseOverEnemy()
+    {
+        PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out var hit);
+        return hit.collider.GetComponent<Entities>() && hit.collider.GetComponent<Entities>().canBeAttacked && PlayerManager.Instance.hasSelectedUnits;
     }
     private Vector2 MouseDirection()
     {

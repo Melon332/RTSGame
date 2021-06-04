@@ -33,10 +33,5 @@ namespace Managers
             DontDestroyOnLoad(gameObject);
             player = GameObject.Find("Main Camera");
         }
-
-        public static bool HasClickedMouseButton()
-        {
-            return Input.GetMouseButton(0);
-        }
     }
 }

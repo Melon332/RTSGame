@@ -34,7 +34,7 @@ namespace Player
                 if (hit.collider.GetComponent<IInteractable>() != null)
                 {
                     hit.collider.GetComponent<IInteractable>().OnClicked();
-                    if (!UnitManager.Instance.selectedUnits.Contains(hit.collider.gameObject) && !hit.collider.GetComponent<Entities>().canBeAttacked)
+                    if (!UnitManager.Instance.selectedUnits.Contains(hit.collider.gameObject))
                     {
                         if (hit.collider.CompareTag("Units"))
                         {
@@ -80,6 +80,7 @@ namespace Player
 
             foreach (var unit in UnitManager.SelectableUnits)
             {
+                if (unit == null) return;
                 Vector3 screenPos = _rtsCamera.WorldToScreenPoint(unit.transform.position);
                 if (screenPos.x > min.x && screenPos.x < max.x && screenPos.y > min.y && screenPos.y < max.y)
                 {

@@ -11,24 +11,24 @@ public class Enemy : Units
     {
         canBeAttacked = true;
         _selectionBox = GetComponentInChildren<SelectionBox>().gameObject;
+        agent = GetComponent<NavMeshAgent>();
         if (_selectionBox != null)
         {
             _selectionBox.SetActive(false);
         }
     }
 
+    protected override void ClickToDoAction(bool hasClicked)
+    {
+        
+    }
+
     public override void OnClicked()
     {
         if (PlayerManager.Instance.hasSelectedUnits) return;
         Debug.Log("This is an enemy, you cannot select it");
-        _selectionBox.SetActive(true);
+        base.OnClicked();
         Debug.Log(hitPoints);
-    }
-
-    public override void OnDeselect()
-    {
-        _selectionBox.SetActive(false);
-        base.OnDeselect();
     }
 
     public override void OnHit(int damage)
