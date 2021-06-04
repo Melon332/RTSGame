@@ -51,5 +51,3 @@ Things I want to implement further than the basic RTS gameplay:
 -Different Factions
 
 That's the project expectations that I have.
-
-For now this project is on hold for a bit because of school work but will be resumed as soon as I am avaliable. (This message will probably be deleted by then)
