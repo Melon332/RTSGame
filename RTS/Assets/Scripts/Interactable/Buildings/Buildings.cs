@@ -155,9 +155,8 @@ public class Buildings : Entities
             var transformPosition = builder.transform.position;
             var position = new Vector3(transformPosition.x, transformPosition.y, transformPosition.z);
             position.z += -5f;
-            builder.GetComponent<Workers>().MoveBackAfterCompletingBuilding(position);
         }
-        builders.Clear();
+
         //Destroys the text box.
         Destroy(textObject);
         yield return new WaitForSeconds(0.1f);
