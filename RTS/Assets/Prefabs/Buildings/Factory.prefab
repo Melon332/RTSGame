@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 1712491675429044538}
   m_Layer: 0
   m_Name: Factory
-  m_TagString: Untagged
+  m_TagString: Buildings
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -299,6 +299,8 @@ MonoBehaviour:
   maxHitPoints: 150
   nameOfUnit: 
   canBeAttacked: 1
+  isBuilding: 0
+  pictureOfObject: {fileID: 0}
   isDead: 0
   agent: {fileID: 0}
   _selectionBox: {fileID: 0}
@@ -316,11 +318,11 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7394037084603925105}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.40941, y: 3.0082507, z: 2.40941}
-  m_Center: {x: 0, y: 0.40528464, z: 0}
+  m_Size: {x: 2.40941, y: 3.0082507, z: 3.8224087}
+  m_Center: {x: 0, y: 0.40528464, z: -0.13872981}
 --- !u!54 &1712491675429044538
 Rigidbody:
   m_ObjectHideFlags: 0

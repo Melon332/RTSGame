@@ -52,8 +52,9 @@ namespace Managers
             var colliders = currentlyActiveMap.GetComponent<Collider>();
             Vector2 mapSize = Vector2.zero;
 
-            mapSize.x = colliders.bounds.size.x / 2;
-            mapSize.y = colliders.bounds.size.z / 2;
+            var bounds = colliders.bounds;
+            mapSize.x = bounds.size.x / 2;
+            mapSize.y = bounds.size.z / 2;
 
             return mapSize;
         }

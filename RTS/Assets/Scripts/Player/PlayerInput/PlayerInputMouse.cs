@@ -53,7 +53,7 @@ public class PlayerInputMouse : CharacterInput
             direction.x += 1;
             HUD.SetCursor(CursorStates.PanRight);
         }
-        else if (PlayerManager.Instance.hasSelectedUnits)
+        else if (PlayerManager.Instance.hasSelectedUnits || PlayerManager.Instance.hasSelectedNonLethalUnits && !IsPointerOverUIObject())
         {
             HUD.SetCursor(CursorStates.Move);
         }
@@ -65,7 +65,7 @@ public class PlayerInputMouse : CharacterInput
         {
             HUD.SetCursor(CursorStates.Select);
         }
-        if (IsMouseOverEnemy())
+        if (IsMouseOverEnemy() && !PlayerManager.Instance.hasSelectedNonLethalUnits)
         {
             HUD.SetCursor(CursorStates.Attack);
         }

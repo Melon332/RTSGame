@@ -25,7 +25,8 @@ namespace Managers
 
         public List<GameObject> buildableUnits = new List<GameObject>();
         
-        public List<GameObject> selectedUnits = new List<GameObject>();
+        public List<GameObject> selectedAttackingUnits = new List<GameObject>();
+        public List<GameObject> selectedNonLethalUnits = new List<GameObject>();
         public static readonly List<GameObject> SelectableUnits = new List<GameObject>();
     }
 }

@@ -274,6 +274,7 @@ MonoBehaviour:
   minRangeToAttack: 0
   attackTimer: 0
   damageAmount: 0
+  canAttack: 1
 --- !u!1001 &3465625113545706262
 PrefabInstance:
   m_ObjectHideFlags: 0

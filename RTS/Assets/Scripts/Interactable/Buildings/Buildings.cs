@@ -10,6 +10,7 @@ using UnityEngine.Video;
 public class Buildings : Entities
 {
     //BUILDING BOOL;
+    private GameObject builder;
     [SerializeField] private int amountOfHpPerSecond;
     [SerializeField] protected bool canProduceUnits;
     protected bool canPlace = true;
@@ -38,6 +39,7 @@ public class Buildings : Entities
         }
         Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
         _selectionBox.transform.localScale = transform.localScale * 3;
+        isBuilding = true;
     }
     
 
@@ -94,6 +96,8 @@ public class Buildings : Entities
             PlayerManager.Instance.hasBuildingInHand = false;
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
             
+            builder = UnitManager.Instance.selectedNonLethalUnits[0];
+
             //Drop the building into to floor to rebuild it.
             var position = transform.position;
             dropBuildingIntoFloor.x = position.x;
@@ -139,6 +143,14 @@ public class Buildings : Entities
             yield return new WaitForSeconds(0.1f);
         }
         hasFinishedBuilding = true;
+        
+        //Moves the builder away from the building
+        var transformPosition = builder.transform.position;
+        var position = new Vector3(transformPosition.x, transformPosition.y, transformPosition.z);
+        position.z += -5f;
+        builder.GetComponent<Workers>().MoveBackAfterCompletingBuilding(position);
+        builder = null;
+        //Destroys the text box.
         Destroy(textObject);
         yield return new WaitForSeconds(0.1f);
     }
@@ -150,13 +162,13 @@ public class Buildings : Entities
         Destroy(gameObject);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision other)
     {
-        if (other.CompareTag("Ground")) return;
+        if (other.collider.CompareTag("Ground")) return;
         canPlace = false;
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnCollisionExit(Collision other)
     {
         canPlace = true;
     }

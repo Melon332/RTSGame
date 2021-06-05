@@ -34,13 +34,22 @@ namespace Player
                 if (hit.collider.GetComponent<IInteractable>() != null)
                 {
                     hit.collider.GetComponent<IInteractable>().OnClicked();
-                    if (!UnitManager.Instance.selectedUnits.Contains(hit.collider.gameObject))
+                    if (!UnitManager.Instance.selectedAttackingUnits.Contains(hit.collider.gameObject))
                     {
                         if (hit.collider.CompareTag("Units"))
                         {
                             PlayerManager.Instance.hasSelectedUnits = true;
+                            UnitManager.Instance.selectedAttackingUnits.Add(hit.collider.gameObject);
                         }
-                        UnitManager.Instance.selectedUnits.Add(hit.collider.gameObject);
+                        else if (hit.collider.CompareTag("Buildings") || hit.collider.CompareTag("EnemyUnits") || hit.collider.CompareTag("Debris"))
+                        {
+                            UnitManager.Instance.selectedNonLethalUnits.Add(hit.collider.gameObject);
+                        }
+                        else
+                        {
+                            UnitManager.Instance.selectedNonLethalUnits.Add(hit.collider.gameObject);
+                            PlayerManager.Instance.hasSelectedNonLethalUnits = true;
+                        }
                     }
                 }
             }
@@ -84,11 +93,16 @@ namespace Player
                 Vector3 screenPos = _rtsCamera.WorldToScreenPoint(unit.transform.position);
                 if (screenPos.x > min.x && screenPos.x < max.x && screenPos.y > min.y && screenPos.y < max.y)
                 {
-                    if (UnitManager.Instance.selectedUnits.Contains(unit.gameObject)) continue;
-                    UnitManager.Instance.selectedUnits.Add(unit.gameObject);
+                    if (UnitManager.Instance.selectedAttackingUnits.Contains(unit.gameObject)) continue;
                     if (unit.CompareTag("Units"))
                     {
                         PlayerManager.Instance.hasSelectedUnits = true;
+                        UnitManager.Instance.selectedAttackingUnits.Add(unit.gameObject);
+                    }
+                    else
+                    {
+                        UnitManager.Instance.selectedNonLethalUnits.Add(unit.gameObject);
+                        PlayerManager.Instance.hasSelectedNonLethalUnits = true;
                     }
                     unit.GetComponent<IInteractable>().OnClicked();
                 }
@@ -100,12 +114,18 @@ namespace Player
         private void DeSelectUnits(bool hasLeftClicked)
         {
             if (!hasLeftClicked) return;
-            foreach (var units in UnitManager.Instance.selectedUnits)
+            foreach (var units in UnitManager.Instance.selectedAttackingUnits)
             {
                 units.GetComponent<IInteractable>().OnDeselect();
                 PlayerManager.Instance.hasSelectedUnits  = false;
             }
-            UnitManager.Instance.selectedUnits.Clear();
+            foreach (var workers in UnitManager.Instance.selectedNonLethalUnits)
+            {
+                workers.GetComponent<IInteractable>().OnDeselect();
+                PlayerManager.Instance.hasSelectedNonLethalUnits = false;
+            }
+            UnitManager.Instance.selectedAttackingUnits.Clear();
+            UnitManager.Instance.selectedNonLethalUnits.Clear();
         }
 
         public void Subscribe(CharacterInput publisher)

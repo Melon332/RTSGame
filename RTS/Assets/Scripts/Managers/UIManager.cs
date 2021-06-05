@@ -36,7 +36,7 @@ namespace Managers
         public Texture2D[] cursors;
         private static Texture2D[] _cursorsStatic;
         
-        [SerializeField] private GameObject buildBuildings;
+        [SerializeField] private GameObject buildingPanel;
         [SerializeField] private Button pullPanelDownButton;
 
         private bool panelIsDown;
@@ -109,6 +109,11 @@ namespace Managers
                 panelIsDown = false;
                 pullPanelDownButton.GetComponentInChildren<TextMeshProUGUI>().text = "Panel Down";
             }
+        }
+
+        public void ShowBuildingsPanel(bool hasSelectedWorker)
+        {
+            buildingPanel.SetActive(hasSelectedWorker);
         }
 
         public void PictureOfSelectedUnits(Sprite image)

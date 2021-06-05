@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7527280172784828548}
   m_Layer: 0
   m_Name: SpookyEnemy
-  m_TagString: Untagged
+  m_TagString: EnemyUnits
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -55,10 +55,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -83,6 +85,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!136 &7527280172784828545
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -110,14 +113,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitPoints: 10000000
+  maxHitPoints: 0
   nameOfUnit: 
   canBeAttacked: 0
+  isBuilding: 0
+  pictureOfObject: {fileID: 0}
+  isDead: 0
   agent: {fileID: 0}
   _selectionBox: {fileID: 0}
   bullet: {fileID: 0}
   bulletSpawnPosition: {fileID: 0}
   minRangeToAttack: 0
   attackTimer: 0
+  damageAmount: 0
+  canAttack: 0
 --- !u!195 &7527280172784828548
 NavMeshAgent:
   m_ObjectHideFlags: 0

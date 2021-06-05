@@ -15,6 +15,7 @@ public abstract class Entities : MonoBehaviour, IInteractable,ISubscriber,IDestr
     public float maxHitPoints;
     public string nameOfUnit;
     public bool canBeAttacked;
+    public bool isBuilding = false;
     public Sprite pictureOfObject;
     [HideInInspector] public bool isDead = false;
     protected bool hasFoundTarget = false;
@@ -51,7 +52,7 @@ public abstract class Entities : MonoBehaviour, IInteractable,ISubscriber,IDestr
             Destroy(gameObject,2f);
             gameObject.SetActive(false);
             UnitManager.SelectableUnits.Remove(gameObject);
-            UnitManager.Instance.selectedUnits.Remove(gameObject);
+            UnitManager.Instance.selectedAttackingUnits.Remove(gameObject);
         }
         else
         {

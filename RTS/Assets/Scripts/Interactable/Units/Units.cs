@@ -14,10 +14,10 @@ namespace Interactable
         [SerializeField] protected GameObject bullet;
         [SerializeField] protected GameObject bulletSpawnPosition;
         //UNIT VARIABLES
-        protected bool isFriendlyUnit = false;
         public float minRangeToAttack;
         public float attackTimer;
         public int damageAmount;
+        [SerializeField] private bool canAttack;
         
         private RaycastHit hit;
         private RaycastHit enemyHit;
@@ -29,7 +29,6 @@ namespace Interactable
         protected override void Start()
         {
             base.Start();
-            isFriendlyUnit = true;
             UnitManager.SelectableUnits.Add(gameObject);
             canBeAttacked = false;
         }
@@ -46,14 +45,22 @@ namespace Interactable
 
                 if (!gameObject.activeSelf) return;
                 if (!found) return;
+
                 if (entityClicked && entityClicked.canBeAttacked)
                 {
-                    enemyHit = hit;
-                    Debug.Log(enemyHit.collider.name);
-                    //Sets the coroutine variable to store it and stop it.
-                    if (AttackAndMove == null)
+                    if (canAttack)
                     {
-                        AttackAndMove = StartCoroutine(MoveToTargetThenAttack());
+                        enemyHit = hit;
+                        Debug.Log(enemyHit.collider.name);
+                        //Sets the coroutine variable to store it and stop it.
+                        if (AttackAndMove == null)
+                        {
+                            AttackAndMove = StartCoroutine(MoveToTargetThenAttack());
+                        }
+                    }
+                    else
+                    {
+                        MoveToTarget(hit);
                     }
                 }
                 else if (!PlayerSelectedUnits.holdingDownButton && !PlayerInputMouse.IsPointerOverUIObject())
@@ -72,10 +79,11 @@ namespace Interactable
         protected virtual void MoveToTarget(RaycastHit target)
         {
             if (target.collider.CompareTag("Units")) return;
-            if (agent == null || target.collider.GetComponent<Entities>()) return;
+            if (agent == null) return;
             transform.Rotate(target.point);
             agent.SetDestination(target.point);
             agent.isStopped = false;
+            Debug.Log("I am moving");
         }
 
         protected virtual IEnumerator MoveToTargetThenAttack()
@@ -100,7 +108,6 @@ namespace Interactable
                     }
                 }
             }
-            
             if (AttackAndMove != null)
             {
                 StopCoroutine(AttackAndMove);
@@ -132,7 +139,7 @@ namespace Interactable
             if (hitPoints <= 0)
             {
                 UnitManager.SelectableUnits.Remove(gameObject);
-                UnitManager.Instance.selectedUnits.Remove(gameObject);
+                UnitManager.Instance.selectedAttackingUnits.Remove(gameObject);
             }
         }
 

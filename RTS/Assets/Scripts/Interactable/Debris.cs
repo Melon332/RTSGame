@@ -26,7 +26,7 @@ namespace Interactable
         {
             base.OnHit(damage);
             UnitManager.SelectableUnits.Remove(gameObject);
-            UnitManager.Instance.selectedUnits.Remove(gameObject);
+            UnitManager.Instance.selectedAttackingUnits.Remove(gameObject);
         }
     }
 }
