@@ -118,14 +118,12 @@ namespace Interactable
         {
             base.OnClicked();
             Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
-            Debug.Log("Hello");
         }
 
         public override void OnDeselect()
         {
             base.OnDeselect();
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
-            Debug.Log("hello");
         }
 
         public override void OnHit(int damage)

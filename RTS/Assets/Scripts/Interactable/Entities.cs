@@ -6,6 +6,7 @@ using Interactable;
 using Managers;
 using UnityEngine.AI;
 using Player;
+using UnityEngine.UI;
 
 public abstract class Entities : MonoBehaviour, IInteractable,ISubscriber,IDestructable
 {
@@ -14,6 +15,7 @@ public abstract class Entities : MonoBehaviour, IInteractable,ISubscriber,IDestr
     public float maxHitPoints;
     public string nameOfUnit;
     public bool canBeAttacked;
+    public Sprite pictureOfObject;
     [HideInInspector] public bool isDead = false;
     protected bool hasFoundTarget = false;
     #endregion
@@ -59,11 +61,20 @@ public abstract class Entities : MonoBehaviour, IInteractable,ISubscriber,IDestr
 
     public virtual void OnClicked()
     {
+        if (pictureOfObject != null)
+        {
+            UIManager.Instance.PictureOfSelectedUnits(pictureOfObject);
+        }
+        else
+        {
+            Debug.Log("Sorry, you are missing a picture for this unit " + nameOfUnit + " Maybe you forgot to add it?");
+        }
         _selectionBox.SetActive(true);
     }
 
     public virtual void OnDeselect()
     {
        _selectionBox.SetActive(false);
+       UIManager.Instance.PictureOfSelectedUnits(null);
     }
 }

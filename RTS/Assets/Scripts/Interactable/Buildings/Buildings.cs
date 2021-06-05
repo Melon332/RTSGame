@@ -123,7 +123,8 @@ public class Buildings : Entities
         var positionToSpawnTextObject = new Vector3(transform.position.x, 3, transform.position.z);
         var textObject = Instantiate(floatingText, positionToSpawnTextObject, Quaternion.Euler(90,0,0), transform);
 
-        while (transform.position != new Vector3(transform.position.x,0,transform.position.z) && hitPoints <= maxHitPoints)
+        var target = new Vector3(transform.position.x,0.5f,transform.position.z);
+        while (transform.position != target && hitPoints <= maxHitPoints)
         {
             if (isDead)
             {

@@ -82,10 +82,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -110,6 +112,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &5736083287124516800
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -180,10 +183,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -208,6 +213,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &3914474247965226807
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -256,14 +262,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitPoints: 0
-  nameOfUnit: 
+  maxHitPoints: 0
+  nameOfUnit: Tanks
   canBeAttacked: 0
+  pictureOfObject: {fileID: 21300000, guid: 8b29b4cdcec655d48aa5fc9d91f6a791, type: 3}
+  isDead: 0
   agent: {fileID: 0}
   _selectionBox: {fileID: 0}
   bullet: {fileID: 7999903933720480626, guid: c50fc26f167691f4b976156d6791b5bf, type: 3}
   bulletSpawnPosition: {fileID: 1431557599070158896}
   minRangeToAttack: 0
   attackTimer: 0
+  damageAmount: 0
 --- !u!1001 &3465625113545706262
 PrefabInstance:
   m_ObjectHideFlags: 0
