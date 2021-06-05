@@ -20,11 +20,6 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        CreateBuilding(0);
-    }
-
     public List<GameObject> Buildings = new List<GameObject>();
     
     public Material canPlaceBuildingMaterial;

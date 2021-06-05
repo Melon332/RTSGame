@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using Managers;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Workers : GroundUnits
 {
+    public int targetedBuilding;
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -24,11 +26,45 @@ public class Workers : GroundUnits
         UIManager.Instance.ShowBuildingsPanel(false);
     }
 
+    protected override void ClickToDoAction(bool hasClicked)
+    {
+        base.ClickToDoAction(hasClicked);
+        if (hasClicked)
+        {
+            var entityClicked = hit.collider.GetComponent<Entities>();
+            if (entityClicked && entityClicked.isBuilding)
+            {
+                ContinueBuilding(hit);
+            }
+        }
+    }
+
+    protected override void MoveToTarget(RaycastHit target)
+    {
+        base.MoveToTarget(target);
+        ClearBuildingID();
+    }
+
+    private void ContinueBuilding(RaycastHit target)
+    {
+        if (agent == null) return;
+        transform.Rotate(target.point);
+        agent.SetDestination(target.point);
+        targetedBuilding = target.collider.gameObject.GetInstanceID();
+        Debug.Log(target.collider.gameObject.GetInstanceID());
+        agent.isStopped = false;
+    }
+    
     public void MoveBackAfterCompletingBuilding(Vector3 position)
     {
         if (agent == null) return;
         transform.Rotate(position);
         agent.SetDestination(position);
         agent.isStopped = false;
+    }
+
+    public void ClearBuildingID()
+    {
+        targetedBuilding = 0;
     }
 }

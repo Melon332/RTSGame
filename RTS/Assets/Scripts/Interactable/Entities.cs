@@ -6,6 +6,7 @@ using Interactable;
 using Managers;
 using UnityEngine.AI;
 using Player;
+using UnityEditor;
 using UnityEngine.UI;
 
 public abstract class Entities : MonoBehaviour, IInteractable,ISubscriber,IDestructable

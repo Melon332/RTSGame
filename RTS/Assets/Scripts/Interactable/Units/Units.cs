@@ -19,7 +19,7 @@ namespace Interactable
         public int damageAmount;
         [SerializeField] private bool canAttack;
         
-        private RaycastHit hit;
+        public RaycastHit hit;
         private RaycastHit enemyHit;
 
         private Coroutine AttackAndMove;
@@ -42,7 +42,6 @@ namespace Interactable
                 var found = PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out hit);
                 var entityClicked = hit.collider.GetComponent<Entities>();
 
-
                 if (!gameObject.activeSelf) return;
                 if (!found) return;
 
@@ -51,7 +50,6 @@ namespace Interactable
                     if (canAttack)
                     {
                         enemyHit = hit;
-                        Debug.Log(enemyHit.collider.name);
                         //Sets the coroutine variable to store it and stop it.
                         if (AttackAndMove == null)
                         {

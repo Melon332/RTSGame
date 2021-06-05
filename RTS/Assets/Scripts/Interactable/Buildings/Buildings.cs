@@ -9,7 +9,7 @@ using UnityEngine;
 public class Buildings : Entities
 {
     //BUILDING BOOL;
-    private List<GameObject> builders = new List<GameObject>();
+    [SerializeField] private List<GameObject> builders = new List<GameObject>();
     [SerializeField] private int amountOfHpPerSecond;
     [SerializeField] protected bool canProduceUnits;
     protected bool canPlace = true;
@@ -38,6 +38,7 @@ public class Buildings : Entities
         Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
         _selectionBox.transform.localScale = transform.localScale * 3;
         isBuilding = true;
+        Debug.Log(GetInstanceID());
     }
 
 
@@ -58,6 +59,7 @@ public class Buildings : Entities
     public override void OnClicked()
     {
         if (!hasFinishedBuilding) return;
+        if(PlayerManager.Instance.hasSelectedUnits) return;
         base.OnClicked();
         Debug.Log("This is a building");
     }
@@ -152,9 +154,12 @@ public class Buildings : Entities
         //Moves the builder away from the building
         foreach (var builder in builders)
         {
+            var worker = builder.GetComponent<Workers>();
             var transformPosition = builder.transform.position;
             var position = new Vector3(transformPosition.x, transformPosition.y, transformPosition.z);
             position.z += -5f;
+            worker.MoveBackAfterCompletingBuilding(position);
+            worker.ClearBuildingID();
         }
 
         //Destroys the text box.
@@ -175,7 +180,11 @@ public class Buildings : Entities
         if (other.CompareTag("Ground")) return;
         canPlace = false;
         if (!other.CompareTag("Worker")) return;
-        builders.Add(other.gameObject);
+        if (other.gameObject.GetComponent<Workers>().targetedBuilding == gameObject.GetInstanceID())
+        {
+            builders.Add(other.gameObject);
+            Debug.Log(gameObject.GetInstanceID());
+        }
     }
 
     private void OnTriggerExit(Collider other)
