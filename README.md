@@ -30,9 +30,15 @@ I have been working on the project for about a week now and I have achieved:
 
 -Custom Cursor Depending On Action(not yet finished, still missing some actions)
 
--Build Buildings(Not finished, very early stages)
+-Build Buildings(Almost finished)
 
-This is fan project dedicated to the C&C Franchise aswell as developing my skills as a game developer further.
+-Workers now move to the buildings and finishes them.
+
+-Workers will now have their own "job", they won't interfere with other buildings aslong as they have a job.
+
+-This is fan project dedicated to the C&C Franchise aswell as developing my skills as a game developer further.
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Things I want to implement further than the basic RTS gameplay:
 
