@@ -5,24 +5,21 @@ using Managers;
 using Player;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Video;
 
 public class Buildings : Entities
 {
     //BUILDING BOOL;
-    private GameObject builder;
+    private List<GameObject> builders = new List<GameObject>();
     [SerializeField] private int amountOfHpPerSecond;
     [SerializeField] protected bool canProduceUnits;
     protected bool canPlace = true;
     protected bool hasFinishedBuilding = false;
 
-    private float buildPercentage;
-    
     [SerializeField] private Vector3 dropBuildingIntoFloor;
 
     [SerializeField] protected GameObject floatingText;
 
-    private Vector3 targetToMoveBuilding = new Vector3(0, 0.25f,0);
+    private Vector3 targetToMoveBuilding = new Vector3(0, 0.25f, 0);
 
     private MeshRenderer[] buildingRenderer;
 
@@ -37,11 +34,12 @@ public class Buildings : Entities
         {
             buildableUnits = UnitManager.Instance.buildableUnits;
         }
+
         Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
         _selectionBox.transform.localScale = transform.localScale * 3;
         isBuilding = true;
     }
-    
+
 
     public override void Subscribe(CharacterInput publisher)
     {
@@ -89,14 +87,13 @@ public class Buildings : Entities
             }
         }
     }
+
     private void PlaceBuilding(bool place)
     {
         if (place && canPlace && !PlayerInputMouse.IsPointerOverUIObject())
         {
             PlayerManager.Instance.hasBuildingInHand = false;
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
-            
-            builder = UnitManager.Instance.selectedNonLethalUnits[0];
 
             //Drop the building into to floor to rebuild it.
             var position = transform.position;
@@ -105,29 +102,31 @@ public class Buildings : Entities
             position = dropBuildingIntoFloor;
             transform.position = position;
             StartCoroutine(BuildBuilding());
-            
-        foreach (var buildingBlocks in buildingRenderer)
-        {
-            if (buildingBlocks.GetComponent<SelectionBox>()) return;
-            buildingBlocks.material = BuildingManager.Instance.normalBuildingMaterial;
-        }
-        
+
+            foreach (var buildingBlocks in buildingRenderer)
+            {
+                if (buildingBlocks.GetComponent<SelectionBox>()) return;
+                buildingBlocks.material = BuildingManager.Instance.normalBuildingMaterial;
+            }
+
         }
         else
         {
             Debug.Log("Sorry sir, I cant build there");
-        } 
+        }
     }
 
     IEnumerator BuildBuilding()
     {
         var speed = 5f;
-        float step = speed * Time.deltaTime;
-        targetToMoveBuilding = new Vector3(transform.position.x,0.25f,transform.position.z);
-        var positionToSpawnTextObject = new Vector3(transform.position.x, 3, transform.position.z);
-        var textObject = Instantiate(floatingText, positionToSpawnTextObject, Quaternion.Euler(90,0,0), transform);
 
-        var target = new Vector3(transform.position.x,0.5f,transform.position.z);
+        float step = speed * Time.deltaTime;
+        targetToMoveBuilding = new Vector3(transform.position.x, 0.25f, transform.position.z);
+        var positionToSpawnTextObject = new Vector3(transform.position.x, 3, transform.position.z);
+        var textObject = Instantiate(floatingText, positionToSpawnTextObject, Quaternion.Euler(90, 0, 0),
+            transform);
+
+        var target = new Vector3(transform.position.x, 0.5f, transform.position.z);
         while (transform.position != target && hitPoints <= maxHitPoints)
         {
             if (isDead)
@@ -135,25 +134,35 @@ public class Buildings : Entities
                 StopCoroutine(BuildBuilding());
                 Destroy(gameObject);
             }
+
+            while (builders.Count == 0) {
+                yield return new WaitForSeconds (0.2f);
+            }
+
             Mathf.Clamp(hitPoints, 0, maxHitPoints);
             hitPoints += amountOfHpPerSecond;
-            var equation = (hitPoints/maxHitPoints) * 100;
-            textObject.GetComponent<TextMeshPro>().text = "Building: " + equation.ToString("F0")+"%";
+            var equation = (hitPoints / maxHitPoints) * 100;
+            textObject.GetComponent<TextMeshPro>().text = "Building: " + equation.ToString("F0") + "%";
             transform.position = Vector3.MoveTowards(transform.position, targetToMoveBuilding, step);
             yield return new WaitForSeconds(0.1f);
         }
+
         hasFinishedBuilding = true;
-        
+
         //Moves the builder away from the building
-        var transformPosition = builder.transform.position;
-        var position = new Vector3(transformPosition.x, transformPosition.y, transformPosition.z);
-        position.z += -5f;
-        builder.GetComponent<Workers>().MoveBackAfterCompletingBuilding(position);
-        builder = null;
+        foreach (var builder in builders)
+        {
+            var transformPosition = builder.transform.position;
+            var position = new Vector3(transformPosition.x, transformPosition.y, transformPosition.z);
+            position.z += -5f;
+            builder.GetComponent<Workers>().MoveBackAfterCompletingBuilding(position);
+        }
+        builders.Clear();
         //Destroys the text box.
         Destroy(textObject);
         yield return new WaitForSeconds(0.1f);
     }
+    
     private void CancelBuilding(bool hasClicked)
     {
         if (!hasClicked) return;
@@ -162,14 +171,18 @@ public class Buildings : Entities
         Destroy(gameObject);
     }
 
-    private void OnCollisionEnter(Collision other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.collider.CompareTag("Ground")) return;
+        if (other.CompareTag("Ground")) return;
         canPlace = false;
+        if (!other.CompareTag("Worker")) return;
+        builders.Add(other.gameObject);
     }
 
-    private void OnCollisionExit(Collision other)
+    private void OnTriggerExit(Collider other)
     {
         canPlace = true;
+        if (!other.CompareTag("Worker")) return;
+        builders.Remove(other.gameObject);
     }
 }

@@ -83,7 +83,6 @@ namespace Interactable
             transform.Rotate(target.point);
             agent.SetDestination(target.point);
             agent.isStopped = false;
-            Debug.Log("I am moving");
         }
 
         protected virtual IEnumerator MoveToTargetThenAttack()
