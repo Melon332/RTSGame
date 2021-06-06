@@ -12,14 +12,13 @@ using UnityEngine.UI;
 public abstract class Entities : MonoBehaviour, IInteractable,ISubscriber,IDestructable
 {
     #region Unit Variables
-    public float hitPoints;
     public float maxHitPoints;
+    public float hitPoints;
     public string nameOfUnit;
     public bool canBeAttacked;
     public bool isBuilding = false;
     public Sprite pictureOfObject;
     [HideInInspector] public bool isDead = false;
-    protected bool hasFoundTarget = false;
     #endregion
 
     [HideInInspector] public NavMeshAgent agent;

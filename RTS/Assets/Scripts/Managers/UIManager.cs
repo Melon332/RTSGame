@@ -37,6 +37,7 @@ namespace Managers
         private static Texture2D[] _cursorsStatic;
         
         [SerializeField] private GameObject buildingPanel;
+        [SerializeField] private GameObject unitPanel;
         [SerializeField] private Button pullPanelDownButton;
 
         private bool panelIsDown;
@@ -114,6 +115,10 @@ namespace Managers
         public void ShowBuildingsPanel(bool hasSelectedWorker)
         {
             buildingPanel.SetActive(hasSelectedWorker);
+        }
+        public void ShowUnitPanel(bool hasSelectedFactory)
+        {
+            unitPanel.SetActive(hasSelectedFactory);
         }
 
         public void PictureOfSelectedUnits(Sprite image)

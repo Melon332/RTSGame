@@ -121,8 +121,11 @@ namespace Player
             }
             foreach (var workers in UnitManager.Instance.selectedNonLethalUnits)
             {
-                workers.GetComponent<IInteractable>().OnDeselect();
-                PlayerManager.Instance.hasSelectedNonLethalUnits = false;
+                if (workers != null)
+                {
+                    workers.GetComponent<IInteractable>().OnDeselect();
+                    PlayerManager.Instance.hasSelectedNonLethalUnits = false;
+                }
             }
             UnitManager.Instance.selectedAttackingUnits.Clear();
             UnitManager.Instance.selectedNonLethalUnits.Clear();

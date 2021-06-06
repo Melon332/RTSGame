@@ -21,6 +21,7 @@ public class BuildingManager : MonoBehaviour
     }
 
     public List<GameObject> Buildings = new List<GameObject>();
+    public GameObject currentSelectedBuilding;
     
     public Material canPlaceBuildingMaterial;
     public Material cantPlaceBuildingMaterial;

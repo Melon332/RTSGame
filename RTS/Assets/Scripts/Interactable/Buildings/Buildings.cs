@@ -9,9 +9,9 @@ using UnityEngine;
 public class Buildings : Entities
 {
     //BUILDING BOOL;
-    [SerializeField] private List<GameObject> builders = new List<GameObject>();
-    [SerializeField] private int amountOfHpPerSecond;
-    [SerializeField] protected bool canProduceUnits;
+    private List<GameObject> builders = new List<GameObject>();
+    
+    [SerializeField] private float amountOfHpPerSecond;
     protected bool canPlace = true;
     protected bool hasFinishedBuilding = false;
 
@@ -19,26 +19,19 @@ public class Buildings : Entities
 
     [SerializeField] protected GameObject floatingText;
 
-    private Vector3 targetToMoveBuilding = new Vector3(0, 0.25f, 0);
+    private Vector3 targetToMoveBuilding = new Vector3(0, -0.5f, 0);
 
     private MeshRenderer[] buildingRenderer;
-
-    [SerializeField] protected List<GameObject> buildableUnits = new List<GameObject>();
 
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
         buildingRenderer = GetComponentsInChildren<MeshRenderer>(true);
-        if (canProduceUnits)
-        {
-            buildableUnits = UnitManager.Instance.buildableUnits;
-        }
 
         Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
         _selectionBox.transform.localScale = transform.localScale * 3;
         isBuilding = true;
-        Debug.Log(GetInstanceID());
     }
 
 
@@ -62,6 +55,13 @@ public class Buildings : Entities
         if(PlayerManager.Instance.hasSelectedUnits) return;
         base.OnClicked();
         Debug.Log("This is a building");
+        BuildingManager.Instance.currentSelectedBuilding = gameObject;
+    }
+
+    public override void OnDeselect()
+    {
+        base.OnDeselect();
+        BuildingManager.Instance.currentSelectedBuilding = null;
     }
 
     private void CanPlaceBuilding(RaycastHit mousePos)
@@ -97,7 +97,9 @@ public class Buildings : Entities
             PlayerManager.Instance.hasBuildingInHand = false;
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
 
-            //Drop the building into to floor to rebuild it.
+            GetComponent<BoxCollider>().transform.position = new Vector3(transform.position.x,targetToMoveBuilding.y,transform.position.z);
+
+                //Drop the building into to floor to rebuild it.
             var position = transform.position;
             dropBuildingIntoFloor.x = position.x;
             dropBuildingIntoFloor.z = position.z;
@@ -123,7 +125,7 @@ public class Buildings : Entities
         var speed = 5f;
 
         float step = speed * Time.deltaTime;
-        targetToMoveBuilding = new Vector3(transform.position.x, 0.25f, transform.position.z);
+        targetToMoveBuilding = new Vector3(transform.position.x, -dropBuildingIntoFloor.y, transform.position.z);
         var positionToSpawnTextObject = new Vector3(transform.position.x, 3, transform.position.z);
         var textObject = Instantiate(floatingText, positionToSpawnTextObject, Quaternion.Euler(90, 0, 0),
             transform);
@@ -141,7 +143,7 @@ public class Buildings : Entities
                 yield return new WaitForSeconds (0.2f);
             }
 
-            Mathf.Clamp(hitPoints, 0, maxHitPoints);
+            hitPoints = Mathf.Clamp(hitPoints, 0, maxHitPoints);
             hitPoints += amountOfHpPerSecond;
             var equation = (hitPoints / maxHitPoints) * 100;
             textObject.GetComponent<TextMeshPro>().text = "Building: " + equation.ToString("F0") + "%";
@@ -193,4 +195,5 @@ public class Buildings : Entities
         if (!other.CompareTag("Worker")) return;
         builders.Remove(other.gameObject);
     }
+   
 }

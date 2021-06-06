@@ -255,9 +255,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7291299345132133104}
-  - component: {fileID: -8929236329017411265}
   - component: {fileID: -636849560501242975}
   - component: {fileID: 1712491675429044538}
+  - component: {fileID: 2353782925747513189}
   m_Layer: 0
   m_Name: Factory
   m_TagString: Buildings
@@ -283,33 +283,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-8929236329017411265
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7394037084603925105}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1c5b87c71c600b41873bee5e579dd8e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hitPoints: 0
-  maxHitPoints: 150
-  nameOfUnit: 
-  canBeAttacked: 1
-  isBuilding: 0
-  pictureOfObject: {fileID: 0}
-  isDead: 0
-  agent: {fileID: 0}
-  _selectionBox: {fileID: 0}
-  amountOfHpPerSecond: 3
-  canProduceUnits: 0
-  dropBuildingIntoFloor: {x: 0, y: -1, z: 0}
-  floatingText: {fileID: 6182403648814924256, guid: 323a8abd9a11abe41b6d3974294c53af,
-    type: 3}
-  buildableUnits: []
 --- !u!65 &-636849560501242975
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -321,8 +294,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4.496649, y: 3.0082507, z: 3.8224087}
-  m_Center: {x: 0.22497475, y: 0.40528464, z: -0.13872981}
+  m_Size: {x: 3.6819358, y: 3.3007493, z: 3.4974284}
+  m_Center: {x: 0.2987821, y: 0.55153346, z: -0.13043976}
 --- !u!54 &1712491675429044538
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -339,6 +312,32 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2353782925747513189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7394037084603925105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee9aad0171fdf4a4a96fee651e697e76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHitPoints: 250
+  hitPoints: 0
+  nameOfUnit: Factory
+  canBeAttacked: 0
+  isBuilding: 0
+  pictureOfObject: {fileID: 0}
+  isDead: 0
+  agent: {fileID: 0}
+  _selectionBox: {fileID: 0}
+  amountOfHpPerSecond: 5
+  dropBuildingIntoFloor: {x: 0, y: -0.5, z: 0}
+  floatingText: {fileID: 6182403648814924256, guid: 323a8abd9a11abe41b6d3974294c53af,
+    type: 3}
+  unitQueue: []
 --- !u!1001 &6077683618734451250
 PrefabInstance:
   m_ObjectHideFlags: 0

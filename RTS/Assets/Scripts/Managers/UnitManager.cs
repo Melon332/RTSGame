@@ -28,6 +28,11 @@ namespace Managers
         public List<GameObject> selectedAttackingUnits = new List<GameObject>();
         public List<GameObject> selectedNonLethalUnits = new List<GameObject>();
         public static readonly List<GameObject> SelectableUnits = new List<GameObject>();
+        public void BuildUnit(int unitIndex)
+        {
+            BuildingManager.Instance.currentSelectedBuilding.GetComponent<Factory>().unitQueue.Add(buildableUnits[unitIndex]);
+            BuildingManager.Instance.currentSelectedBuilding.GetComponent<Factory>().StartConstructing(unitIndex);
+        }
     }
 }
 

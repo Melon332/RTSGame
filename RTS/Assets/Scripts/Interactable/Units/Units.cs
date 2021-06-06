@@ -11,12 +11,15 @@ namespace Interactable
     public abstract class Units : Entities, IInteractable
     {
         //BULLET SPAWNING
+        public float amountOfHpPerSecond;
+        [Header("Unit Bullet Variables")]
         [SerializeField] protected GameObject bullet;
         [SerializeField] protected GameObject bulletSpawnPosition;
-        //UNIT VARIABLES
+        [Header("Unit Attack Variables")]
         public float minRangeToAttack;
         public float attackTimer;
         public int damageAmount;
+        public bool hasBeenConstructed;
         [SerializeField] private bool canAttack;
         
         public RaycastHit hit;
@@ -83,6 +86,14 @@ namespace Interactable
             agent.isStopped = false;
         }
 
+        public void MoveForward(Vector3 position)
+        {
+            if (agent == null) return;
+            transform.Rotate(position);
+            agent.SetDestination(position);
+            agent.isStopped = false;
+        }
+
         protected virtual IEnumerator MoveToTargetThenAttack()
         {
             if (enemyHit.collider.GetComponent<Entities>())
@@ -120,8 +131,11 @@ namespace Interactable
         }
         public override void OnClicked()
         {
-            base.OnClicked();
-            Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
+            if (hasBeenConstructed)
+            {
+                base.OnClicked();
+                Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
+            }
         }
 
         public override void OnDeselect()
