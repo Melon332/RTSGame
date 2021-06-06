@@ -30,7 +30,10 @@ namespace Managers
         public static readonly List<GameObject> SelectableUnits = new List<GameObject>();
         public void BuildUnit(int unitIndex)
         {
-            BuildingManager.Instance.currentSelectedBuilding.GetComponent<Factory>().unitQueue.Add(buildableUnits[unitIndex]);
+            if (BuildingManager.Instance.currentSelectedBuilding.GetComponent<Factory>().unitQueue.Count < 9)
+            {
+                BuildingManager.Instance.currentSelectedBuilding.GetComponent<Factory>().unitQueue.Add(buildableUnits[unitIndex]);   
+            }
             BuildingManager.Instance.currentSelectedBuilding.GetComponent<Factory>().StartConstructing(unitIndex);
         }
     }

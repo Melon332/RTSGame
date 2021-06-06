@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Interactable;
 using Managers;
+using Player;
 using UnityEngine;
 using TMPro;
 
 public class Factory : Buildings
 {
     private GameObject currentUnitConstructing;
-    public List<GameObject> unitQueue = new List<GameObject>();
+    public List<GameObject> unitQueue = new List<GameObject>(9);
 
     private bool isConstructingUnit;
     
@@ -18,10 +19,7 @@ public class Factory : Buildings
     private Coroutine ConstructUnit;
     private GameObject textObject;
 
-    protected override void Start()
-    {
-        base.Start();
-    }
+    private Vector3 rallyPointPosition;
 
     public void StartConstructing(int _unitIndex)
     {
@@ -62,33 +60,79 @@ public class Factory : Buildings
                     yield return new WaitForSeconds(0.2f);
                 }
                 isConstructingUnit = false;
-                var position = new Vector3(unitComponent.transform.position.x, unitComponent.transform.position.y,
-                    5f);
-                unitComponent.MoveForward(position);
+                if (rallyPointPosition != Vector3.zero)
+                {
+                    unitComponent.MoveForward(rallyPointPosition);
+                }
+                else
+                {
+                    var position = new Vector3(unitComponent.transform.position.x, unitComponent.transform.position.y,
+                        5f); 
+                    unitComponent.MoveForward(position);
+                }
                 unitComponent.hasBeenConstructed = true;
                 currentUnitConstructing = null;
                 unitQueue.RemoveAt(0);
+                textBox.SetActive(false);
 
                 if (!unitQueue.Any())
                 {
                     StopCoroutine(testingStuff);
                     testingStuff = null;
-                    textBox.SetActive(false);
+                    Destroy(textBox);
                 }
                 yield return new WaitForSeconds(0.1f);
             }
         }
     }
 
+    private void SetRallyPoint(bool hasClicked)
+    {
+        if (!hasClicked) return;
+        if (!PlayerInputMouse.IsPointerOverUIObject())
+        {
+            if (!PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out var hit)) return;
+            if (!hit.collider.CompareTag("Ground")) return;
+            Debug.Log(PlayerInputMouse.IsPointerOverUIObject());
+            rallyPointPosition = hit.point;
+            Debug.Log(rallyPointPosition);
+        }
+    }
+
+    private void RemoveRallyPoint(bool hasLeftClicked)
+    {
+        rallyPointPosition = Vector3.zero;
+    }
+
     public override void OnClicked()
     {
-        base.OnClicked();
-        UIManager.Instance.ShowUnitPanel(true);
+        if (hasFinishedBuilding)
+        {
+            base.OnClicked();
+            UIManager.Instance.ShowUnitPanel(true);
+            Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
+        }
     }
 
     public override void OnDeselect()
     {
-        base.OnDeselect();
-        UIManager.Instance.ShowUnitPanel(false);
+        if (hasFinishedBuilding)
+        {
+            base.OnDeselect();
+            UIManager.Instance.ShowUnitPanel(false);
+            UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
+        }
+    }
+
+    public override void Subscribe(CharacterInput publisher)
+    {
+        base.Subscribe(publisher);
+        publisher.hasClicked += SetRallyPoint;
+    }
+
+    public override void UnSubscribe(CharacterInput publisher)
+    {
+        base.UnSubscribe(publisher);
+        publisher.hasClicked -= SetRallyPoint;
     }
 }

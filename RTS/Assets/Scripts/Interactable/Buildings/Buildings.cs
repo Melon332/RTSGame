@@ -14,6 +14,7 @@ public class Buildings : Entities
     [SerializeField] private float amountOfHpPerSecond;
     protected bool canPlace = true;
     protected bool hasFinishedBuilding = false;
+    private bool hasPlacedBuilding;
 
     [SerializeField] private Vector3 dropBuildingIntoFloor;
 
@@ -67,6 +68,7 @@ public class Buildings : Entities
     private void CanPlaceBuilding(RaycastHit mousePos)
     {
         if (hasFinishedBuilding) return;
+        if(hasPlacedBuilding) return;
         transform.position = new Vector3(mousePos.point.x, 0, mousePos.point.z);
         if (canPlace && !PlayerInputMouse.IsPointerOverUIObject())
         {
@@ -92,20 +94,23 @@ public class Buildings : Entities
 
     private void PlaceBuilding(bool place)
     {
+        if (hasPlacedBuilding) return;
         if (place && canPlace && !PlayerInputMouse.IsPointerOverUIObject())
         {
             PlayerManager.Instance.hasBuildingInHand = false;
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
 
-            GetComponent<BoxCollider>().transform.position = new Vector3(transform.position.x,targetToMoveBuilding.y,transform.position.z);
+            GetComponent<BoxCollider>().transform.position = new Vector3(transform.position.x,
+                targetToMoveBuilding.y, transform.position.z);
 
-                //Drop the building into to floor to rebuild it.
+            //Drop the building into to floor to rebuild it.
             var position = transform.position;
             dropBuildingIntoFloor.x = position.x;
             dropBuildingIntoFloor.z = position.z;
             position = dropBuildingIntoFloor;
             transform.position = position;
             StartCoroutine(BuildBuilding());
+            hasPlacedBuilding = true;
 
             foreach (var buildingBlocks in buildingRenderer)
             {
@@ -171,10 +176,13 @@ public class Buildings : Entities
     
     private void CancelBuilding(bool hasClicked)
     {
-        if (!hasClicked) return;
-        UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
-        PlayerManager.Instance.hasBuildingInHand = false;
-        Destroy(gameObject);
+        if (!hasPlacedBuilding)
+        {
+            if (!hasClicked) return;
+            UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
+            PlayerManager.Instance.hasBuildingInHand = false;
+            Destroy(gameObject);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
