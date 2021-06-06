@@ -12,6 +12,7 @@ using UnityEngine.UI;
 public abstract class Entities : MonoBehaviour, IInteractable,ISubscriber,IDestructable
 {
     #region Unit Variables
+    [Header("General Unit Variables")]
     public float maxHitPoints;
     public float hitPoints;
     public string nameOfUnit;
@@ -76,6 +77,5 @@ public abstract class Entities : MonoBehaviour, IInteractable,ISubscriber,IDestr
     public virtual void OnDeselect()
     {
        _selectionBox.SetActive(false);
-       UIManager.Instance.PictureOfSelectedUnits(null);
     }
 }

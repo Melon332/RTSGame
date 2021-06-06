@@ -34,7 +34,7 @@ namespace Managers
             {
                 BuildingManager.Instance.currentSelectedBuilding.GetComponent<Factory>().unitQueue.Add(buildableUnits[unitIndex]);   
             }
-            BuildingManager.Instance.currentSelectedBuilding.GetComponent<Factory>().StartConstructing(unitIndex);
+            BuildingManager.Instance.currentSelectedBuilding.GetComponent<Factory>().StartConstructing();
         }
     }
 }

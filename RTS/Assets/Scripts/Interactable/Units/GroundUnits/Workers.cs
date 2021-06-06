@@ -7,12 +7,6 @@ using UnityEngine;
 public class Workers : GroundUnits
 {
     public int targetedBuilding;
-    // Start is called before the first frame update
-    protected override void Start()
-    {
-        base.Start();
-    }
-    
 
     public override void OnClicked()
     {

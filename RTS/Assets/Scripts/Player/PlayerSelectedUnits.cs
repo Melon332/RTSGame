@@ -26,29 +26,40 @@ namespace Player
 
         private void ClickedOnUnit(bool hasClicked)
         {
+            //Checks if the player has a building in hand.
             if (PlayerManager.Instance.hasBuildingInHand) return;
             if (!hasClicked) return;
-            _ray = _rtsCamera.ScreenPointToRay(Input.mousePosition);
-            if (PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out var hit))
+            if (!PlayerInputMouse.IsPointerOverUIObject())
             {
-                if (hit.collider.GetComponent<IInteractable>() != null)
+                //Shoots a ray from the mouse position
+                _ray = _rtsCamera.ScreenPointToRay(Input.mousePosition);
+                if (PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out var hit))
                 {
-                    hit.collider.GetComponent<IInteractable>().OnClicked();
-                    if (!UnitManager.Instance.selectedAttackingUnits.Contains(hit.collider.gameObject))
+                    //Checks if that ray hit something interactable
+                    if (hit.collider.GetComponent<IInteractable>() != null)
                     {
-                        if (hit.collider.CompareTag("Units"))
+                        //Calls a OnClicked Method to the clicked unit
+                        hit.collider.GetComponent<IInteractable>().OnClicked();
+                        //Adds it to a list but if it already exists on the list, continue
+                        if (!UnitManager.Instance.selectedAttackingUnits.Contains(hit.collider.gameObject))
                         {
-                            PlayerManager.Instance.hasSelectedUnits = true;
-                            UnitManager.Instance.selectedAttackingUnits.Add(hit.collider.gameObject);
-                        }
-                        else if (hit.collider.CompareTag("Buildings") || hit.collider.CompareTag("EnemyUnits") || hit.collider.CompareTag("Debris"))
-                        {
-                            UnitManager.Instance.selectedNonLethalUnits.Add(hit.collider.gameObject);
-                        }
-                        else
-                        {
-                            UnitManager.Instance.selectedNonLethalUnits.Add(hit.collider.gameObject);
-                            PlayerManager.Instance.hasSelectedNonLethalUnits = true;
+                            //If it's a unit that you can attack with, add it to the lethal units list.
+                            if (hit.collider.CompareTag("Units"))
+                            {
+                                PlayerManager.Instance.hasSelectedUnits = true;
+                                UnitManager.Instance.selectedAttackingUnits.Add(hit.collider.gameObject);
+                            }
+                            //If it's abuilding or non lethal add it to the non lethal unit
+                            else if (hit.collider.CompareTag("Buildings") || hit.collider.CompareTag("EnemyUnits") ||
+                                     hit.collider.CompareTag("Debris"))
+                            {
+                                UnitManager.Instance.selectedNonLethalUnits.Add(hit.collider.gameObject);
+                            }
+                            else
+                            {
+                                UnitManager.Instance.selectedNonLethalUnits.Add(hit.collider.gameObject);
+                                PlayerManager.Instance.hasSelectedNonLethalUnits = true;
+                            }
                         }
                     }
                 }
@@ -82,17 +93,20 @@ namespace Player
         {
             if (!hasReleaseButton) return;
             selectionBox.gameObject.SetActive(false);
-
+            //Selection box size
             Vector2 min = selectionBox.anchoredPosition - (selectionBox.sizeDelta / 2);
             Vector2 max = selectionBox.anchoredPosition + (selectionBox.sizeDelta / 2);
 
 
             foreach (var unit in UnitManager.SelectableUnits)
             {
+                //Checks which units are in the selection box, if it's empty, return.
                 if (unit == null) return;
                 Vector3 screenPos = _rtsCamera.WorldToScreenPoint(unit.transform.position);
+                //checks if the selection box is in world space
                 if (screenPos.x > min.x && screenPos.x < max.x && screenPos.y > min.y && screenPos.y < max.y)
                 {
+                    //If the selection box already has that unit in the list, continue searching.
                     if (UnitManager.Instance.selectedAttackingUnits.Contains(unit.gameObject)) continue;
                     if (unit.CompareTag("Units"))
                     {
@@ -107,6 +121,7 @@ namespace Player
                     unit.GetComponent<IInteractable>().OnClicked();
                 }
             }
+            //Resets the position of the box and tells the game that the player isn't holding down button
             _startPos = Vector2.zero;
             holdingDownButton = false;
         }

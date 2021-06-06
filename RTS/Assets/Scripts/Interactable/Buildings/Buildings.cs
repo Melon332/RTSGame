@@ -149,9 +149,12 @@ public class Buildings : Entities
             }
 
             hitPoints = Mathf.Clamp(hitPoints, 0, maxHitPoints);
-            hitPoints += amountOfHpPerSecond;
-            var equation = (hitPoints / maxHitPoints) * 100;
-            textObject.GetComponent<TextMeshPro>().text = "Building: " + equation.ToString("F0") + "%";
+            if (hitPoints < maxHitPoints)
+            {
+                hitPoints += amountOfHpPerSecond;
+                var equation = (hitPoints / maxHitPoints) * 100;
+                textObject.GetComponent<TextMeshPro>().text = "Building: " + equation.ToString("F0") + "%";
+            }
             transform.position = Vector3.MoveTowards(transform.position, targetToMoveBuilding, step);
             yield return new WaitForSeconds(0.1f);
         }
@@ -193,7 +196,6 @@ public class Buildings : Entities
         if (other.gameObject.GetComponent<Workers>().targetedBuilding == gameObject.GetInstanceID())
         {
             builders.Add(other.gameObject);
-            Debug.Log(gameObject.GetInstanceID());
         }
     }
 

@@ -109,8 +109,9 @@ namespace Interactable
                     }
                     else
                     {
-                        agent.isStopped = true;
+
                         transform.LookAt(enemyHit.transform.position);
+                        agent.isStopped = true;
                         Attack();
                         yield return new WaitForSeconds(attackTimer);
                     }
@@ -172,6 +173,19 @@ namespace Interactable
             if (!gameObject.activeSelf) return;
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
             agent = null;
+        }
+        private bool IsFacingObject(Transform other){
+            // Check if the gaze is looking at the front side of the object
+            Vector3 forward = transform.forward;
+            Vector3 toOther = (other.transform.position - transform.position).normalized;
+ 
+            if(Vector3.Dot(forward, toOther) > 0f){
+                Debug.Log("Not facing the object");
+                return false;
+            }
+   
+            Debug.Log("Facing the object");
+            return true;
         }
     }
 }

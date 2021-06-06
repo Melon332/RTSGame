@@ -21,7 +21,7 @@ public class Factory : Buildings
 
     private Vector3 rallyPointPosition;
 
-    public void StartConstructing(int _unitIndex)
+    public void StartConstructing()
     {
         var positionToSpawnTextObject = new Vector3(transform.position.x, 3, transform.position.z);
         if (textObject == null)
@@ -32,26 +32,25 @@ public class Factory : Buildings
 
         if (testingStuff == null)
         {
-            testingStuff = StartCoroutine(CreateUnit(textObject, _unitIndex));
-            Debug.Log("I am being called");
+            testingStuff = StartCoroutine(CreateUnit(textObject));
         }
     }
 
-    IEnumerator CreateUnit(GameObject textBox, int unitIndex)
+    IEnumerator CreateUnit(GameObject textBox)
     {
         while (unitQueue.Any())
         {
             if (!isConstructingUnit)
             {
                 yield return new WaitForSeconds(0.5f);
-               currentUnitConstructing = Instantiate(unitQueue[unitIndex], transform.position, Quaternion.identity);
+               currentUnitConstructing = Instantiate(unitQueue[0], transform.position, Quaternion.identity);
                isConstructingUnit = true;
                textBox.SetActive(true);
             }
             else
             {
                 var unitComponent = currentUnitConstructing.GetComponent<Units>();
-                while(unitComponent.hitPoints <= unitComponent.maxHitPoints)
+                while(unitComponent.hitPoints < unitComponent.maxHitPoints)
                 {
                     unitComponent.hitPoints = Mathf.Clamp(unitComponent.hitPoints, 0, unitComponent.maxHitPoints); 
                     unitComponent.hitPoints += unitComponent.amountOfHpPerSecond;
