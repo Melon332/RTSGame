@@ -62,6 +62,7 @@ public class Factory : Buildings
                 if (rallyPointPosition != Vector3.zero)
                 {
                     unitComponent.MoveForward(rallyPointPosition);
+                    Debug.Log(rallyPointPosition+" This is from the spawning");
                 }
                 else
                 {
@@ -90,11 +91,13 @@ public class Factory : Buildings
         if (!hasClicked) return;
         if (!PlayerInputMouse.IsPointerOverUIObject())
         {
-            if (!PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out var hit)) return;
-            if (!hit.collider.CompareTag("Ground")) return;
-            Debug.Log(PlayerInputMouse.IsPointerOverUIObject());
-            rallyPointPosition = hit.point;
-            Debug.Log(rallyPointPosition);
+            if (BuildingManager.Instance.wantsToSetRallyPoint)
+            {
+                if (!PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out var hit)) return;
+                if (!hit.collider.CompareTag("Ground")) return;
+                rallyPointPosition = hit.point;
+                Debug.Log(rallyPointPosition);
+            }
         }
     }
 
@@ -120,6 +123,7 @@ public class Factory : Buildings
             base.OnDeselect();
             UIManager.Instance.ShowUnitPanel(false);
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
+            BuildingManager.Instance.wantsToSetRallyPoint = false;
         }
     }
 

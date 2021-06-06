@@ -19,7 +19,7 @@ public class BuildingManager : MonoBehaviour
             return _instance;
         }
     }
-
+    
     public List<GameObject> Buildings = new List<GameObject>();
     public GameObject currentSelectedBuilding;
     
@@ -27,6 +27,14 @@ public class BuildingManager : MonoBehaviour
     public Material cantPlaceBuildingMaterial;
     public Material normalBuildingMaterial;
 
+    public bool wantsToSetRallyPoint = false;
+
+
+    public void SetRallyPoint()
+    {
+        wantsToSetRallyPoint = true;
+        Debug.Log(wantsToSetRallyPoint);
+    }
     public GameObject CreateBuilding(int buildingIndex)
     {
         PlayerManager.Instance.hasBuildingInHand = true;

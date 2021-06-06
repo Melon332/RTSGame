@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.UI;
 using Player;
@@ -39,6 +41,7 @@ namespace Managers
         [SerializeField] private GameObject buildingPanel;
         [SerializeField] private GameObject unitPanel;
         [SerializeField] private Button pullPanelDownButton;
+        [SerializeField] private Button setRallyPoint;
 
         private bool panelIsDown;
         void Awake()
@@ -112,6 +115,15 @@ namespace Managers
             }
         }
 
+        public void SetRallyPoint(Delegate method)
+        {
+            setRallyPoint.onClick.AddListener(delegate { SetRallyPointButton(method); });
+        }
+
+        private void SetRallyPointButton(Delegate method)
+        {
+            
+        }
         public void ShowBuildingsPanel(bool hasSelectedWorker)
         {
             buildingPanel.SetActive(hasSelectedWorker);
