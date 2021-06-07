@@ -10,11 +10,11 @@ public class Enemy : Units
     protected override void Start()
     {
         canBeAttacked = true;
-        _selectionBox = GetComponentInChildren<SelectionBox>().gameObject;
+        selectionBox = GetComponentInChildren<SelectionBox>().gameObject;
         agent = GetComponent<NavMeshAgent>();
-        if (_selectionBox != null)
+        if (selectionBox != null)
         {
-            _selectionBox.SetActive(false);
+            selectionBox.SetActive(false);
         }
     }
 

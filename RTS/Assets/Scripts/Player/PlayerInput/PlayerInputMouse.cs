@@ -88,8 +88,9 @@ public class PlayerInputMouse : CharacterInput
 
     private static bool IsMouseOverEnemy()
     {
+        if (!PlayerManager.Instance.hasSelectedUnits || !IsMouseInGameView()) return false;
         PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out var hit);
-        return hit.collider.GetComponent<Entities>() && hit.collider.GetComponent<Entities>().canBeAttacked && PlayerManager.Instance.hasSelectedUnits;
+        return hit.collider.GetComponent<Entities>() &&hit.collider.GetComponent<Entities>().canBeAttacked && PlayerManager.Instance.hasSelectedUnits;
     }
     private Vector2 MouseDirection()
     {

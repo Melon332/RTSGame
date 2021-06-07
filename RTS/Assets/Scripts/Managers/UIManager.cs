@@ -114,16 +114,6 @@ namespace Managers
                 pullPanelDownButton.GetComponentInChildren<TextMeshProUGUI>().text = "Panel Down";
             }
         }
-
-        public void SetRallyPoint(Delegate method)
-        {
-            setRallyPoint.onClick.AddListener(delegate { SetRallyPointButton(method); });
-        }
-
-        private void SetRallyPointButton(Delegate method)
-        {
-            
-        }
         public void ShowBuildingsPanel(bool hasSelectedWorker)
         {
             buildingPanel.SetActive(hasSelectedWorker);

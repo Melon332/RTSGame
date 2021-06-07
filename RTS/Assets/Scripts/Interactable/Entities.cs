@@ -23,15 +23,15 @@ public abstract class Entities : MonoBehaviour, IInteractable,ISubscriber,IDestr
     #endregion
 
     [HideInInspector] public NavMeshAgent agent;
-    [HideInInspector] public GameObject _selectionBox;
+    [HideInInspector] public GameObject selectionBox;
 
     protected virtual void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        _selectionBox = GetComponentInChildren<SelectionBox>().gameObject;
-        if (_selectionBox == null) return;
-        _selectionBox.SetActive(false);
-        _selectionBox.transform.localScale = gameObject.transform.localScale * 2;
+        selectionBox = GetComponentInChildren<SelectionBox>().gameObject;
+        if (selectionBox == null) return;
+        selectionBox.SetActive(false);
+        selectionBox.transform.localScale = gameObject.transform.localScale * 2;
     }
 
     public virtual void Subscribe(CharacterInput publisher)
@@ -71,11 +71,13 @@ public abstract class Entities : MonoBehaviour, IInteractable,ISubscriber,IDestr
         {
             Debug.Log("Sorry, you are missing a picture for this unit " + nameOfUnit + " Maybe you forgot to add it?");
         }
-        _selectionBox.SetActive(true);
+        selectionBox.SetActive(true);
     }
 
     public virtual void OnDeselect()
     {
-       _selectionBox.SetActive(false);
+       selectionBox.SetActive(false);
+       if (PlayerManager.Instance.hasSelectedUnits) return;
+       UIManager.Instance.PictureOfSelectedUnits(null);
     }
 }

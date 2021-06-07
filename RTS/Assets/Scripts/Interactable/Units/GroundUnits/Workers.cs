@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Interactable;
 using Managers;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -25,8 +26,8 @@ public class Workers : GroundUnits
         base.ClickToDoAction(hasClicked);
         if (hasClicked)
         {
-            var entityClicked = hit.collider.GetComponent<Entities>();
-            if (entityClicked && entityClicked.isBuilding)
+            var buildingClicked = hit.collider.GetComponent<Buildings>();
+            if (buildingClicked && buildingClicked.isBuilding && !buildingClicked.hasPlacedBuilding)
             {
                 ContinueBuilding(hit);
             }
@@ -45,7 +46,6 @@ public class Workers : GroundUnits
         transform.Rotate(target.point);
         agent.SetDestination(target.point);
         targetedBuilding = target.collider.gameObject.GetInstanceID();
-        Debug.Log(target.collider.gameObject.GetInstanceID());
         agent.isStopped = false;
     }
     

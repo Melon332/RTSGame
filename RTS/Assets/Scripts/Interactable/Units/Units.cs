@@ -47,7 +47,6 @@ namespace Interactable
 
                 if (!gameObject.activeSelf) return;
                 if (!found) return;
-
                 if (entityClicked && entityClicked.canBeAttacked)
                 {
                     if (canAttack)
@@ -79,7 +78,7 @@ namespace Interactable
 
         protected virtual void MoveToTarget(RaycastHit target)
         {
-            if (target.collider.CompareTag("Units")) return;
+            if (target.collider.CompareTag("Units") || target.collider.CompareTag("Buildings")) return;
             if (agent == null) return;
             transform.Rotate(target.point);
             agent.SetDestination(target.point);
@@ -98,7 +97,7 @@ namespace Interactable
         {
             if (enemyHit.collider.GetComponent<Entities>())
             {
-                while (enemyHit.collider.GetComponent<Entities>().hitPoints >= 0 && !enemyHit.collider.GetComponent<Entities>().isDead )
+                while (!enemyHit.collider.GetComponent<Entities>().isDead)
                 {
                     var distance = (transform.position - enemyHit.transform.position).sqrMagnitude;
                     if (distance > minRangeToAttack)

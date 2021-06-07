@@ -14,7 +14,7 @@ public class Factory : Buildings
 
     private bool isConstructingUnit;
     
-    private Coroutine testingStuff;
+    private Coroutine createUnitCoroutine;
     
     private Coroutine ConstructUnit;
     private GameObject textObject;
@@ -30,9 +30,9 @@ public class Factory : Buildings
             transform);
         }
 
-        if (testingStuff == null)
+        if (createUnitCoroutine == null)
         {
-            testingStuff = StartCoroutine(CreateUnit(textObject));
+            createUnitCoroutine = StartCoroutine(CreateUnit(textObject));
         }
     }
 
@@ -42,6 +42,7 @@ public class Factory : Buildings
         {
             if (!isConstructingUnit)
             {
+                //1. 
                 yield return new WaitForSeconds(0.5f);
                currentUnitConstructing = Instantiate(unitQueue[0], transform.position, Quaternion.identity);
                isConstructingUnit = true;
@@ -52,6 +53,7 @@ public class Factory : Buildings
                 var unitComponent = currentUnitConstructing.GetComponent<Units>();
                 while(unitComponent.hitPoints < unitComponent.maxHitPoints)
                 {
+                    //Checks hit points and does an equation to convert it into % and set it into a text box
                     unitComponent.hitPoints = Mathf.Clamp(unitComponent.hitPoints, 0, unitComponent.maxHitPoints); 
                     unitComponent.hitPoints += unitComponent.amountOfHpPerSecond;
                     var equation = (unitComponent.hitPoints / unitComponent.maxHitPoints) * 100;
@@ -62,7 +64,6 @@ public class Factory : Buildings
                 if (rallyPointPosition != Vector3.zero)
                 {
                     unitComponent.MoveForward(rallyPointPosition);
-                    Debug.Log(rallyPointPosition+" This is from the spawning");
                 }
                 else
                 {
@@ -70,6 +71,10 @@ public class Factory : Buildings
                         5f); 
                     unitComponent.MoveForward(position);
                 }
+                //1. Makes the unit interactable
+                //2. Sets the current unit to null
+                //3. Unit queue index 0 removed
+                //4. Removed text box
                 unitComponent.hasBeenConstructed = true;
                 currentUnitConstructing = null;
                 unitQueue.RemoveAt(0);
@@ -77,8 +82,8 @@ public class Factory : Buildings
 
                 if (!unitQueue.Any())
                 {
-                    StopCoroutine(testingStuff);
-                    testingStuff = null;
+                    StopCoroutine(createUnitCoroutine);
+                    createUnitCoroutine = null;
                     Destroy(textBox);
                 }
                 yield return new WaitForSeconds(0.1f);
@@ -96,7 +101,6 @@ public class Factory : Buildings
                 if (!PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out var hit)) return;
                 if (!hit.collider.CompareTag("Ground")) return;
                 rallyPointPosition = hit.point;
-                Debug.Log(rallyPointPosition);
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Enums;
 using Managers;
 using Player;
 using TMPro;
@@ -8,13 +9,13 @@ using UnityEngine;
 
 public class Buildings : Entities
 {
-    //BUILDING BOOL;
     private List<GameObject> builders = new List<GameObject>();
     
     [SerializeField] private float amountOfHpPerSecond;
+    //BUILDING BOOL;
     protected bool canPlace = true;
     protected bool hasFinishedBuilding = false;
-    private bool hasPlacedBuilding;
+    [HideInInspector] public bool hasPlacedBuilding;
 
     [SerializeField] private Vector3 dropBuildingIntoFloor;
 
@@ -31,7 +32,7 @@ public class Buildings : Entities
         buildingRenderer = GetComponentsInChildren<MeshRenderer>(true);
 
         Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
-        _selectionBox.transform.localScale = transform.localScale * 3;
+        selectionBox.transform.localScale = transform.localScale * 3;
         isBuilding = true;
     }
 
@@ -53,7 +54,25 @@ public class Buildings : Entities
     public override void OnClicked()
     {
         if (!hasFinishedBuilding) return;
-        if(PlayerManager.Instance.hasSelectedUnits) return;
+        //Checks if the player has units selected.
+        if (PlayerManager.Instance.hasSelectedUnits || PlayerManager.Instance.hasSelectedNonLethalUnits)
+        {
+            //Resets the units selection list so that the player can focus on the building
+            UIManager.SetCursorState((int)CursorStates.Select);
+            foreach (var lethalUnits in UnitManager.Instance.selectedAttackingUnits)
+            {
+                lethalUnits.GetComponent<Entities>().OnDeselect();
+            }
+            foreach (var nonLethalUnit in UnitManager.Instance.selectedNonLethalUnits)
+            {
+                nonLethalUnit.GetComponent<Entities>().OnDeselect();
+            }
+            //Clears the list and tells the player it has no units selected.
+            PlayerManager.Instance.hasSelectedUnits = false;
+            UnitManager.Instance.selectedAttackingUnits.Clear();
+            UnitManager.Instance.selectedNonLethalUnits.Clear();
+        }
+
         base.OnClicked();
         Debug.Log("This is a building");
         BuildingManager.Instance.currentSelectedBuilding = gameObject;
@@ -95,7 +114,7 @@ public class Buildings : Entities
     private void PlaceBuilding(bool place)
     {
         if (hasPlacedBuilding) return;
-        if (place && canPlace && !PlayerInputMouse.IsPointerOverUIObject())
+            if (place && canPlace && !PlayerInputMouse.IsPointerOverUIObject())
         {
             PlayerManager.Instance.hasBuildingInHand = false;
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
