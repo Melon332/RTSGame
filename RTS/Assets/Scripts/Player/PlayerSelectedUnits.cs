@@ -39,10 +39,10 @@ namespace Player
                     //Checks if that ray hit something interactable
                     if (hit.collider.GetComponent<IInteractable>() != null)
                     {
-                        //Calls a OnClicked Method to the clicked unit
                         hit.collider.GetComponent<IInteractable>().OnClicked();
+                        //Calls a OnClicked Method to the clicked unit
                         //Adds it to a list but if it already exists on the list, continue
-                        if (!UnitManager.Instance.selectedAttackingUnits.Contains(hit.collider.gameObject))
+                        if (!UnitManager.Instance.selectedAttackingUnits.Contains(hit.collider.gameObject) || !UnitManager.Instance.selectedNonLethalUnits.Contains(hit.collider.gameObject) )
                         {
                             //If it's a unit that you can attack with, add it to the lethal units list.
                             if (hit.collider.CompareTag("Units"))
@@ -50,16 +50,16 @@ namespace Player
                                 PlayerManager.Instance.hasSelectedUnits = true;
                                 UnitManager.Instance.selectedAttackingUnits.Add(hit.collider.gameObject);
                             }
-                            //If it's abuilding or non lethal add it to the non lethal unit
-                            else if (!hit.collider.GetComponent<Entities>().isSelectable)
+                            //If it's a building or non lethal add it to the non lethal unit
+                            else if (hit.collider.GetComponent<Entities>().isSelectable && !hit.collider.GetComponent<Entities>().isBuilding)
                             {
-                                UnitManager.Instance.selectedNonLethalUnits.Add(hit.collider.gameObject);
-                            }
-                            else
-                            {
-                                UnitManager.Instance.selectedNonLethalUnits.Add(hit.collider.gameObject);
                                 PlayerManager.Instance.hasSelectedNonLethalUnits = true;
                             }
+                            else if(hit.collider.GetComponent<Entities>().isBuilding)
+                            {
+                                PlayerManager.Instance.hasSelectedBuilding = true;
+                            }
+                            UnitManager.Instance.selectedNonLethalUnits.Add(hit.collider.gameObject);
                         }
                     }
                 }

@@ -15,7 +15,7 @@ public class Buildings : Entities
     [SerializeField] private float amountOfHpPerSecond;
     //BUILDING BOOL;
     protected bool canPlace = true;
-    protected bool hasFinishedBuilding = false;
+    [HideInInspector] public bool hasFinishedBuilding = false;
     [HideInInspector] public bool hasPlacedBuilding;
 
     [SerializeField] private Vector3 dropBuildingIntoFloor;
@@ -63,31 +63,43 @@ public class Buildings : Entities
 
     public override void OnClicked()
     {
-        if (!hasFinishedBuilding) return;
-        //Checks if the player has units selected.
-        if (PlayerManager.Instance.hasSelectedUnits || PlayerManager.Instance.hasSelectedNonLethalUnits)
+        if (hasFinishedBuilding)
         {
-            //Resets the units selection list so that the player can focus on the building
-            foreach (var lethalUnits in UnitManager.Instance.selectedAttackingUnits)
+            //Checks if the player has units selected.
+            if (PlayerManager.Instance.hasSelectedUnits || PlayerManager.Instance.hasSelectedNonLethalUnits)
             {
-                lethalUnits.GetComponent<Entities>().OnDeselect();
-            }
-            foreach (var nonLethalUnit in UnitManager.Instance.selectedNonLethalUnits)
-            {
-                nonLethalUnit.GetComponent<Entities>().OnDeselect();
+                //Resets the units selection list so that the player can focus on the building
+                foreach (var lethalUnits in UnitManager.Instance.selectedAttackingUnits)
+                {
+                    lethalUnits.GetComponent<Entities>().OnDeselect();
+                }
+
+                foreach (var nonLethalUnit in UnitManager.Instance.selectedNonLethalUnits)
+                {
+                    nonLethalUnit.GetComponent<Entities>().OnDeselect();
+                    PlayerManager.Instance.hasSelectedNonLethalUnits = false;
+                }
+
+                //Clears the list and tells the player it has no units selected.
+                PlayerManager.Instance.hasSelectedUnits = false;
                 PlayerManager.Instance.hasSelectedNonLethalUnits = false;
+                UnitManager.Instance.selectedAttackingUnits.Clear();
+                UnitManager.Instance.selectedNonLethalUnits.Clear();
             }
-            //Clears the list and tells the player it has no units selected.
-            PlayerManager.Instance.hasSelectedUnits = false;
-            PlayerManager.Instance.hasSelectedNonLethalUnits = false;
-            UnitManager.Instance.selectedAttackingUnits.Clear();
-            UnitManager.Instance.selectedNonLethalUnits.Clear();
+
+            HUD.SetCursor(CursorStates.Select);
+
+            base.OnClicked();
+            Debug.Log("This is a building");
+            BuildingManager.Instance.currentSelectedBuilding = gameObject;
         }
-        HUD.SetCursor(CursorStates.Select);
-        
-        base.OnClicked();
-        Debug.Log("This is a building");
-        BuildingManager.Instance.currentSelectedBuilding = gameObject;
+        else
+        {
+            Debug.Log("Hello");
+            HUD.SetCursor(CursorStates.Select);
+            UnitManager.Instance.selectedNonLethalUnits.Remove(gameObject);
+            PlayerManager.Instance.hasSelectedNonLethalUnits = false;
+        }
     }
 
     public override void OnDeselect()

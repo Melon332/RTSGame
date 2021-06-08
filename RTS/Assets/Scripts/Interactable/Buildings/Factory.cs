@@ -116,23 +116,19 @@ public class Factory : Buildings
 
     public override void OnClicked()
     {
-        if (hasFinishedBuilding)
-        {
             base.OnClicked();
-            UIManager.Instance.ShowPanels(true,1);
+            UIManager.Instance.ShowPanels(true, 1);
             Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
-        }
     }
 
     public override void OnDeselect()
     {
-        if (hasFinishedBuilding)
-        {
-            base.OnDeselect();
-            UIManager.Instance.ShowPanels(false,1);
-            UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
-            BuildingManager.Instance.wantsToSetRallyPoint = false;
-        }
+
+        base.OnDeselect();
+        UIManager.Instance.ShowPanels(false,1);
+        UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
+        BuildingManager.Instance.wantsToSetRallyPoint = false;
+        
     }
 
     public override void Subscribe(CharacterInput publisher)
