@@ -16,6 +16,7 @@ namespace Player
         private Vector2 _startPos;
         
         public static bool holdingDownButton;
+        
 
 
         // Start is called before the first frame update
@@ -50,8 +51,7 @@ namespace Player
                                 UnitManager.Instance.selectedAttackingUnits.Add(hit.collider.gameObject);
                             }
                             //If it's abuilding or non lethal add it to the non lethal unit
-                            else if (hit.collider.CompareTag("Buildings") || hit.collider.CompareTag("EnemyUnits") ||
-                                     hit.collider.CompareTag("Debris"))
+                            else if (!hit.collider.GetComponent<Entities>().isSelectable)
                             {
                                 UnitManager.Instance.selectedNonLethalUnits.Add(hit.collider.gameObject);
                             }

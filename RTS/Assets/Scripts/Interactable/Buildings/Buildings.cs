@@ -6,7 +6,8 @@ using Managers;
 using Player;
 using TMPro;
 using UnityEngine;
-
+using UnityEngine.AI;
+[RequireComponent(typeof(NavMeshObstacle))]
 public class Buildings : Entities
 {
     private List<GameObject> builders = new List<GameObject>();
@@ -24,6 +25,8 @@ public class Buildings : Entities
     private Vector3 targetToMoveBuilding = new Vector3(0, -0.5f, 0);
 
     private MeshRenderer[] buildingRenderer;
+    private NavMeshObstacle buildingHitBox;
+    private BoxCollider buildingCollider;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -34,6 +37,13 @@ public class Buildings : Entities
         Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
         selectionBox.transform.localScale = transform.localScale * 3;
         isBuilding = true;
+        //References the obstacle collider for other agents to avoid
+        buildingHitBox = GetComponent<NavMeshObstacle>();
+        buildingHitBox.enabled = false;
+        buildingHitBox.carving = false;
+        
+        buildingCollider = GetComponent<BoxCollider>();
+        isSelectable = true;
     }
 
 
@@ -58,7 +68,6 @@ public class Buildings : Entities
         if (PlayerManager.Instance.hasSelectedUnits || PlayerManager.Instance.hasSelectedNonLethalUnits)
         {
             //Resets the units selection list so that the player can focus on the building
-            UIManager.SetCursorState((int)CursorStates.Select);
             foreach (var lethalUnits in UnitManager.Instance.selectedAttackingUnits)
             {
                 lethalUnits.GetComponent<Entities>().OnDeselect();
@@ -66,13 +75,16 @@ public class Buildings : Entities
             foreach (var nonLethalUnit in UnitManager.Instance.selectedNonLethalUnits)
             {
                 nonLethalUnit.GetComponent<Entities>().OnDeselect();
+                PlayerManager.Instance.hasSelectedNonLethalUnits = false;
             }
             //Clears the list and tells the player it has no units selected.
             PlayerManager.Instance.hasSelectedUnits = false;
+            PlayerManager.Instance.hasSelectedNonLethalUnits = false;
             UnitManager.Instance.selectedAttackingUnits.Clear();
             UnitManager.Instance.selectedNonLethalUnits.Clear();
         }
-
+        HUD.SetCursor(CursorStates.Select);
+        
         base.OnClicked();
         Debug.Log("This is a building");
         BuildingManager.Instance.currentSelectedBuilding = gameObject;
@@ -118,9 +130,11 @@ public class Buildings : Entities
         {
             PlayerManager.Instance.hasBuildingInHand = false;
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
+            buildingHitBox.enabled = true;
+            buildingHitBox.carving = true;
 
-            GetComponent<BoxCollider>().transform.position = new Vector3(transform.position.x,
-                targetToMoveBuilding.y, transform.position.z);
+            buildingCollider.transform.position = new Vector3(transform.position.x,
+            targetToMoveBuilding.y, transform.position.z);
 
             //Drop the building into to floor to rebuild it.
             var position = transform.position;

@@ -34,6 +34,7 @@ namespace Interactable
             base.Start();
             UnitManager.SelectableUnits.Add(gameObject);
             canBeAttacked = false;
+            isSelectable = true;
         }
         
 

@@ -19,6 +19,7 @@ public abstract class Entities : MonoBehaviour, IInteractable,ISubscriber,IDestr
     public bool canBeAttacked;
     public bool isBuilding = false;
     public Sprite pictureOfObject;
+    public bool isSelectable;
     [HideInInspector] public bool isDead = false;
     #endregion
 
@@ -54,6 +55,7 @@ public abstract class Entities : MonoBehaviour, IInteractable,ISubscriber,IDestr
             gameObject.SetActive(false);
             UnitManager.SelectableUnits.Remove(gameObject);
             UnitManager.Instance.selectedAttackingUnits.Remove(gameObject);
+            UnitManager.Instance.selectedNonLethalUnits.Remove(gameObject);
         }
         else
         {
@@ -77,7 +79,7 @@ public abstract class Entities : MonoBehaviour, IInteractable,ISubscriber,IDestr
     public virtual void OnDeselect()
     {
        selectionBox.SetActive(false);
-       if (PlayerManager.Instance.hasSelectedUnits) return;
+       if (PlayerManager.Instance.hasSelectedUnits || PlayerManager.Instance.hasSelectedNonLethalUnits) return;
        UIManager.Instance.PictureOfSelectedUnits(null);
     }
 }

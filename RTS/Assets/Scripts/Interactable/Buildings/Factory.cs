@@ -9,7 +9,7 @@ using TMPro;
 
 public class Factory : Buildings
 {
-    private GameObject currentUnitConstructing;
+    [HideInInspector] public GameObject currentUnitConstructing;
     public List<GameObject> unitQueue = new List<GameObject>(9);
 
     private bool isConstructingUnit;
@@ -36,7 +36,7 @@ public class Factory : Buildings
         }
     }
 
-    IEnumerator CreateUnit(GameObject textBox)
+    protected virtual IEnumerator CreateUnit(GameObject textBox)
     {
         while (unitQueue.Any())
         {
@@ -51,6 +51,10 @@ public class Factory : Buildings
             else
             {
                 var unitComponent = currentUnitConstructing.GetComponent<Units>();
+                if (unitComponent.GetComponent<Harvester>())
+                {
+                    unitComponent.GetComponent<Harvester>().targetedSupplyStation = gameObject;
+                }
                 while(unitComponent.hitPoints < unitComponent.maxHitPoints)
                 {
                     //Checks hit points and does an equation to convert it into % and set it into a text box
@@ -115,7 +119,7 @@ public class Factory : Buildings
         if (hasFinishedBuilding)
         {
             base.OnClicked();
-            UIManager.Instance.ShowUnitPanel(true);
+            UIManager.Instance.ShowPanels(true,1);
             Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
         }
     }
@@ -125,7 +129,7 @@ public class Factory : Buildings
         if (hasFinishedBuilding)
         {
             base.OnDeselect();
-            UIManager.Instance.ShowUnitPanel(false);
+            UIManager.Instance.ShowPanels(false,1);
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
             BuildingManager.Instance.wantsToSetRallyPoint = false;
         }

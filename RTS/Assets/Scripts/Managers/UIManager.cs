@@ -37,9 +37,8 @@ namespace Managers
         //CURSORS VARIABLES
         public Texture2D[] cursors;
         private static Texture2D[] _cursorsStatic;
-        
-        [SerializeField] private GameObject buildingPanel;
-        [SerializeField] private GameObject unitPanel;
+
+        [SerializeField] private List<GameObject> panels = new List<GameObject>();
         [SerializeField] private Button pullPanelDownButton;
         [SerializeField] private Button setRallyPoint;
 
@@ -116,11 +115,11 @@ namespace Managers
         }
         public void ShowBuildingsPanel(bool hasSelectedWorker)
         {
-            buildingPanel.SetActive(hasSelectedWorker);
+           panels[0].SetActive(hasSelectedWorker);
         }
-        public void ShowUnitPanel(bool hasSelectedFactory)
+        public void ShowPanels(bool hasSelectedFactory, int panelNumber)
         {
-            unitPanel.SetActive(hasSelectedFactory);
+            panels[panelNumber].SetActive(hasSelectedFactory);
         }
 
         public void PictureOfSelectedUnits(Sprite image)
