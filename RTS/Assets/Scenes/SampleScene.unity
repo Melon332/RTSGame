@@ -3122,6 +3122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hasSelectedUnits: 0
   hasSelectedNonLethalUnits: 0
+  hasSelectedBuilding: 0
   hasBuildingInHand: 0
 --- !u!1001 &1497682412
 PrefabInstance:
@@ -3793,12 +3794,12 @@ PrefabInstance:
     - target: {fileID: 9123633643452154792, guid: 438f8e432936a7844a1ec966c6e1de05,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.7264252
+      value: 0.02
       objectReference: {fileID: 0}
     - target: {fileID: 9123633643452154792, guid: 438f8e432936a7844a1ec966c6e1de05,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.9227676
+      value: 6.539
       objectReference: {fileID: 0}
     - target: {fileID: 9123633643452154792, guid: 438f8e432936a7844a1ec966c6e1de05,
         type: 3}
@@ -3834,6 +3835,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9123633643452154795, guid: 438f8e432936a7844a1ec966c6e1de05,
+        type: 3}
+      propertyPath: m_Center.x
+      value: 0.48
+      objectReference: {fileID: 0}
+    - target: {fileID: 9123633643452154795, guid: 438f8e432936a7844a1ec966c6e1de05,
+        type: 3}
+      propertyPath: m_Extents.x
+      value: 1.22
       objectReference: {fileID: 0}
     - target: {fileID: 9123633643452154799, guid: 438f8e432936a7844a1ec966c6e1de05,
         type: 3}
@@ -4641,6 +4652,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1511902823261568787, guid: b8189223757d3c64aacfe8f6f4be3be2,
         type: 3}
+      propertyPath: isSelectable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511902823261568787, guid: b8189223757d3c64aacfe8f6f4be3be2,
+        type: 3}
       propertyPath: hasBeenConstructed
       value: 1
       objectReference: {fileID: 0}
@@ -4717,6 +4733,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Harvester
+      objectReference: {fileID: 0}
+    - target: {fileID: 2946572902194635704, guid: f576058da7ff66b449b68f428c8bfa99,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2946572902194635708, guid: f576058da7ff66b449b68f428c8bfa99,
         type: 3}
