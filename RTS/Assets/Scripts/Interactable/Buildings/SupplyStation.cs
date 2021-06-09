@@ -13,6 +13,7 @@ public class SupplyStation : Factory
         {
             base.OnClicked();
             UIManager.Instance.ShowPanels(true, 2);
+            UIManager.Instance.ShowPanels(false,1);
             HUD.SetCursor(CursorStates.Select);
         }
     }

@@ -92,6 +92,7 @@ public class Harvester : Units
         {
             timer = 0;
             currentAmountOfMoney += moneyTakenPerSecond;
+            targetedDepo.GetComponent<SupplyDepo>().amountOfMoneyInDepo -= moneyTakenPerSecond;
         }
     }
 
@@ -100,6 +101,7 @@ public class Harvester : Units
         while (currentAmountOfMoney > 0)
         {
             GiveMoneyToPlayer();
+            UIManager.Instance.UpdatePlayerMoney();
             yield return new WaitForSeconds(0.0001f);
         }
         MoveToCollectMoney();

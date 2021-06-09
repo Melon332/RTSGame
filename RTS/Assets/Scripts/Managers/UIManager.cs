@@ -40,7 +40,10 @@ namespace Managers
 
         [SerializeField] private List<GameObject> panels = new List<GameObject>();
         [SerializeField] private Button pullPanelDownButton;
-        [SerializeField] private Button setRallyPoint;
+        [SerializeField] private TextMeshProUGUI playerMoney;
+        [SerializeField] private TextMeshProUGUI playerUnit;
+        [SerializeField] private TextMeshProUGUI playerPower;
+        [SerializeField] private TextMeshProUGUI requiredPower;
 
         private bool panelIsDown;
         void Awake()
@@ -125,6 +128,16 @@ namespace Managers
         public void PictureOfSelectedUnits(Sprite image)
         {
             imageOfUnit.sprite = image;
+        }
+
+        public void UpdatePlayerMoney()
+        {
+            playerMoney.text = "Money: " + PlayerManager.Instance.AmountOfMoneyPlayerHas+ "$";
+        }
+
+        public void UpdateUnitCount()
+        {
+            playerUnit.text = "Units created: " + UnitManager.SelectableUnits.Count;
         }
     }
 }

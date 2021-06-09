@@ -76,11 +76,13 @@ public class Factory : Buildings
                 //2. Sets the current unit to null
                 //3. Unit queue index 0 removed
                 //4. Removed text box
+                //5. Update unit count
                 unitComponent.hasBeenConstructed = true;
                 currentUnitConstructing.GetComponent<MeshRenderer>().enabled = true;
                 currentUnitConstructing = null;
                 unitQueue.RemoveAt(0);
                 textBox.SetActive(false);
+                UIManager.Instance.UpdateUnitCount();
                 if (unitComponent.GetComponent<Harvester>())
                 {
                     unitComponent.GetComponent<Harvester>().targetedSupplyStation = gameObject;
