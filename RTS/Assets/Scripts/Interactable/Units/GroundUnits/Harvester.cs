@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Interactable;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Harvester : Units
 {
@@ -13,19 +14,20 @@ public class Harvester : Units
     public int holdMaxAmountOfMoney;
 
     public int currentAmountOfMoney;
+    public int moneyTakenPerSecond;
     public GameObject targetedDepo;
 
     [HideInInspector] public bool isCollectingMoney;
     [HideInInspector] public bool isReturningToSupplyStation = false;
 
     [HideInInspector] public bool wantsToCollectMoney = false;
+    
+    [SerializeField] protected int moneyDelay;
+
+    protected float timer;
+    
     //STATION IT WAS CREATED FROM
     public GameObject targetedSupplyStation;
-
-    private void Update()
-    {
-        IsCloseToSupplyDepo();
-    }
 
     protected override void ClickToDoAction(bool hasClicked)
     {
@@ -54,7 +56,15 @@ public class Harvester : Units
         targetedDepo = targetDepo.collider.gameObject;
         wantsToCollectMoney = true;
         isCollectingMoney = false;
-        Debug.Log(wantsToCollectMoney);
+        agent.isStopped = false;
+    }
+    private void MoveToCollectMoney()
+    {
+        if (agent == null) return;
+        transform.Rotate(targetedDepo.transform.position);
+        agent.SetDestination(targetedDepo.transform.position);
+        wantsToCollectMoney = true;
+        isCollectingMoney = false;
         agent.isStopped = false;
     }
 
@@ -69,30 +79,47 @@ public class Harvester : Units
 
     private void GiveMoneyToPlayer()
     {
-        PlayerManager.Instance.AmountOfMoneyPlayerHas += currentAmountOfMoney;
-        currentAmountOfMoney = 0;
+        PlayerManager.Instance.AmountOfMoneyPlayerHas++;
+        currentAmountOfMoney--;
+    }
+    public void AddMoneyToHarvester()
+    {
+        timer += Time.deltaTime;
+        Mathf.Clamp(currentAmountOfMoney, 0, holdMaxAmountOfMoney);
+        if (timer >= moneyDelay)
+        {
+            timer = 0;
+            currentAmountOfMoney += moneyTakenPerSecond;
+        }
     }
 
-    private bool IsCloseToSupplyDepo()
+    public IEnumerator AddMoneyToPlayer()
     {
-        if (!isReturningToSupplyStation) return false;
-        var distance = Vector3.Distance(transform.position, targetedSupplyStation.transform.position);
-        if (distance < 2)
+        while (currentAmountOfMoney >= 0)
         {
-            if (targetedDepo != null)
+            GiveMoneyToPlayer();
+            yield return new WaitForSeconds(0.1f);
+        }
+        MoveToCollectMoney();
+        yield return new WaitForSeconds(0.1f);
+    }
+
+    public void FindNearestSupplyDepo()
+    {
+        var depos = FindObjectsOfType<SupplyDepo>();
+        foreach (var closestDepo in depos)
+        {
+            float distance = Vector3.Distance(transform.position, closestDepo.gameObject.transform.position);
+            if (distance < 10)
             {
-                wantsToCollectMoney = true;
-                GoBackToSupplyStation(targetedDepo.transform.position);
-                isReturningToSupplyStation = false;
-                GiveMoneyToPlayer();
+                targetedDepo = closestDepo.gameObject;
             }
-            return true;
+            else
+            {
+                var randomNumber = Random.Range(0, depos.Length);
+                targetedDepo = depos[randomNumber].gameObject;
+            }
+            MoveToCollectMoney();
         }
-        else
-        {
-            return false;
-        }
-        
-        
     }
 }

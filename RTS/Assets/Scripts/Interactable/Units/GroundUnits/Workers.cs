@@ -31,6 +31,10 @@ public class Workers : GroundUnits
             {
                 ContinueBuilding(hit);
             }
+            else if (buildingClicked && !buildingClicked.hasFinishedBuilding)
+            {
+                ContinueBuilding(hit);
+            }
         }
     }
 

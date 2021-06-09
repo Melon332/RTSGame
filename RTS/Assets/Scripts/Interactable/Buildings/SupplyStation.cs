@@ -22,4 +22,14 @@ public class SupplyStation : Factory
         base.OnDeselect();
         UIManager.Instance.ShowPanels(false,2);
     }
+
+    public override void OnTriggerEnter(Collider other)
+    {
+        base.OnTriggerEnter(other);
+        if (other.gameObject.GetComponent<Harvester>() && other.gameObject.GetComponent<Harvester>().targetedSupplyStation == gameObject)
+        {
+            other.gameObject.GetComponent<Harvester>()
+                .StartCoroutine(other.gameObject.GetComponent<Harvester>().AddMoneyToPlayer());
+        }
+    }
 }

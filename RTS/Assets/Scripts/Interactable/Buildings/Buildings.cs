@@ -42,7 +42,7 @@ public class Buildings : Entities
         buildingHitBox.enabled = false;
         buildingHitBox.carving = false;
         
-        buildingCollider = GetComponent<BoxCollider>();
+        buildingCollider = GetComponentInChildren<BoxCollider>();
         isSelectable = true;
     }
 
@@ -145,15 +145,13 @@ public class Buildings : Entities
             buildingHitBox.enabled = true;
             buildingHitBox.carving = true;
 
-            buildingCollider.transform.position = new Vector3(transform.position.x,
-            targetToMoveBuilding.y, transform.position.z);
-
             //Drop the building into to floor to rebuild it.
             var position = transform.position;
             dropBuildingIntoFloor.x = position.x;
             dropBuildingIntoFloor.z = position.z;
             position = dropBuildingIntoFloor;
             transform.position = position;
+            buildingCollider.center = new Vector3(buildingCollider.center.x,Mathf.Abs(dropBuildingIntoFloor.y), buildingCollider.center.z);
             StartCoroutine(BuildBuilding());
             hasPlacedBuilding = true;
 
@@ -233,7 +231,7 @@ public class Buildings : Entities
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    public virtual void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Ground")) return;
         canPlace = false;

@@ -56,7 +56,6 @@ public class PlayerInputMouse : CharacterInput
         else if (PlayerManager.Instance.hasSelectedUnits || PlayerManager.Instance.hasSelectedNonLethalUnits && !IsPointerOverUIObject())
         {
             HUD.SetCursor(CursorStates.Move);
-            Debug.Log(PlayerManager.Instance.hasSelectedNonLethalUnits);
         }
         else if (IsPointerOverUIObject())
         {

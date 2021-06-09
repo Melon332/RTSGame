@@ -192,7 +192,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 2946572902194635704}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.8
   m_Speed: 2
   m_Acceleration: 8
   avoidancePriority: 50
@@ -253,8 +253,12 @@ MonoBehaviour:
   canAttack: 0
   holdMaxAmountOfMoney: 1000
   currentAmountOfMoney: 0
-  targetedDepo: 0
+  moneyTakenPerSecond: 100
+  targetedDepo: {fileID: 0}
   isCollectingMoney: 0
+  isReturningToSupplyStation: 0
+  wantsToCollectMoney: 0
+  moneyDelay: 1
   targetedSupplyStation: {fileID: 0}
 --- !u!1001 &2946572902173805597
 PrefabInstance:

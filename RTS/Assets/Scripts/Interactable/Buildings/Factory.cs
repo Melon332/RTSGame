@@ -45,16 +45,13 @@ public class Factory : Buildings
                 //1. 
                 yield return new WaitForSeconds(0.5f);
                currentUnitConstructing = Instantiate(unitQueue[0], transform.position, Quaternion.identity);
+               currentUnitConstructing.GetComponent<MeshRenderer>().enabled = false;
                isConstructingUnit = true;
                textBox.SetActive(true);
             }
             else
             {
                 var unitComponent = currentUnitConstructing.GetComponent<Units>();
-                if (unitComponent.GetComponent<Harvester>())
-                {
-                    unitComponent.GetComponent<Harvester>().targetedSupplyStation = gameObject;
-                }
                 while(unitComponent.hitPoints < unitComponent.maxHitPoints)
                 {
                     //Checks hit points and does an equation to convert it into % and set it into a text box
@@ -80,9 +77,15 @@ public class Factory : Buildings
                 //3. Unit queue index 0 removed
                 //4. Removed text box
                 unitComponent.hasBeenConstructed = true;
+                currentUnitConstructing.GetComponent<MeshRenderer>().enabled = true;
                 currentUnitConstructing = null;
                 unitQueue.RemoveAt(0);
                 textBox.SetActive(false);
+                if (unitComponent.GetComponent<Harvester>())
+                {
+                    unitComponent.GetComponent<Harvester>().targetedSupplyStation = gameObject;
+                    unitComponent.GetComponent<Harvester>().FindNearestSupplyDepo();
+                }
 
                 if (!unitQueue.Any())
                 {

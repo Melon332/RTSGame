@@ -33,12 +33,11 @@ public class BuildingManager : MonoBehaviour
     public void SetRallyPoint()
     {
         wantsToSetRallyPoint = true;
-        Debug.Log(wantsToSetRallyPoint);
     }
-    public GameObject CreateBuilding(int buildingIndex)
+    public void CreateBuilding(int buildingIndex)
     {
+        if(PlayerManager.Instance.hasBuildingInHand) return;
         PlayerManager.Instance.hasBuildingInHand = true;
-        var buildingToCreate = Instantiate(Buildings[buildingIndex]);
-        return buildingToCreate;
+        Instantiate(Buildings[buildingIndex]);
     }
 }

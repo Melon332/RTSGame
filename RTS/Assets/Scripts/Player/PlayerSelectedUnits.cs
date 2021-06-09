@@ -129,17 +129,17 @@ namespace Player
         private void DeSelectUnits(bool hasLeftClicked)
         {
             if (!hasLeftClicked) return;
+            PlayerManager.Instance.hasSelectedNonLethalUnits = false;
+            PlayerManager.Instance.hasSelectedUnits  = false;
             foreach (var units in UnitManager.Instance.selectedAttackingUnits)
             {
                 units.GetComponent<IInteractable>().OnDeselect();
-                PlayerManager.Instance.hasSelectedUnits  = false;
             }
             foreach (var workers in UnitManager.Instance.selectedNonLethalUnits)
             {
                 if (workers != null)
                 {
                     workers.GetComponent<IInteractable>().OnDeselect();
-                    PlayerManager.Instance.hasSelectedNonLethalUnits = false;
                 }
             }
             UnitManager.Instance.selectedAttackingUnits.Clear();
