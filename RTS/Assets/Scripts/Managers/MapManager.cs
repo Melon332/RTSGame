@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -25,6 +26,7 @@ namespace Managers
         }
 
         [SerializeField] private List<GameObject> mapsToChooseFrom = new List<GameObject>();
+        private SupplyDepo[] _supplyDepos;
 
         public GameObject currentlyActiveMap;
 
@@ -32,6 +34,7 @@ namespace Managers
         void Awake()
         {
             SelectMap(1);
+            _supplyDepos = FindObjectsOfType<SupplyDepo>();
         }
 
 
@@ -58,5 +61,10 @@ namespace Managers
 
             return mapSize;
         }
+        public SupplyDepo[] GetAllSupplyDepos()
+        {
+            return _supplyDepos;
+        }
     }
+
 }

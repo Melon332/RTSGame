@@ -8,7 +8,7 @@ using UnityEngine.AI;
 namespace Interactable
 {
     [RequireComponent(typeof(NavMeshAgent))]
-    public abstract class Units : Entities, IInteractable
+    public abstract class Units : Entity, IInteractable
     {
         //BULLET SPAWNING
         public float amountOfHpPerSecond;
@@ -44,7 +44,7 @@ namespace Interactable
             {
                 //Gets the mouse position whenever you click
                 var found = PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out hit);
-                var entityClicked = hit.collider.GetComponent<Entities>();
+                var entityClicked = hit.collider.GetComponent<Entity>();
 
                 if (!gameObject.activeSelf) return;
                 if (!found) return;
@@ -96,9 +96,9 @@ namespace Interactable
 
         protected virtual IEnumerator MoveToTargetThenAttack()
         {
-            if (enemyHit.collider.GetComponent<Entities>())
+            if (enemyHit.collider.GetComponent<Entity>())
             {
-                while (!enemyHit.collider.GetComponent<Entities>().isDead)
+                while (!enemyHit.collider.GetComponent<Entity>().isDead)
                 {
                     var distance = (transform.position - enemyHit.transform.position).sqrMagnitude;
                     if (distance > minRangeToAttack)

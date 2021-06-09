@@ -4,7 +4,7 @@ using Managers;
 
 namespace Interactable
 {
-    public class Debris : Entities
+    public class Debris : Entity
     {
         protected override void Start()
         {

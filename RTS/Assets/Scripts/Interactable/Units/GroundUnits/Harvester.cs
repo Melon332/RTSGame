@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Interactable;
+using Managers;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -20,7 +21,7 @@ public class Harvester : Units
     [HideInInspector] public bool isCollectingMoney;
     [HideInInspector] public bool isReturningToSupplyStation = false;
 
-    [HideInInspector] public bool wantsToCollectMoney = false;
+    public bool wantsToCollectMoney = false;
     
     [SerializeField] protected int moneyDelay;
 
@@ -65,6 +66,7 @@ public class Harvester : Units
         agent.SetDestination(targetedDepo.transform.position);
         wantsToCollectMoney = true;
         isCollectingMoney = false;
+        isReturningToSupplyStation = false;
         agent.isStopped = false;
     }
 
@@ -95,31 +97,51 @@ public class Harvester : Units
 
     public IEnumerator AddMoneyToPlayer()
     {
-        while (currentAmountOfMoney >= 0)
+        while (currentAmountOfMoney > 0)
         {
             GiveMoneyToPlayer();
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.0001f);
         }
         MoveToCollectMoney();
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.0001f);
     }
 
-    public void FindNearestSupplyDepo()
+    public SupplyDepo FindNearestSupplyDepo()
     {
-        var depos = FindObjectsOfType<SupplyDepo>();
+        var depos = MapManager.Instance.GetAllSupplyDepos();
+        var closestDistance = 25f;
+
+        SupplyDepo target = null;
+        var pos = transform.position;
         foreach (var closestDepo in depos)
         {
-            float distance = Vector3.Distance(transform.position, closestDepo.gameObject.transform.position);
-            if (distance < 10)
+            float distance = Vector3.Distance(pos, closestDepo.gameObject.transform.position);
+            if (distance < closestDistance)
             {
+                closestDistance = distance;
+                target = closestDepo;
                 targetedDepo = closestDepo.gameObject;
             }
-            else
-            {
-                var randomNumber = Random.Range(0, depos.Length);
-                targetedDepo = depos[randomNumber].gameObject;
-            }
-            MoveToCollectMoney();
         }
+        MoveToCollectMoney();
+
+        if (target == null)
+        {
+            target = depos[Random.Range(0,depos.Length)];
+        }
+
+        return target;
+    }
+
+    public override void OnClicked()
+    {
+        base.OnClicked();
+        PlayerManager.Instance.hasSelectedHarvester = true;
+    }
+
+    public override void OnDeselect()
+    {
+        base.OnDeselect();
+        PlayerManager.Instance.hasSelectedHarvester = false;
     }
 }

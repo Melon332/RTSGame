@@ -35,6 +35,11 @@ public class Workers : GroundUnits
             {
                 ContinueBuilding(hit);
             }
+            else if (buildingClicked && buildingClicked.hasFinishedBuilding &&
+                     buildingClicked.hitPoints <= maxHitPoints)
+            {
+                ContinueBuilding(hit);
+            }
         }
     }
 

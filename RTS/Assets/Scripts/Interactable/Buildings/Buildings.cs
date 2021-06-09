@@ -8,7 +8,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshObstacle))]
-public class Buildings : Entities
+public class Buildings : Entity
 {
     private List<GameObject> builders = new List<GameObject>();
     
@@ -71,12 +71,12 @@ public class Buildings : Entities
                 //Resets the units selection list so that the player can focus on the building
                 foreach (var lethalUnits in UnitManager.Instance.selectedAttackingUnits)
                 {
-                    lethalUnits.GetComponent<Entities>().OnDeselect();
+                    lethalUnits.GetComponent<Entity>().OnDeselect();
                 }
 
                 foreach (var nonLethalUnit in UnitManager.Instance.selectedNonLethalUnits)
                 {
-                    nonLethalUnit.GetComponent<Entities>().OnDeselect();
+                    nonLethalUnit.GetComponent<Entity>().OnDeselect();
                     PlayerManager.Instance.hasSelectedNonLethalUnits = false;
                 }
 
@@ -219,6 +219,38 @@ public class Buildings : Entities
         Destroy(textObject);
         yield return new WaitForSeconds(0.1f);
     }
+
+    private IEnumerator RepairBuilding()
+    {
+        var positionToSpawnTextObject = new Vector3(transform.position.x, 3, transform.position.z);
+        var textObject = Instantiate(floatingText, positionToSpawnTextObject, Quaternion.Euler(90, 0, 0),
+            transform);
+        while (hitPoints <= maxHitPoints)
+        {
+            if (isDead)
+            {
+                StopCoroutine(RepairBuilding());
+                Destroy(gameObject);
+            }
+
+            while (builders.Count == 0) {
+                yield return new WaitForSeconds (0.2f);
+            }
+
+            hitPoints = Mathf.Clamp(hitPoints, 0, maxHitPoints);
+            if (hitPoints < maxHitPoints)
+            {
+                hitPoints += amountOfHpPerSecond;
+                var equation = (hitPoints / maxHitPoints) * 100;
+                textObject.GetComponent<TextMeshPro>().text = "Repairing: " + equation.ToString("F0") + "%";
+            }
+            else
+            {
+                Destroy(textObject);
+            }
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
     
     private void CancelBuilding(bool hasClicked)
     {
@@ -239,6 +271,13 @@ public class Buildings : Entities
         if (other.gameObject.GetComponent<Workers>().targetedBuilding == gameObject.GetInstanceID())
         {
             builders.Add(other.gameObject);
+        }
+
+        if (hitPoints <= maxHitPoints && other.gameObject.GetComponent<Workers>().targetedBuilding == gameObject.GetInstanceID() && hasFinishedBuilding)
+        {
+            Debug.Log(builders.Count);
+            builders.Add(other.gameObject);
+            StartCoroutine(RepairBuilding());
         }
     }
 

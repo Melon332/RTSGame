@@ -9,7 +9,7 @@ using Player;
 using UnityEditor;
 using UnityEngine.UI;
 
-public abstract class Entities : MonoBehaviour, IInteractable,ISubscriber,IDestructable
+public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestructable
 {
     #region Unit Variables
     [Header("General Unit Variables")]

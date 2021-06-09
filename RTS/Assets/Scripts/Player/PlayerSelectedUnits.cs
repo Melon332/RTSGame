@@ -51,11 +51,11 @@ namespace Player
                                 UnitManager.Instance.selectedAttackingUnits.Add(hit.collider.gameObject);
                             }
                             //If it's a building or non lethal add it to the non lethal unit
-                            else if (hit.collider.GetComponent<Entities>().isSelectable && !hit.collider.GetComponent<Entities>().isBuilding)
+                            else if (hit.collider.GetComponent<Entity>().isSelectable && !hit.collider.GetComponent<Entity>().isBuilding)
                             {
                                 PlayerManager.Instance.hasSelectedNonLethalUnits = true;
                             }
-                            else if(hit.collider.GetComponent<Entities>().isBuilding)
+                            else if(hit.collider.GetComponent<Entity>().isBuilding)
                             {
                                 PlayerManager.Instance.hasSelectedBuilding = true;
                             }

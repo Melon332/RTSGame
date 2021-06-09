@@ -22,6 +22,7 @@ public class PlayerManager : MonoBehaviour
    [HideInInspector] public bool hasSelectedNonLethalUnits = false;
    [HideInInspector] public bool hasSelectedBuilding = false;
    [HideInInspector] public bool hasBuildingInHand = false;
+   [HideInInspector] public bool hasSelectedHarvester = false;
    public int AmountOfMoneyPlayerHas { get; set; }
    
 }

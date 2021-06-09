@@ -69,6 +69,10 @@ public class PlayerInputMouse : CharacterInput
         {
             HUD.SetCursor(CursorStates.Attack);
         }
+        if (IsMouseOverSupplyDepo())
+        {
+            HUD.SetCursor(CursorStates.Harvest);
+        }
         return direction;
         
     }
@@ -88,9 +92,22 @@ public class PlayerInputMouse : CharacterInput
 
     private static bool IsMouseOverEnemy()
     {
+        bool hasFoundEnemy = false;
         if (!PlayerManager.Instance.hasSelectedUnits || !IsMouseInGameView()) return false;
         PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out var hit);
-        return hit.collider.GetComponent<Entities>() &&hit.collider.GetComponent<Entities>().canBeAttacked && PlayerManager.Instance.hasSelectedUnits;
+        var entity = hit.collider.GetComponent<Entity>();
+        if (entity != null)
+        {
+            hasFoundEnemy = entity.canBeAttacked;
+        }
+        return hasFoundEnemy;
+    }
+    private static bool IsMouseOverSupplyDepo()
+    {
+        if (!PlayerManager.Instance.hasSelectedUnits && !PlayerManager.Instance.hasSelectedHarvester || !IsMouseInGameView()) return false;
+        PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out var hit);
+        bool hasHitSupplyDepo = hit.collider.GetComponent<SupplyDepo>() != null;
+        return hasHitSupplyDepo;
     }
     private Vector2 MouseDirection()
     {
