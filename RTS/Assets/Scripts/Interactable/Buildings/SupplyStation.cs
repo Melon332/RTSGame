@@ -17,6 +17,7 @@ public class SupplyStation : Factory
         if (hasFinishedBuilding)
         {
             base.OnClicked();
+            if (!PlayerManager.Instance.hasEnoughPower) return;
             UIManager.Instance.ShowPanels(true, 2);
             UIManager.Instance.ShowPanels(false,1);
             HUD.SetCursor(CursorStates.Select);

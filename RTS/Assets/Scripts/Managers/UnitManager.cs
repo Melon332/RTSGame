@@ -36,11 +36,19 @@ namespace Managers
         }
         public void BuildUnit(int unitIndex)
         {
-            if (BuildingManager.Instance.currentSelectedBuilding.GetComponent<Factory>().unitQueue.Count < 9)
+            if (PlayerManager.Instance.AmountOfMoneyPlayerHas >= buildableUnits[unitIndex].GetComponent<Entity>().objectCost)
             {
-                BuildingManager.Instance.currentSelectedBuilding.GetComponent<Factory>().unitQueue.Add(buildableUnits[unitIndex]);   
+                if (BuildingManager.Instance.currentSelectedBuilding.GetComponent<Factory>().unitQueue.Count < 9)
+                {
+                    BuildingManager.Instance.currentSelectedBuilding.GetComponent<Factory>().unitQueue
+                        .Add(buildableUnits[unitIndex]);
+                }
+                BuildingManager.Instance.currentSelectedBuilding.GetComponent<Factory>().StartConstructing();
             }
-            BuildingManager.Instance.currentSelectedBuilding.GetComponent<Factory>().StartConstructing();
+            else
+            {
+                Debug.Log("Sorry, you need more money!");
+            }
         }
     }
 }

@@ -264,6 +264,7 @@ MonoBehaviour:
   maxHitPoints: 150
   hitPoints: 0
   nameOfUnit: Tanks
+  objectCost: 1500
   canBeAttacked: 0
   isBuilding: 0
   pictureOfObject: {fileID: 21300000, guid: 8b29b4cdcec655d48aa5fc9d91f6a791, type: 3}

@@ -130,6 +130,37 @@ namespace Managers
             imageOfUnit.sprite = image;
         }
 
+        public IEnumerator DecreasePlayerMoney(int money)
+        {
+            while (money > 0)
+            {
+                PlayerManager.Instance.AmountOfMoneyPlayerHas-=5;
+                money-=5;
+                playerMoney.text = "Money: " + PlayerManager.Instance.AmountOfMoneyPlayerHas+ "$";
+                yield return new WaitForSeconds(0.0001f);
+            }
+        }
+
+        public IEnumerator IncreasePlayerMoney(int money)
+        {
+            while (money > 0)
+            {
+                PlayerManager.Instance.AmountOfMoneyPlayerHas++;
+                money--;
+                playerMoney.text = "Money: " + PlayerManager.Instance.AmountOfMoneyPlayerHas+ "$";
+                yield return new WaitForSeconds(0.0001f);
+            } 
+        }
+
+        public void PlayerPowerText()
+        {
+            playerPower.text = "Power: " + PlayerManager.Instance.AmountOfPowerPlayerHas;
+        }
+
+        public void UpdateRequiredPowerText()
+        {
+            requiredPower.text = "Required Power: " + PlayerManager.Instance.RequiredPower;
+        }
         public void UpdatePlayerMoney()
         {
             playerMoney.text = "Money: " + PlayerManager.Instance.AmountOfMoneyPlayerHas+ "$";

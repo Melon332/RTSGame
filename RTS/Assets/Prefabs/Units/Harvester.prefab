@@ -236,21 +236,22 @@ MonoBehaviour:
   maxHitPoints: 150
   hitPoints: 0
   nameOfUnit: 
+  objectCost: 5000
   canBeAttacked: 0
   isBuilding: 0
   pictureOfObject: {fileID: 21300000, guid: 70856cbe483a02c4aac9f2f1499501e0, type: 3}
   isSelectable: 1
   isDead: 0
+  canAttack: 0
   agent: {fileID: 0}
   selectionBox: {fileID: 0}
+  hasBeenConstructed: 0
   amountOfHpPerSecond: 10
   bullet: {fileID: 0}
   bulletSpawnPosition: {fileID: 0}
   minRangeToAttack: 0
   attackTimer: 0
   damageAmount: 0
-  hasBeenConstructed: 0
-  canAttack: 0
   holdMaxAmountOfMoney: 1000
   currentAmountOfMoney: 0
   moneyTakenPerSecond: 100

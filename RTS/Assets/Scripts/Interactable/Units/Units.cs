@@ -65,7 +65,6 @@ namespace Interactable
             {
                 //Gets the mouse position whenever you click
                 var found = PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out hit);
-                Debug.Log(found);
                 var entityClicked = hit.collider.GetComponent<Entity>();
 
                 if (!gameObject.activeSelf) return;

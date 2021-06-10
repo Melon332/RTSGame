@@ -38,7 +38,7 @@ namespace Player
                 _ray = _rtsCamera.ScreenPointToRay(Input.mousePosition);
                 if (PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out var hit))
                 {
-                    if(hit.collider.GetComponent<Entity>())
+                    if (hit.collider.GetComponent<Entity>())
                     {
                         if (!PlayerInputMouse.IsMouseOverEnemy())
                         {
@@ -78,14 +78,17 @@ namespace Player
                                 PlayerManager.Instance.hasSelectedUnits = true;
                                 UnitManager.Instance.selectedAttackingUnits.Add(hit.collider.gameObject);
                             }
-                            else if (hit.collider.GetComponent<Entity>().isSelectable && !hit.collider.GetComponent<Entity>().canAttack && !hit.collider.GetComponent<Entity>().isBuilding)
+                            else if (hit.collider.GetComponent<Entity>().isSelectable &&
+                                     !hit.collider.GetComponent<Entity>().canAttack &&
+                                     !hit.collider.GetComponent<Entity>().isBuilding)
                             {
                                 PlayerManager.Instance.hasSelectedNonLethalUnits = true;
                             }
-                            else if(hit.collider.GetComponent<Entity>().isBuilding)
+                            else if (hit.collider.GetComponent<Entity>().isBuilding)
                             {
                                 PlayerManager.Instance.hasSelectedBuilding = true;
                             }
+
                             if (!UnitManager.Instance.selectedNonLethalUnits.Contains(hit.collider.gameObject))
                             {
                                 if (!UnitManager.Instance.selectedAttackingUnits.Contains(hit.collider.gameObject))

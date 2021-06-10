@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Managers;
 using UnityEngine;
 
 public class BuildingManager : MonoBehaviour
@@ -20,7 +21,7 @@ public class BuildingManager : MonoBehaviour
         }
     }
     
-    public List<GameObject> Buildings = new List<GameObject>();
+    public List<GameObject> BuildableBuildings = new List<GameObject>();
     public GameObject currentSelectedBuilding;
     
     public Material canPlaceBuildingMaterial;
@@ -36,8 +37,15 @@ public class BuildingManager : MonoBehaviour
     }
     public void CreateBuilding(int buildingIndex)
     {
-        if(PlayerManager.Instance.hasBuildingInHand) return;
-        PlayerManager.Instance.hasBuildingInHand = true;
-        Instantiate(Buildings[buildingIndex]);
+        if (PlayerManager.Instance.AmountOfMoneyPlayerHas>= BuildableBuildings[buildingIndex].GetComponent<Entity>().objectCost )
+        {
+            if (PlayerManager.Instance.hasBuildingInHand) return;
+            PlayerManager.Instance.hasBuildingInHand = true;
+            Instantiate(BuildableBuildings[buildingIndex]);
+        }
+        else
+        {
+            Debug.Log("sorry, sir. You need more funds!");
+        }
     }
 }

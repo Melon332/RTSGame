@@ -16,6 +16,8 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
     public float maxHitPoints;
     public float hitPoints;
     public string nameOfUnit;
+    public int objectCost;
+    public int costOfPower;
     public bool canBeAttacked;
     public bool isBuilding = false;
     public Sprite pictureOfObject;

@@ -9,6 +9,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshObstacle))]
+[RequireComponent(typeof(BoxCollider))]
 public class Buildings : Entity
 {
     private List<GameObject> builders = new List<GameObject>();
@@ -28,6 +29,7 @@ public class Buildings : Entity
     private MeshRenderer[] buildingRenderer;
     private NavMeshObstacle buildingHitBox;
     private BoxCollider buildingCollider;
+    [SerializeField] private float buildingSpeed;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -66,6 +68,7 @@ public class Buildings : Entity
     {
         if (hasFinishedBuilding)
         {
+            if (!PlayerManager.Instance.hasEnoughPower) return;
             //Checks if the player has units selected.
             if (PlayerManager.Instance.hasSelectedUnits || PlayerManager.Instance.hasSelectedNonLethalUnits)
             {
@@ -89,8 +92,7 @@ public class Buildings : Entity
             }
 
             HUD.SetCursor(CursorStates.Select);
-
-            base.OnClicked();
+            
             Debug.Log("This is a building");
             BuildingManager.Instance.currentSelectedBuilding = gameObject;
         }
@@ -101,6 +103,7 @@ public class Buildings : Entity
             UnitManager.Instance.selectedNonLethalUnits.Remove(gameObject);
             PlayerManager.Instance.hasSelectedNonLethalUnits = false;
         }
+        base.OnClicked();
     }
 
     public override void OnDeselect()
@@ -143,8 +146,6 @@ public class Buildings : Entity
         {
             PlayerManager.Instance.hasBuildingInHand = false;
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
-            buildingHitBox.enabled = true;
-            buildingHitBox.carving = true;
 
             //Drop the building into to floor to rebuild it.
             var position = transform.position;
@@ -171,9 +172,11 @@ public class Buildings : Entity
 
     IEnumerator BuildBuilding()
     {
-        var speed = 5f;
+        PlayerManager.Instance.MoneyPlayerHad = PlayerManager.Instance.AmountOfMoneyPlayerHas;
+        UIManager.Instance.StartCoroutine(
+            UIManager.Instance.DecreasePlayerMoney(objectCost));
 
-        float step = speed * Time.deltaTime;
+        float step = buildingSpeed * Time.deltaTime;
         targetToMoveBuilding = new Vector3(transform.position.x, -dropBuildingIntoFloor.y, transform.position.z);
         var positionToSpawnTextObject = new Vector3(transform.position.x, 3, transform.position.z);
         var textObject = Instantiate(floatingText, positionToSpawnTextObject, Quaternion.Euler(90, 0, 0),
@@ -202,8 +205,11 @@ public class Buildings : Entity
             transform.position = Vector3.MoveTowards(transform.position, targetToMoveBuilding, step);
             yield return new WaitForSeconds(0.1f);
         }
-
+        buildingHitBox.enabled = true;
+        buildingHitBox.carving = true;
         hasFinishedBuilding = true;
+        PlayerManager.Instance.CheckIfPowerIsSufficient(costOfPower);
+        UIManager.Instance.UpdateRequiredPowerText();
 
         //Moves the builder away from the building
         foreach (var builder in builders)
@@ -214,8 +220,14 @@ public class Buildings : Entity
             position.z += -5f;
             worker.MoveBackAfterCompletingBuilding(position);
             worker.ClearBuildingID();
+            worker.agent.isStopped = false;
         }
 
+        if (gameObject.GetComponent<PowerReactor>())
+        {
+            gameObject.GetComponent<PowerReactor>().AddPowerToPlayer();
+            Debug.Log("Hello");
+        }
         //Destroys the text box.
         Destroy(textObject);
         yield return new WaitForSeconds(0.1f);
@@ -258,6 +270,8 @@ public class Buildings : Entity
         if (!hasPlacedBuilding)
         {
             if (!hasClicked) return;
+            UIManager.Instance.StartCoroutine(UIManager.Instance.DecreasePlayerMoney(0));
+            UIManager.Instance.UpdatePlayerMoney();
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
             PlayerManager.Instance.hasBuildingInHand = false;
             Destroy(gameObject);
@@ -272,6 +286,7 @@ public class Buildings : Entity
         if (other.gameObject.GetComponent<Workers>().targetedBuilding == gameObject.GetInstanceID())
         {
             builders.Add(other.gameObject);
+            other.gameObject.GetComponent<Workers>().agent.isStopped = true;
         }
 
         if (hitPoints <= maxHitPoints && other.gameObject.GetComponent<Workers>().targetedBuilding == gameObject.GetInstanceID() && hasFinishedBuilding)

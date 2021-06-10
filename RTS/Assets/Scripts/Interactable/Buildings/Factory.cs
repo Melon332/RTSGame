@@ -47,6 +47,10 @@ public class Factory : Buildings
                currentUnitConstructing = Instantiate(unitQueue[0], transform.position, Quaternion.identity);
                currentUnitConstructing.GetComponent<MeshRenderer>().enabled = false;
                isConstructingUnit = true;
+               PlayerManager.Instance.MoneyPlayerHad = PlayerManager.Instance.AmountOfMoneyPlayerHas;
+               Debug.Log(PlayerManager.Instance.MoneyPlayerHad + " Units");
+               UIManager.Instance.StartCoroutine(
+                   UIManager.Instance.DecreasePlayerMoney(currentUnitConstructing.GetComponent<Entity>().objectCost));
                textBox.SetActive(true);
             }
             else
@@ -122,6 +126,7 @@ public class Factory : Buildings
     public override void OnClicked()
     {
             base.OnClicked();
+            if (!PlayerManager.Instance.hasEnoughPower) return;
             UIManager.Instance.ShowPanels(true, 1);
             Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
     }
