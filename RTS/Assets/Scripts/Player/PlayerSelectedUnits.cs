@@ -38,9 +38,35 @@ namespace Player
                 _ray = _rtsCamera.ScreenPointToRay(Input.mousePosition);
                 if (PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out var hit))
                 {
-                    //Checks if that ray hit something interactable
-                    if (hit.collider.GetComponent<IInteractable>() != null)
+                    if(hit.collider.GetComponent<Entity>())
                     {
+                        if (!PlayerInputMouse.IsMouseOverEnemy())
+                        {
+                            //Checks if that ray hit something interactable
+                            if (hit.collider.GetComponent<IInteractable>() != null)
+                            {
+                                //CLEARING LIST AND RESETTING OBJECTS
+                                PlayerManager.Instance.hasSelectedNonLethalUnits = false;
+                                PlayerManager.Instance.hasSelectedUnits = false;
+                                foreach (var units in UnitManager.Instance.selectedAttackingUnits)
+                                {
+                                    units.GetComponent<IInteractable>().OnDeselect();
+                                }
+
+                                foreach (var workers in UnitManager.Instance.selectedNonLethalUnits)
+                                {
+                                    if (workers != null)
+                                    {
+                                        workers.GetComponent<IInteractable>().OnDeselect();
+                                    }
+                                }
+
+                                UnitManager.Instance.selectedAttackingUnits.Clear();
+                                UnitManager.Instance.selectedNonLethalUnits.Clear();
+                            }
+                        }
+
+
                         hit.collider.GetComponent<IInteractable>().OnClicked();
                         //Calls a OnClicked Method to the clicked unit
                         //Adds it to a list but if it already exists on the list, continue
@@ -138,26 +164,26 @@ namespace Player
             if (!hasClicked || !hasShiftClicked) return;
             if (!PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out var hit)) return;
             if (hit.collider.GetComponent<IInteractable>() == null) return;
-            foreach (var stuff in UnitManager.SelectableUnits)
+            foreach (var units in UnitManager.SelectableUnits)
             {
                 //Checks if the unit is in any list, if it isn't continue
-                if (stuff.GetComponent<Entity>().GetType() != hit.collider.GetComponent<Entity>().GetType() ||
-                    !stuff.GetComponent<Entity>().hasBeenConstructed) continue;
-                if (stuff.GetComponent<Entity>().canAttack)
+                if (units.GetComponent<Entity>().GetType() != hit.collider.GetComponent<Entity>().GetType() ||
+                    !units.GetComponent<Entity>().hasBeenConstructed) continue;
+                if (units.GetComponent<Entity>().canAttack)
                 {
-                    if (UnitManager.Instance.selectedAttackingUnits.Contains(stuff.gameObject)) continue;
+                    if (UnitManager.Instance.selectedAttackingUnits.Contains(units.gameObject)) continue;
                     Debug.Log("Yoyo");
                     PlayerManager.Instance.hasSelectedUnits = true;
-                    UnitManager.Instance.selectedAttackingUnits.Add(stuff.gameObject);
-                    stuff.GetComponent<IInteractable>().OnClicked();
+                    UnitManager.Instance.selectedAttackingUnits.Add(units.gameObject);
+                    units.GetComponent<IInteractable>().OnClicked();
                 }
                 else
                 {
                     if (UnitManager.Instance.selectedNonLethalUnits.Contains(hit.collider.gameObject)) continue;
                     Debug.Log("YoyoButNonLethal");
                     PlayerManager.Instance.hasSelectedNonLethalUnits = true;
-                    UnitManager.Instance.selectedNonLethalUnits.Add(stuff.gameObject);
-                    stuff.GetComponent<IInteractable>().OnClicked();
+                    UnitManager.Instance.selectedNonLethalUnits.Add(units.gameObject);
+                    units.GetComponent<IInteractable>().OnClicked();
                 }
             }
         }

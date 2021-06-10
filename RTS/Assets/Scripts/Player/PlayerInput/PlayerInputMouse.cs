@@ -91,7 +91,7 @@ public class PlayerInputMouse : CharacterInput
         return IsMouseOverGameWindow;
     }
 
-    private static bool IsMouseOverEnemy()
+    public static bool IsMouseOverEnemy()
     {
         bool hasFoundEnemy = false;
         if (!PlayerManager.Instance.hasSelectedUnits || !IsMouseInGameView()) return false;
@@ -100,8 +100,10 @@ public class PlayerInputMouse : CharacterInput
         if (entity != null)
         {
             hasFoundEnemy = entity.canBeAttacked;
+            return hasFoundEnemy;
         }
-        return hasFoundEnemy;
+
+        return false;
     }
     private static bool IsMouseOverSupplyDepo()
     {

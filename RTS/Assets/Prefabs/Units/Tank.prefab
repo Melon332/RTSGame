@@ -241,7 +241,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 0.5
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -267,17 +267,18 @@ MonoBehaviour:
   canBeAttacked: 0
   isBuilding: 0
   pictureOfObject: {fileID: 21300000, guid: 8b29b4cdcec655d48aa5fc9d91f6a791, type: 3}
+  isSelectable: 0
   isDead: 0
+  canAttack: 1
   agent: {fileID: 0}
   selectionBox: {fileID: 0}
+  hasBeenConstructed: 0
   amountOfHpPerSecond: 5
   bullet: {fileID: 7999903933720480626, guid: c50fc26f167691f4b976156d6791b5bf, type: 3}
   bulletSpawnPosition: {fileID: 1431557599070158896}
   minRangeToAttack: 50
   attackTimer: 0.5
   damageAmount: 25
-  hasBeenConstructed: 0
-  canAttack: 1
 --- !u!1001 &3465625113545706262
 PrefabInstance:
   m_ObjectHideFlags: 0
