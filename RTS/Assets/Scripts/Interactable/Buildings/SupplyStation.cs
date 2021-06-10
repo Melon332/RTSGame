@@ -6,6 +6,11 @@ using UnityEngine;
 
 public class SupplyStation : Factory
 {
+    protected override void Start()
+    {
+        base.Start();
+        selectionBox.transform.localScale = gameObject.transform.localScale * 4;
+    }
 
     public override void OnClicked()
     {

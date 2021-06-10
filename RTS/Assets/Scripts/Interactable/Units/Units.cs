@@ -26,15 +26,38 @@ namespace Interactable
         private Coroutine AttackAndMove;
         
         private bool hasSubscribed = false;
-        
+
+        private MeshRenderer[] meshes;
+
+        private void Awake()
+        {
+            UnitManager.SelectableUnits.Add(gameObject);
+        }
+
         protected override void Start()
         {
             base.Start();
-            UnitManager.SelectableUnits.Add(gameObject);
             canBeAttacked = false;
             isSelectable = true;
+            //Disable all the meshes to make the unit invisible
+            meshes = GetComponentsInChildren<MeshRenderer>();
+            if (!hasBeenConstructed)
+            {
+                foreach (var mesh in meshes)
+                {
+                    mesh.enabled = false;
+                }
+            }
         }
-        
+
+        public void ActivateAllMesh()
+        {
+            //Reactivates them when construction is completed
+            foreach (var mesh in meshes)
+            {
+                mesh.enabled = true;
+            }
+        }
 
         protected virtual void ClickToDoAction(bool hasClicked)
         {
@@ -42,6 +65,7 @@ namespace Interactable
             {
                 //Gets the mouse position whenever you click
                 var found = PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out hit);
+                Debug.Log(found);
                 var entityClicked = hit.collider.GetComponent<Entity>();
 
                 if (!gameObject.activeSelf) return;
@@ -77,6 +101,7 @@ namespace Interactable
 
         protected virtual void MoveToTarget(RaycastHit target)
         {
+            //Moves to target in the case that the target isn't a build or another unit
             if (target.collider.CompareTag("Units") || target.collider.CompareTag("Buildings")) return;
             if (agent == null) return;
             transform.Rotate(target.point);

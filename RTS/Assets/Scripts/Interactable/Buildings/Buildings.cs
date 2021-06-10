@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Enums;
+using Interactable;
 using Managers;
 using Player;
 using TMPro;

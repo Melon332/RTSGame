@@ -78,7 +78,7 @@ public class Factory : Buildings
                 //4. Removed text box
                 //5. Update unit count
                 unitComponent.hasBeenConstructed = true;
-                currentUnitConstructing.GetComponent<MeshRenderer>().enabled = true;
+                unitComponent.ActivateAllMesh();
                 currentUnitConstructing = null;
                 unitQueue.RemoveAt(0);
                 textBox.SetActive(false);

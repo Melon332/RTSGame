@@ -36,9 +36,18 @@ public class Harvester : Units
         if (hasClicked)
         {
             var supplyDepoHit = hit.collider.GetComponent<SupplyDepo>();
+            var supplyStationHit = hit.collider.GetComponent<SupplyStation>();
             if (supplyDepoHit && supplyDepoHit.amountOfMoneyInDepo >= 0)
             {
                 MoveToCollectMoney(hit);
+            }
+            else if(supplyStationHit && currentAmountOfMoney >= 0)
+            {
+                if (supplyStationHit.gameObject != targetedSupplyStation)
+                {
+                    targetedSupplyStation = supplyStationHit.gameObject;
+                }
+                GoBackToSupplyStation(targetedSupplyStation.transform.position);
             }
         }
     }
@@ -77,6 +86,14 @@ public class Harvester : Units
         transform.Rotate(position);
         agent.SetDestination(position);
         agent.isStopped = false;
+        if (targetedDepo == null)
+        {
+            FindNearestSupplyDepo();
+        }
+        else
+        {
+            Debug.Log("I have target " + targetedDepo.name);
+        }
     }
 
     private void GiveMoneyToPlayer()

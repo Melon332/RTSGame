@@ -11,6 +11,7 @@ public class CameraController : MonoBehaviour, ISubscriber
 
     [HideInInspector] public float maxYScroll;
     public float minYScroll;
+    [SerializeField] private LayerMask fogOfWarLayer;
     
     public static Camera rtsCamera;
     // Start is called before the first frame update
@@ -41,7 +42,7 @@ public class CameraController : MonoBehaviour, ISubscriber
     {
         //Sends a ray to wherever the mouse position is.
         var ray = rtsCamera.ScreenPointToRay(Input.mousePosition);
-        return Physics.Raycast(ray, out hit);
+        return Physics.Raycast(ray,out hit,Mathf.Infinity,fogOfWarLayer);
     }
 
     private void MoveCamera(Vector2 direction)

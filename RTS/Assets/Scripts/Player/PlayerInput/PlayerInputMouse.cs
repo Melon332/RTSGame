@@ -110,7 +110,14 @@ public class PlayerInputMouse : CharacterInput
         if (!PlayerManager.Instance.hasSelectedUnits && !PlayerManager.Instance.hasSelectedHarvester || !IsMouseInGameView()) return false;
         PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out var hit);
         bool hasHitSupplyDepo = hit.collider.GetComponent<SupplyDepo>() != null;
-        return hasHitSupplyDepo;
+        if (PlayerManager.Instance.hasSelectedHarvester)
+        {
+            return hasHitSupplyDepo;
+        }
+        else
+        {
+            return false;
+        }
     }
     private Vector2 MouseDirection()
     {

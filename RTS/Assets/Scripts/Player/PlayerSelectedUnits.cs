@@ -78,7 +78,7 @@ namespace Player
                                 PlayerManager.Instance.hasSelectedUnits = true;
                                 UnitManager.Instance.selectedAttackingUnits.Add(hit.collider.gameObject);
                             }
-                            else if (hit.collider.GetComponent<Entity>().isSelectable && !hit.collider.GetComponent<Entity>().canAttack)
+                            else if (hit.collider.GetComponent<Entity>().isSelectable && !hit.collider.GetComponent<Entity>().canAttack && !hit.collider.GetComponent<Entity>().isBuilding)
                             {
                                 PlayerManager.Instance.hasSelectedNonLethalUnits = true;
                             }
@@ -172,7 +172,6 @@ namespace Player
                 if (units.GetComponent<Entity>().canAttack)
                 {
                     if (UnitManager.Instance.selectedAttackingUnits.Contains(units.gameObject)) continue;
-                    Debug.Log("Yoyo");
                     PlayerManager.Instance.hasSelectedUnits = true;
                     UnitManager.Instance.selectedAttackingUnits.Add(units.gameObject);
                     units.GetComponent<IInteractable>().OnClicked();
@@ -180,7 +179,6 @@ namespace Player
                 else
                 {
                     if (UnitManager.Instance.selectedNonLethalUnits.Contains(hit.collider.gameObject)) continue;
-                    Debug.Log("YoyoButNonLethal");
                     PlayerManager.Instance.hasSelectedNonLethalUnits = true;
                     UnitManager.Instance.selectedNonLethalUnits.Add(units.gameObject);
                     units.GetComponent<IInteractable>().OnClicked();
