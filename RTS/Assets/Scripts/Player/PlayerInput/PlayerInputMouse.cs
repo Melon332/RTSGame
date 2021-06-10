@@ -18,6 +18,7 @@ public class PlayerInputMouse : CharacterInput
         var direction = CameraDirection();
         CameraMovement(direction);
         HasClicked(Input.GetKeyDown(mouseButton));
+        hasClickedAndShiftClicked(Input.GetKeyDown(mouseButton), Input.GetKey(KeyCode.LeftShift));
         HasHeldDownButton(Input.GetMouseButton(0),MouseDirection());
         hasReleasedButton(Input.GetMouseButtonUp(0));
         HasLeftClickedMouseButton(Input.GetMouseButton(1));

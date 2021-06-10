@@ -21,10 +21,12 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
     public Sprite pictureOfObject;
     public bool isSelectable;
     [HideInInspector] public bool isDead = false;
+    public bool canAttack;
     #endregion
 
     [HideInInspector] public NavMeshAgent agent;
     [HideInInspector] public GameObject selectionBox;
+    public bool hasBeenConstructed;
 
     protected virtual void Start()
     {

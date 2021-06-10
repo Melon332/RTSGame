@@ -19,9 +19,7 @@ namespace Interactable
         public float minRangeToAttack;
         public float attackTimer;
         public int damageAmount;
-        public bool hasBeenConstructed;
-        [SerializeField] private bool canAttack;
-        
+
         public RaycastHit hit;
         private RaycastHit enemyHit;
 

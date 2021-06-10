@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Enums;
 using Interactable;
 using Managers;
@@ -42,7 +44,7 @@ namespace Player
                         hit.collider.GetComponent<IInteractable>().OnClicked();
                         //Calls a OnClicked Method to the clicked unit
                         //Adds it to a list but if it already exists on the list, continue
-                        if (!UnitManager.Instance.selectedAttackingUnits.Contains(hit.collider.gameObject) || !UnitManager.Instance.selectedNonLethalUnits.Contains(hit.collider.gameObject) )
+                        if (!UnitManager.Instance.selectedAttackingUnits.Contains(hit.collider.gameObject))
                         {
                             //If it's a unit that you can attack with, add it to the lethal units list.
                             if (hit.collider.CompareTag("Units"))
@@ -50,8 +52,7 @@ namespace Player
                                 PlayerManager.Instance.hasSelectedUnits = true;
                                 UnitManager.Instance.selectedAttackingUnits.Add(hit.collider.gameObject);
                             }
-                            //If it's a building or non lethal add it to the non lethal unit
-                            else if (hit.collider.GetComponent<Entity>().isSelectable && !hit.collider.GetComponent<Entity>().isBuilding)
+                            else if (hit.collider.GetComponent<Entity>().isSelectable && !hit.collider.GetComponent<Entity>().canAttack)
                             {
                                 PlayerManager.Instance.hasSelectedNonLethalUnits = true;
                             }
@@ -59,7 +60,13 @@ namespace Player
                             {
                                 PlayerManager.Instance.hasSelectedBuilding = true;
                             }
-                            UnitManager.Instance.selectedNonLethalUnits.Add(hit.collider.gameObject);
+                            if (!UnitManager.Instance.selectedNonLethalUnits.Contains(hit.collider.gameObject))
+                            {
+                                if (!UnitManager.Instance.selectedAttackingUnits.Contains(hit.collider.gameObject))
+                                {
+                                    UnitManager.Instance.selectedNonLethalUnits.Add(hit.collider.gameObject);
+                                }
+                            }
                         }
                     }
                 }
@@ -126,6 +133,35 @@ namespace Player
             holdingDownButton = false;
         }
 
+        private void SelectAllUnitsOfSort(bool hasClicked, bool hasShiftClicked)
+        {
+            if (!hasClicked || !hasShiftClicked) return;
+            if (!PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out var hit)) return;
+            if (hit.collider.GetComponent<IInteractable>() == null) return;
+            foreach (var stuff in UnitManager.SelectableUnits)
+            {
+                //Checks if the unit is in any list, if it isn't continue
+                if (stuff.GetComponent<Entity>().GetType() != hit.collider.GetComponent<Entity>().GetType() ||
+                    !stuff.GetComponent<Entity>().hasBeenConstructed) continue;
+                if (stuff.GetComponent<Entity>().canAttack)
+                {
+                    if (UnitManager.Instance.selectedAttackingUnits.Contains(stuff.gameObject)) continue;
+                    Debug.Log("Yoyo");
+                    PlayerManager.Instance.hasSelectedUnits = true;
+                    UnitManager.Instance.selectedAttackingUnits.Add(stuff.gameObject);
+                    stuff.GetComponent<IInteractable>().OnClicked();
+                }
+                else
+                {
+                    if (UnitManager.Instance.selectedNonLethalUnits.Contains(hit.collider.gameObject)) continue;
+                    Debug.Log("YoyoButNonLethal");
+                    PlayerManager.Instance.hasSelectedNonLethalUnits = true;
+                    UnitManager.Instance.selectedNonLethalUnits.Add(stuff.gameObject);
+                    stuff.GetComponent<IInteractable>().OnClicked();
+                }
+            }
+        }
+
         private void DeSelectUnits(bool hasLeftClicked)
         {
             if (!hasLeftClicked) return;
@@ -148,6 +184,7 @@ namespace Player
 
         public void Subscribe(CharacterInput publisher)
         {
+            publisher.hasClickedAndShiftClicked += SelectAllUnitsOfSort;
             publisher.hasClicked += ClickedOnUnit;
             publisher.hasHeldDownButton += SelectingMultipleUnits;
             publisher.hasReleasedButton += ReleaseSelectionBox;
@@ -156,6 +193,7 @@ namespace Player
 
         public void UnSubscribe(CharacterInput publisher)
         {
+            publisher.hasClickedAndShiftClicked -= SelectAllUnitsOfSort;
             publisher.hasClicked -= ClickedOnUnit;
             publisher.hasHeldDownButton -= SelectingMultipleUnits;
             publisher.hasReleasedButton -= ReleaseSelectionBox;

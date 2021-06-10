@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class CharacterInput : MonoBehaviour
 {
     public Action<Vector2> cameraMovement;
     public Action<bool> hasClicked;
+    public Action<bool, bool> hasClickedAndShiftClicked;
     public Action<bool, Vector2> hasHeldDownButton;
     public Action<bool> hasReleasedButton;
     public Action<bool> hasLeftClickedMouse;
@@ -30,6 +32,11 @@ public class CharacterInput : MonoBehaviour
             hasClicked?.Invoke(_hasClicked);
             PastHasClicked = _hasClicked;
         }
+    }    
+    protected void HasClicked(bool hasClicked, bool hasShiftClicked)
+    {
+        hasClickedAndShiftClicked?.Invoke(hasClicked,hasShiftClicked);
+        Debug.Log("I have been called");
     }
 
     protected void HasHeldDownButton(bool hasHeldDownMouseButton, Vector2 mousePos)

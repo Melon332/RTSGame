@@ -329,15 +329,20 @@ MonoBehaviour:
   hitPoints: 0
   nameOfUnit: Factory
   canBeAttacked: 0
-  isBuilding: 0
+  isBuilding: 1
   pictureOfObject: {fileID: 21300000, guid: f7d1f9ac2d988a24781b91403aa85617, type: 3}
+  isSelectable: 0
   isDead: 0
   agent: {fileID: 0}
-  _selectionBox: {fileID: 0}
+  selectionBox: {fileID: 0}
+  hasBeenConstructed: 0
   amountOfHpPerSecond: 5
+  hasFinishedBuilding: 0
+  hasPlacedBuilding: 0
   dropBuildingIntoFloor: {x: 0, y: -0.5, z: 0}
   floatingText: {fileID: 6182403648814924256, guid: 323a8abd9a11abe41b6d3974294c53af,
     type: 3}
+  currentUnitConstructing: {fileID: 0}
   unitQueue: []
 --- !u!208 &-5708718613309771517
 NavMeshObstacle:
