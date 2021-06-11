@@ -63,13 +63,13 @@ MonoBehaviour:
   agent: {fileID: 0}
   selectionBox: {fileID: 0}
   hasBeenConstructed: 0
-  amountOfHpPerSecond: 50
   hasFinishedBuilding: 0
   hasPlacedBuilding: 0
   dropBuildingIntoFloor: {x: 0, y: -0.5, z: 0}
   floatingText: {fileID: 6182403648814924256, guid: 323a8abd9a11abe41b6d3974294c53af,
     type: 3}
   buildingSpeed: 6
+  amountOfHpPerSecond: 30
   currentUnitConstructing: {fileID: 0}
   unitQueue: []
 --- !u!208 &4672544396843426732

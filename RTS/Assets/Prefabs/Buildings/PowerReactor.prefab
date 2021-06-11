@@ -228,8 +228,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.7814221, y: 3.4735527, z: 2.6894298}
-  m_Center: {x: -0.04011655, y: 0.12133789, z: -0.04182005}
+  m_Size: {x: 2.7814221, y: 4.760501, z: 2.6894298}
+  m_Center: {x: -0.04011655, y: 0.7648131, z: -0.04182005}
 --- !u!114 &8563892953185872392
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249,20 +249,20 @@ MonoBehaviour:
   costOfPower: 0
   canBeAttacked: 0
   isBuilding: 0
-  pictureOfObject: {fileID: 0}
+  pictureOfObject: {fileID: 21300000, guid: e06e37ca908cd2c4f82f552dff6cee96, type: 3}
   isSelectable: 0
   isDead: 0
   canAttack: 0
   agent: {fileID: 0}
   selectionBox: {fileID: 0}
   hasBeenConstructed: 0
-  amountOfHpPerSecond: 25
   hasFinishedBuilding: 0
   hasPlacedBuilding: 0
-  dropBuildingIntoFloor: {x: 0, y: -0.5, z: 0}
+  dropBuildingIntoFloor: {x: 0, y: -1, z: 0}
   floatingText: {fileID: 6182403648814924256, guid: 323a8abd9a11abe41b6d3974294c53af,
     type: 3}
   buildingSpeed: 4
+  amountOfHpPerSecond: 22.5
   powerProduced: 25
 --- !u!1 &8043767036560098174
 GameObject:

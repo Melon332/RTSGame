@@ -54,27 +54,18 @@ public class PlayerManager : MonoBehaviour
    {
        RequiredPower += powerAmount;
        //Checks if power is sufficient
-       if (RequiredPower >= AmountOfPowerPlayerHas)
+       if (RequiredPower < AmountOfPowerPlayerHas)
        {
-           Debug.Log("Insufficient power!");
-           hasEnoughPower = false;
-           foreach (var attackingUnit in UnitManager.Instance.selectedAttackingUnits)
-           {
-               attackingUnit.GetComponent<IInteractable>().OnDeselect();
-           }
-           foreach (var nonLethalUnit in UnitManager.Instance.selectedNonLethalUnits)
-           {
-               nonLethalUnit.GetComponent<IInteractable>().OnDeselect();
-           }
-           UnitManager.Instance.selectedAttackingUnits.Clear();
-           UnitManager.Instance.selectedNonLethalUnits.Clear();
-           hasSelectedNonLethalUnits = false;
-           hasSelectedUnits  = false;
+           UIManager.Instance.MiniMapState(true);
+           Debug.Log("Enough Power");
+           hasEnoughPower = true;
+
        }
        else
        {
-           Debug.Log("Enough Power");
-           hasEnoughPower = true;
+           Debug.Log("Insufficient power!");
+           UIManager.Instance.MiniMapState(false);
+           hasEnoughPower = false;
        }
    }
 

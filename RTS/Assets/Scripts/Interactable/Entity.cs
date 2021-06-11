@@ -86,4 +86,9 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
        if (PlayerManager.Instance.hasSelectedUnits || PlayerManager.Instance.hasSelectedNonLethalUnits) return;
        UIManager.Instance.PictureOfSelectedUnits(null);
     }
+
+    public void OnNoPower()
+    {
+        Debug.Log("There is no power!");
+    }
 }

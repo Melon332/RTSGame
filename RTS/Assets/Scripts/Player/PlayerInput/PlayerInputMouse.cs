@@ -77,6 +77,10 @@ public class PlayerInputMouse : CharacterInput
         return direction;
         
     }
+    /// <summary>
+    /// Checks if mouse is over an UI object
+    /// </summary>
+    /// <returns>1 if mouse is over UI Object 0 if mouse is not over an UI object</returns>
     public static bool IsPointerOverUIObject()
     {
         PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
@@ -90,7 +94,10 @@ public class PlayerInputMouse : CharacterInput
     {
         return IsMouseOverGameWindow;
     }
-
+/// <summary>
+/// Checks if you have a lethal unit and is hovering over a enemy
+/// </summary>
+/// <returns>1 if enemy is under mouse cursor and has lethal unit 0 if there is no enemy</returns>
     public static bool IsMouseOverEnemy()
     {
         bool hasFoundEnemy = false;
@@ -105,6 +112,10 @@ public class PlayerInputMouse : CharacterInput
 
         return false;
     }
+/// <summary>
+/// Checks if you have a harvester selected and are hovering over a supply depo
+/// </summary>
+/// <returns>1 if harvester selected and supply depo under mouse 0 if harvester not selected</returns>
     private static bool IsMouseOverSupplyDepo()
     {
         if (!PlayerManager.Instance.hasSelectedUnits && !PlayerManager.Instance.hasSelectedHarvester || !IsMouseInGameView()) return false;

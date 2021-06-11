@@ -12,9 +12,8 @@ using UnityEngine.AI;
 [RequireComponent(typeof(BoxCollider))]
 public class Buildings : Entity
 {
-    private List<GameObject> builders = new List<GameObject>();
+    private readonly List<GameObject> builders = new List<GameObject>();
     
-    [SerializeField] private float amountOfHpPerSecond;
     //BUILDING BOOL;
     protected bool canPlace = true;
     [HideInInspector] public bool hasFinishedBuilding = false;
@@ -30,6 +29,7 @@ public class Buildings : Entity
     private NavMeshObstacle buildingHitBox;
     private BoxCollider buildingCollider;
     [SerializeField] private float buildingSpeed;
+    public float amountOfHpPerSecond;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -68,7 +68,8 @@ public class Buildings : Entity
     {
         if (hasFinishedBuilding)
         {
-            if (!PlayerManager.Instance.hasEnoughPower) return;
+            //Will be used later
+           // if (!PlayerManager.Instance.hasEnoughPower) return;
             //Checks if the player has units selected.
             if (PlayerManager.Instance.hasSelectedUnits || PlayerManager.Instance.hasSelectedNonLethalUnits)
             {
@@ -182,9 +183,13 @@ public class Buildings : Entity
         var textObject = Instantiate(floatingText, positionToSpawnTextObject, Quaternion.Euler(90, 0, 0),
             transform);
 
-        var target = new Vector3(transform.position.x, 0.5f, transform.position.z);
+        var target = new Vector3(transform.position.x, Mathf.Abs(dropBuildingIntoFloor.y), transform.position.z);
         while (transform.position != target && hitPoints <= maxHitPoints)
         {
+            if (transform.position == target)
+            {
+                hitPoints = maxHitPoints;
+            }
             if (isDead)
             {
                 StopCoroutine(BuildBuilding());
@@ -201,6 +206,7 @@ public class Buildings : Entity
                 hitPoints += amountOfHpPerSecond;
                 var equation = (hitPoints / maxHitPoints) * 100;
                 textObject.GetComponent<TextMeshPro>().text = "Building: " + equation.ToString("F0") + "%";
+                Mathf.Clamp(equation, 0, 100);
             }
             transform.position = Vector3.MoveTowards(transform.position, targetToMoveBuilding, step);
             yield return new WaitForSeconds(0.1f);
@@ -226,7 +232,6 @@ public class Buildings : Entity
         if (gameObject.GetComponent<PowerReactor>())
         {
             gameObject.GetComponent<PowerReactor>().AddPowerToPlayer();
-            Debug.Log("Hello");
         }
         //Destroys the text box.
         Destroy(textObject);

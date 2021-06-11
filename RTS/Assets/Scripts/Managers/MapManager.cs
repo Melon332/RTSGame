@@ -50,6 +50,10 @@ namespace Managers
             currentlyActiveMap = mapChosen;
         }
 
+        /// <summary>
+        /// Returns the bounds of the current activated map object
+        /// </summary>
+        /// <returns>map size</returns>
         public Vector2 ReturnSizeOfMap()
         {
             var colliders = currentlyActiveMap.GetComponent<Collider>();

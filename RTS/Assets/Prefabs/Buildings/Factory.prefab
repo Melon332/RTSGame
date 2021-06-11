@@ -325,7 +325,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee9aad0171fdf4a4a96fee651e697e76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHitPoints: 250
+  maxHitPoints: 5000
   hitPoints: 0
   nameOfUnit: Factory
   objectCost: 2000
@@ -339,13 +339,13 @@ MonoBehaviour:
   agent: {fileID: 0}
   selectionBox: {fileID: 0}
   hasBeenConstructed: 0
-  amountOfHpPerSecond: 5
   hasFinishedBuilding: 0
   hasPlacedBuilding: 0
   dropBuildingIntoFloor: {x: 0, y: -0.5, z: 0}
   floatingText: {fileID: 6182403648814924256, guid: 323a8abd9a11abe41b6d3974294c53af,
     type: 3}
-  buildingSpeed: 7
+  buildingSpeed: 5
+  amountOfHpPerSecond: 95
   currentUnitConstructing: {fileID: 0}
   unitQueue: []
 --- !u!208 &-5708718613309771517

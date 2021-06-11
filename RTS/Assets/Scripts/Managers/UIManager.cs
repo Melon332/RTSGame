@@ -44,6 +44,7 @@ namespace Managers
         [SerializeField] private TextMeshProUGUI playerUnit;
         [SerializeField] private TextMeshProUGUI playerPower;
         [SerializeField] private TextMeshProUGUI requiredPower;
+        [SerializeField] private RawImage minimapHUD;
 
         private bool panelIsDown;
         void Awake()
@@ -120,9 +121,14 @@ namespace Managers
         {
            panels[0].SetActive(hasSelectedWorker);
         }
-        public void ShowPanels(bool hasSelectedFactory, int panelNumber)
+        /// <summary>
+        /// Specify if you want to show or hide panel and provide an panel number
+        /// </summary>
+        /// <param name="wantsToShowPanel"></param>
+        /// <param name="panelNumber"></param>
+        public void ShowPanels(bool wantsToShowPanel, int panelNumber)
         {
-            panels[panelNumber].SetActive(hasSelectedFactory);
+            panels[panelNumber].SetActive(wantsToShowPanel);
         }
 
         public void PictureOfSelectedUnits(Sprite image)
@@ -169,6 +175,11 @@ namespace Managers
         public void UpdateUnitCount()
         {
             playerUnit.text = "Units created: " + UnitManager.SelectableUnits.Count;
+        }
+
+        public void MiniMapState(bool state)
+        {
+            minimapHUD.gameObject.SetActive(state);
         }
     }
 }

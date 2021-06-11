@@ -12,11 +12,12 @@ public class PowerReactor : Buildings
     {
         PlayerManager.Instance.AmountOfPowerPlayerHas += powerProduced;
         UIManager.Instance.PlayerPowerText();
+        PlayerManager.Instance.CheckIfPowerIsSufficient(0);
     }
 
     private void OnDestroy()
     {
-        if (PlayerManager.Instance != null)
+        if (PlayerManager.Instance != null && hasFinishedBuilding)
         {
             PlayerManager.Instance.AmountOfPowerPlayerHas -= powerProduced;
             UIManager.Instance.PlayerPowerText();

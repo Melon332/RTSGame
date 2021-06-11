@@ -167,24 +167,28 @@ namespace Player
             if (!hasClicked || !hasShiftClicked) return;
             if (!PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out var hit)) return;
             if (hit.collider.GetComponent<IInteractable>() == null) return;
+           Debug.Log(hit.collider.GetComponent<Entity>().GetType());
             foreach (var units in UnitManager.SelectableUnits)
             {
                 //Checks if the unit is in any list, if it isn't continue
-                if (units.GetComponent<Entity>().GetType() != hit.collider.GetComponent<Entity>().GetType() ||
-                    !units.GetComponent<Entity>().hasBeenConstructed) continue;
-                if (units.GetComponent<Entity>().canAttack)
+                if (hit.collider.GetComponent<Entity>().GetType() == units.GetComponent<Entity>().GetType() && units.GetComponent<Entity>().hasBeenConstructed)
                 {
-                    if (UnitManager.Instance.selectedAttackingUnits.Contains(units.gameObject)) continue;
-                    PlayerManager.Instance.hasSelectedUnits = true;
-                    UnitManager.Instance.selectedAttackingUnits.Add(units.gameObject);
-                    units.GetComponent<IInteractable>().OnClicked();
-                }
-                else
-                {
-                    if (UnitManager.Instance.selectedNonLethalUnits.Contains(hit.collider.gameObject)) continue;
-                    PlayerManager.Instance.hasSelectedNonLethalUnits = true;
-                    UnitManager.Instance.selectedNonLethalUnits.Add(units.gameObject);
-                    units.GetComponent<IInteractable>().OnClicked();
+
+                    if (units.GetComponent<Entity>().canAttack)
+                    {
+                        if (UnitManager.Instance.selectedAttackingUnits.Contains(units.gameObject)) continue;
+                        PlayerManager.Instance.hasSelectedUnits = true;
+                        UnitManager.Instance.selectedAttackingUnits.Add(units.gameObject);
+                        units.GetComponent<IInteractable>().OnClicked();
+                    }
+                    else
+                    {
+                        if (UnitManager.Instance.selectedNonLethalUnits.Contains(hit.collider.gameObject)) continue;
+                        PlayerManager.Instance.hasSelectedNonLethalUnits = true;
+                        UnitManager.Instance.selectedNonLethalUnits.Add(units.gameObject);
+                        units.GetComponent<IInteractable>().OnClicked();
+                        Debug.Log("Hello");
+                    }
                 }
             }
         }

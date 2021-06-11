@@ -8,6 +8,8 @@ TagManager:
   - EnemyUnits
   - Ground
   - Worker
+  - Buildings
+  - Debris
   layers:
   - Default
   - TransparentFX
@@ -15,8 +17,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - FogLayer
+  - Ground
   - 
   - 
   - 
