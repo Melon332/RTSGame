@@ -103,6 +103,7 @@ MonoBehaviour:
   amountOfHpPerSecond: 50
   textObject: {fileID: 0}
   attackableEnemies: []
+  damageAmount: 50
   bullet: {fileID: 7999903933720480626, guid: c50fc26f167691f4b976156d6791b5bf, type: 3}
   bulletSpawnPosition: {fileID: 5877646601793388879}
   attackTimer: 3

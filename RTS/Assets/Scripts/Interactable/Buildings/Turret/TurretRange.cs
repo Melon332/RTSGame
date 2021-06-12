@@ -8,7 +8,7 @@ using UnityEngine;
 public class TurretRange : MonoBehaviour
 {
     private Turret mainTurret;
-    Coroutine test;
+    private Coroutine mainTurretAttackCoroutine;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,15 +17,19 @@ public class TurretRange : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if(other.CompareTag("Units"))
+        if(!other.gameObject.CompareTag("Ground"))
         {
-            if (other.gameObject.GetComponent<Entity>().canBeAttacked && !mainTurret.attackableEnemies.Contains(other.gameObject))
+            if (other.GetComponent<Entity>())
             {
-                mainTurret.attackableEnemies.Add(other.gameObject);
-                if(test == null)
+                if (other.gameObject.GetComponent<Entity>().canBeAttacked &&
+                    !mainTurret.attackableEnemies.Contains(other.gameObject))
                 {
-                    test = StartCoroutine(mainTurret.FireAtEnemies());
-                    Debug.Log("other");
+                    mainTurret.attackableEnemies.Add(other.gameObject);
+                    if (mainTurretAttackCoroutine == null)
+                    {
+                        mainTurretAttackCoroutine = StartCoroutine(mainTurret.FireAtEnemies());
+                        Debug.Log("other");
+                    }
                 }
             }
         }
@@ -36,10 +40,10 @@ public class TurretRange : MonoBehaviour
         mainTurret.attackableEnemies.Remove(other.gameObject);
         if (!mainTurret.attackableEnemies.Any())
         {
-            if (test != null)
+            if (mainTurretAttackCoroutine != null)
             {
-                StopCoroutine(test);
-                test = null;
+                StopCoroutine(mainTurretAttackCoroutine);
+                mainTurretAttackCoroutine = null;
             }
         }
     }

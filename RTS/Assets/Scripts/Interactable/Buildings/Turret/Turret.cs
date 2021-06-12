@@ -10,6 +10,8 @@ public class Turret : Buildings
     public List<GameObject> attackableEnemies = new List<GameObject>();
 
     [Header("Turret variables")] 
+    [SerializeField] private int damageAmount;
+    
     [SerializeField] private GameObject bullet;
 
     [SerializeField] private Transform bulletSpawnPosition;
@@ -19,6 +21,8 @@ public class Turret : Buildings
      private GameObject turretHead;
 
      public TurretRange _turretRange;
+     
+     
 
      protected override void Start()
     {
@@ -30,7 +34,9 @@ public class Turret : Buildings
 
      public IEnumerator FireAtEnemies()
     {
-        int randomTarget = Random.Range(0, attackableEnemies.Count);
+        var randomTarget = Random.Range(0, attackableEnemies.Count);
+        
+        Debug.Log("Hello");
         
         while (attackableEnemies.Any())
         {
@@ -48,7 +54,7 @@ public class Turret : Buildings
     {
         var bulletObject = Instantiate(bullet, bulletSpawnPosition.transform);
         bulletObject.GetComponent<Bullet>().Setup(bulletSpawnPosition.transform.forward);
-        bulletObject.GetComponent<Bullet>().damageAmount = 25;
+        bulletObject.GetComponent<Bullet>().damageAmount = damageAmount;
     }
 
     public void ActivateTurret()

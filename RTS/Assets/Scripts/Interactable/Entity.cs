@@ -13,13 +13,17 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
 {
     #region Unit Variables
     [Header("General Unit Variables")]
+    [Header("Hitpoints and name")]
     public float maxHitPoints;
     public float hitPoints;
     public string nameOfUnit;
+    [Header("Cost and power consumption")]
     public int objectCost;
     public int costOfPower;
+    [Header("Is it a building and is it friendly?")]
     public bool canBeAttacked;
     public bool isBuilding = false;
+    [Header("Can be clicked by player? Picture of player")]
     public Sprite pictureOfObject;
     public bool isSelectable;
     [HideInInspector] public bool isDead = false;
@@ -54,6 +58,7 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
         if (hitPoints <= 0)
         {  
             isDead = true;
+            Debug.Log(isDead + " " +name);
             OnDeselect();
             Destroy(gameObject,2f);
             gameObject.SetActive(false);
@@ -90,13 +95,5 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
     public void OnNoPower()
     {
         Debug.Log("There is no power!");
-    }
-
-    private void OnDisable()
-    {
-        UIManager.Instance.PictureOfSelectedUnits(null);
-        UnitManager.SelectableUnits.Remove(gameObject);
-        UnitManager.Instance.selectedAttackingUnits.Remove(gameObject);
-        UnitManager.Instance.selectedNonLethalUnits.Remove(gameObject);
     }
 }
