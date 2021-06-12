@@ -18,7 +18,7 @@ public class Turret : Buildings
 
      private GameObject turretHead;
 
-     [SerializeField] public TurretRange _turretRange;
+     public TurretRange _turretRange;
 
      protected override void Start()
     {
@@ -31,13 +31,9 @@ public class Turret : Buildings
      public IEnumerator FireAtEnemies()
     {
         int randomTarget = Random.Range(0, attackableEnemies.Count);
-
-
-        Debug.Log("heelo");
-        Debug.Log(attackableEnemies.Any());
+        
         while (attackableEnemies.Any())
         {
-            Debug.Log("pew pew");
             turretHead.transform.LookAt(attackableEnemies[randomTarget].transform.position);
             Attack();
             if (attackableEnemies[randomTarget].GetComponent<Entity>().isDead)

@@ -105,7 +105,8 @@ MonoBehaviour:
   attackableEnemies: []
   bullet: {fileID: 7999903933720480626, guid: c50fc26f167691f4b976156d6791b5bf, type: 3}
   bulletSpawnPosition: {fileID: 5877646601793388879}
-  attackTimer: 0.75
+  attackTimer: 3
+  _turretRange: {fileID: 0}
 --- !u!1 &1986697697848923359
 GameObject:
   m_ObjectHideFlags: 0
