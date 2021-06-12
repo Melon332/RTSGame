@@ -143,7 +143,7 @@ public class Buildings : Entity
     private void PlaceBuilding(bool place)
     {
         if (hasPlacedBuilding) return;
-            if (place && canPlace && !PlayerInputMouse.IsPointerOverUIObject())
+        if (place && canPlace && !PlayerInputMouse.IsPointerOverUIObject())
         {
             PlayerManager.Instance.hasBuildingInHand = false;
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
@@ -174,14 +174,15 @@ public class Buildings : Entity
     IEnumerator BuildBuilding()
     {
         PlayerManager.Instance.MoneyPlayerHad = PlayerManager.Instance.AmountOfMoneyPlayerHas;
-        UIManager.Instance.StartCoroutine(
-            UIManager.Instance.DecreasePlayerMoney(objectCost));
+        UIManager.Instance.DecreasePlayerMoney();
 
         float step = buildingSpeed * Time.deltaTime;
         targetToMoveBuilding = new Vector3(transform.position.x, -dropBuildingIntoFloor.y, transform.position.z);
         var positionToSpawnTextObject = new Vector3(transform.position.x, 3, transform.position.z);
         var textObject = Instantiate(floatingText, positionToSpawnTextObject, Quaternion.Euler(90, 0, 0),
             transform);
+        PlayerManager.Instance.playerMoneyRemoval = PlayerManager.Instance.StartCoroutine(PlayerManager.Instance.RemoveMoney(this));
+
 
         var target = new Vector3(transform.position.x, Mathf.Abs(dropBuildingIntoFloor.y), transform.position.z);
         while (transform.position != target && hitPoints <= maxHitPoints)
@@ -200,6 +201,11 @@ public class Buildings : Entity
                 yield return new WaitForSeconds (0.2f);
             }
 
+            while (PlayerManager.Instance.AmountOfMoneyPlayerHas <= 0)
+            {
+                yield return new WaitForSeconds(0.2f);
+            }
+
             hitPoints = Mathf.Clamp(hitPoints, 0, maxHitPoints);
             if (hitPoints < maxHitPoints)
             {
@@ -214,6 +220,7 @@ public class Buildings : Entity
         buildingHitBox.enabled = true;
         buildingHitBox.carving = true;
         hasFinishedBuilding = true;
+        PlayerManager.Instance.playerMoneyRemoval  = null;
         PlayerManager.Instance.CheckIfPowerIsSufficient(costOfPower);
         UIManager.Instance.UpdateRequiredPowerText();
 
@@ -275,7 +282,7 @@ public class Buildings : Entity
         if (!hasPlacedBuilding)
         {
             if (!hasClicked) return;
-            UIManager.Instance.StartCoroutine(UIManager.Instance.DecreasePlayerMoney(0));
+            UIManager.Instance.DecreasePlayerMoney();
             UIManager.Instance.UpdatePlayerMoney();
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
             PlayerManager.Instance.hasBuildingInHand = false;

@@ -48,9 +48,6 @@ public class Factory : Buildings
                currentUnitConstructing.GetComponent<MeshRenderer>().enabled = false;
                isConstructingUnit = true;
                PlayerManager.Instance.MoneyPlayerHad = PlayerManager.Instance.AmountOfMoneyPlayerHas;
-               Debug.Log(PlayerManager.Instance.MoneyPlayerHad + " Units");
-               UIManager.Instance.StartCoroutine(
-                   UIManager.Instance.DecreasePlayerMoney(currentUnitConstructing.GetComponent<Entity>().objectCost));
                textBox.SetActive(true);
             }
             else
@@ -63,6 +60,16 @@ public class Factory : Buildings
                     unitComponent.hitPoints += unitComponent.amountOfHpPerSecond;
                     var equation = (unitComponent.hitPoints / unitComponent.maxHitPoints) * 100;
                     textBox.GetComponent<TextMeshPro>().text = "Constructing: " + equation.ToString("F0") + "%";
+                    if (PlayerManager.Instance.playerMoneyRemoval  == null)
+                    {
+                        PlayerManager.Instance.playerMoneyRemoval  = PlayerManager.Instance.StartCoroutine(PlayerManager.Instance.RemoveMoney(unitComponent));
+                    }
+                    UIManager.Instance.DecreasePlayerMoney();
+                    //If money is less than or equal zero, pause the routine.
+                    while (PlayerManager.Instance.AmountOfMoneyPlayerHas <= 0)
+                    {
+                        yield return new WaitForSeconds(0.5f);
+                    }
                     yield return new WaitForSeconds(0.2f);
                 }
                 isConstructingUnit = false;
@@ -86,6 +93,7 @@ public class Factory : Buildings
                 currentUnitConstructing = null;
                 unitQueue.RemoveAt(0);
                 textBox.SetActive(false);
+                PlayerManager.Instance.playerMoneyRemoval  = null;
                 UIManager.Instance.UpdateUnitCount();
                 if (unitComponent.GetComponent<Harvester>())
                 {

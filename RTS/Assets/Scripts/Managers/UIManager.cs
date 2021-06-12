@@ -136,15 +136,9 @@ namespace Managers
             imageOfUnit.sprite = image;
         }
 
-        public IEnumerator DecreasePlayerMoney(int money)
+        public void DecreasePlayerMoney()
         {
-            while (money > 0)
-            {
-                PlayerManager.Instance.AmountOfMoneyPlayerHas-=5;
-                money-=5;
-                playerMoney.text = "Money: " + PlayerManager.Instance.AmountOfMoneyPlayerHas+ "$";
-                yield return new WaitForSeconds(0.0001f);
-            }
+            playerMoney.text = "Money: " + PlayerManager.Instance.AmountOfMoneyPlayerHas+ "$";
         }
 
         public IEnumerator IncreasePlayerMoney(int money)

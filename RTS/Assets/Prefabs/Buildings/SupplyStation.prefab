@@ -52,7 +52,7 @@ MonoBehaviour:
   maxHitPoints: 1500
   hitPoints: 0
   nameOfUnit: Supply Station
-  objectCost: 10000
+  objectCost: 24999
   costOfPower: 10
   canBeAttacked: 0
   isBuilding: 1

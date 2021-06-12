@@ -23,13 +23,14 @@ public class PlayerManager : MonoBehaviour
     }
 
 
-
+    
     [HideInInspector] public bool hasSelectedUnits = false;
    [HideInInspector] public bool hasSelectedNonLethalUnits = false;
    [HideInInspector] public bool hasSelectedBuilding = false;
    [HideInInspector] public bool hasBuildingInHand = false;
    [HideInInspector] public bool hasSelectedHarvester = false;
    [HideInInspector] public bool hasEnoughPower;
+   public Coroutine playerMoneyRemoval;
    public int AmountOfMoneyPlayerHas { get; set; }
    public int MoneyPlayerHad { get; set; }
    public int AmountOfPowerPlayerHas { get; set; }
@@ -67,6 +68,20 @@ public class PlayerManager : MonoBehaviour
            UIManager.Instance.MiniMapState(false);
            hasEnoughPower = false;
        }
+   }
+
+   public IEnumerator RemoveMoney(Entity obj)
+   {
+       var objectCost =+ obj.objectCost;
+       Debug.Log(objectCost +" Starting value");
+       while(objectCost > 0 && AmountOfMoneyPlayerHas > 0)
+       {
+           AmountOfMoneyPlayerHas -= 5;
+           objectCost -= 5;
+           UIManager.Instance.UpdatePlayerMoney();
+           yield return new WaitForSeconds(0.00010f);
+       }
+        Debug.Log("Construction complete!");
    }
 
 }

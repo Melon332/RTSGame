@@ -32,7 +32,6 @@ namespace Managers
         
         private void Start()
         {
-            
             UIManager.Instance.UpdateUnitCount();
         }
         public void BuildUnit(int unitIndex)
