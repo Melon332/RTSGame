@@ -98,7 +98,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1511902823261568796}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -156,6 +156,8 @@ MonoBehaviour:
   maxHitPoints: 150
   hitPoints: 0
   nameOfUnit: Worker
+  objectCost: 0
+  costOfPower: 0
   canBeAttacked: 0
   isBuilding: 0
   pictureOfObject: {fileID: 21300000, guid: 16512f55bdbc4964087080a7febce029, type: 3}

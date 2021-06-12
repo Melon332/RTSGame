@@ -23,19 +23,24 @@ public class Buildings : Entity
 
     [SerializeField] protected GameObject floatingText;
 
-    private Vector3 targetToMoveBuilding = new Vector3(0, -0.5f, 0);
+    private Vector3 targetToMoveBuilding = new Vector3(0, 0.5f, 0);
 
-    private MeshRenderer[] buildingRenderer;
+    [HideInInspector] public MeshRenderer[] buildingRenderer;
     private NavMeshObstacle buildingHitBox;
     private BoxCollider buildingCollider;
     [SerializeField] private float buildingSpeed;
     public float amountOfHpPerSecond;
+    
+    //Makes it easier to track the textobjects in the game
+    [HideInInspector] public GameObject textObject;
 
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
-        buildingRenderer = GetComponentsInChildren<MeshRenderer>(true);
+
+        buildingRenderer = GetComponentsInChildren<MeshRenderer>();
+        
 
         Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
         selectionBox.transform.localScale = transform.localScale * 3;
@@ -95,21 +100,22 @@ public class Buildings : Entity
             HUD.SetCursor(CursorStates.Select);
             
             Debug.Log("This is a building");
-            BuildingManager.Instance.currentSelectedBuilding = gameObject;
         }
         else
         {
-            Debug.Log("Hello");
             HUD.SetCursor(CursorStates.Select);
             UnitManager.Instance.selectedNonLethalUnits.Remove(gameObject);
             PlayerManager.Instance.hasSelectedNonLethalUnits = false;
         }
+        BuildingManager.Instance.currentSelectedBuilding = gameObject;
+        UIManager.Instance.ShowPanels(true,3);
         base.OnClicked();
     }
 
     public override void OnDeselect()
     {
         base.OnDeselect();
+        UIManager.Instance.ShowPanels(false,3);
         BuildingManager.Instance.currentSelectedBuilding = null;
     }
 
@@ -171,26 +177,21 @@ public class Buildings : Entity
         }
     }
 
-    IEnumerator BuildBuilding()
+    protected virtual IEnumerator BuildBuilding()
     {
         PlayerManager.Instance.MoneyPlayerHad = PlayerManager.Instance.AmountOfMoneyPlayerHas;
         UIManager.Instance.DecreasePlayerMoney();
 
         float step = buildingSpeed * Time.deltaTime;
-        targetToMoveBuilding = new Vector3(transform.position.x, -dropBuildingIntoFloor.y, transform.position.z);
-        var positionToSpawnTextObject = new Vector3(transform.position.x, 3, transform.position.z);
-        var textObject = Instantiate(floatingText, positionToSpawnTextObject, Quaternion.Euler(90, 0, 0),
-            transform);
+        targetToMoveBuilding = new Vector3(transform.position.x, Mathf.Abs(dropBuildingIntoFloor.y), transform.position.z);
+        var positionToSpawnTextObject = new Vector3(transform.position.x, 3f, transform.position.z);
+        textObject = Instantiate(floatingText, positionToSpawnTextObject, Quaternion.Euler(90, 0, 0));
         PlayerManager.Instance.playerMoneyRemoval = PlayerManager.Instance.StartCoroutine(PlayerManager.Instance.RemoveMoney(this));
 
 
-        var target = new Vector3(transform.position.x, Mathf.Abs(dropBuildingIntoFloor.y), transform.position.z);
-        while (transform.position != target && hitPoints <= maxHitPoints)
+        var target = new Vector3(transform.position.x, targetToMoveBuilding.y, transform.position.z);
+        while (transform.position != target && hitPoints < maxHitPoints)
         {
-            if (transform.position == target)
-            {
-                hitPoints = maxHitPoints;
-            }
             if (isDead)
             {
                 StopCoroutine(BuildBuilding());
@@ -213,16 +214,29 @@ public class Buildings : Entity
                 var equation = (hitPoints / maxHitPoints) * 100;
                 textObject.GetComponent<TextMeshPro>().text = "Building: " + equation.ToString("F0") + "%";
                 Mathf.Clamp(equation, 0, 100);
+                if (transform.position == target)
+                {
+                    hitPoints = maxHitPoints;
+                    equation = 100;
+                }
+                else if (hitPoints >= maxHitPoints)
+                {
+                    transform.position = target;
+                }
             }
             transform.position = Vector3.MoveTowards(transform.position, targetToMoveBuilding, step);
             yield return new WaitForSeconds(0.1f);
         }
+        hitPoints = maxHitPoints;
+        buildingCollider.isTrigger = false;
         buildingHitBox.enabled = true;
         buildingHitBox.carving = true;
         hasFinishedBuilding = true;
         PlayerManager.Instance.playerMoneyRemoval  = null;
         PlayerManager.Instance.CheckIfPowerIsSufficient(costOfPower);
         UIManager.Instance.UpdateRequiredPowerText();
+        //Destroys the text box.
+        Destroy(textObject);
 
         //Moves the builder away from the building
         foreach (var builder in builders)
@@ -240,15 +254,17 @@ public class Buildings : Entity
         {
             gameObject.GetComponent<PowerReactor>().AddPowerToPlayer();
         }
-        //Destroys the text box.
-        Destroy(textObject);
+        else if (gameObject.GetComponent<Turret>())
+        {
+            gameObject.GetComponent<Turret>().ActivateTurret();
+        }
         yield return new WaitForSeconds(0.1f);
     }
 
     private IEnumerator RepairBuilding()
     {
         var positionToSpawnTextObject = new Vector3(transform.position.x, 3, transform.position.z);
-        var textObject = Instantiate(floatingText, positionToSpawnTextObject, Quaternion.Euler(90, 0, 0),
+        textObject = Instantiate(floatingText, positionToSpawnTextObject, Quaternion.Euler(90, 0, 0),
             transform);
         while (hitPoints <= maxHitPoints)
         {
@@ -315,5 +331,20 @@ public class Buildings : Entity
         if (!other.CompareTag("Worker")) return;
         builders.Remove(other.gameObject);
     }
-   
+
+    public override void OnHit(int damage)
+    {
+        base.OnHit(damage);
+        buildingCollider.isTrigger = true;
+    }
+
+    protected virtual void OnDestroy()
+    {
+        if (textObject != null)
+        {
+            Destroy(textObject);
+        }
+        OnDeselect();
+    }
+    
 }

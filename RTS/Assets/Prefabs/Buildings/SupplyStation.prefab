@@ -52,9 +52,9 @@ MonoBehaviour:
   maxHitPoints: 1500
   hitPoints: 0
   nameOfUnit: Supply Station
-  objectCost: 24999
+  objectCost: 9999
   costOfPower: 10
-  canBeAttacked: 0
+  canBeAttacked: 1
   isBuilding: 1
   pictureOfObject: {fileID: 21300000, guid: 961ebba49385b3a4fb8f4ca2fc03a01a, type: 3}
   isSelectable: 0

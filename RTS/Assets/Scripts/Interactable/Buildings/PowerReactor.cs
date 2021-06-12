@@ -15,8 +15,9 @@ public class PowerReactor : Buildings
         PlayerManager.Instance.CheckIfPowerIsSufficient(0);
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
         if (PlayerManager.Instance != null && hasFinishedBuilding)
         {
             PlayerManager.Instance.AmountOfPowerPlayerHas -= powerProduced;

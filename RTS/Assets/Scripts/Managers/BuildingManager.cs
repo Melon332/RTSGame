@@ -48,4 +48,11 @@ public class BuildingManager : MonoBehaviour
             Debug.Log("sorry, sir. You need more funds!");
         }
     }
+
+    public void DestroyBuilding()
+    {
+        StartCoroutine(PlayerManager.Instance.AddMoney(currentSelectedBuilding.GetComponent<Entity>()));
+        Destroy(currentSelectedBuilding);
+        currentSelectedBuilding = null;
+    }
 }

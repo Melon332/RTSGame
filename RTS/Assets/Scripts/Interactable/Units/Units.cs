@@ -12,11 +12,12 @@ namespace Interactable
     {
         //BULLET SPAWNING
         public float amountOfHpPerSecond;
-        [Header("Unit Bullet Variables")]
-        [SerializeField] protected GameObject bullet;
+
+        [Header("Unit Bullet Variables")] [SerializeField]
+        protected GameObject bullet;
+
         [SerializeField] protected GameObject bulletSpawnPosition;
-        [Header("Unit Attack Variables")]
-        public float minRangeToAttack;
+        [Header("Unit Attack Variables")] public float minRangeToAttack;
         public float attackTimer;
         public int damageAmount;
 
@@ -24,7 +25,7 @@ namespace Interactable
         private RaycastHit enemyHit;
 
         private Coroutine AttackAndMove;
-        
+
         private bool hasSubscribed = false;
 
         private MeshRenderer[] meshes;
@@ -139,6 +140,7 @@ namespace Interactable
                     }
                 }
             }
+
             if (AttackAndMove != null)
             {
                 StopCoroutine(AttackAndMove);
@@ -152,6 +154,7 @@ namespace Interactable
             bulletObject.GetComponent<Bullet>().Setup(bulletSpawnPosition.transform.forward);
             bulletObject.GetComponent<Bullet>().damageAmount = damageAmount;
         }
+
         public override void OnClicked()
         {
             if (hasBeenConstructed)
@@ -165,16 +168,6 @@ namespace Interactable
         {
             base.OnDeselect();
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
-        }
-
-        public override void OnHit(int damage)
-        {
-            base.OnHit(damage);
-            if (hitPoints <= 0)
-            {
-                UnitManager.SelectableUnits.Remove(gameObject);
-                UnitManager.Instance.selectedAttackingUnits.Remove(gameObject);
-            }
         }
 
         public override void Subscribe(CharacterInput publisher)
@@ -195,19 +188,6 @@ namespace Interactable
             if (!gameObject.activeSelf) return;
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
             agent = null;
-        }
-        private bool IsFacingObject(Transform other){
-            // Check if the gaze is looking at the front side of the object
-            Vector3 forward = transform.forward;
-            Vector3 toOther = (other.transform.position - transform.position).normalized;
- 
-            if(Vector3.Dot(forward, toOther) > 0f){
-                Debug.Log("Not facing the object");
-                return false;
-            }
-   
-            Debug.Log("Facing the object");
-            return true;
         }
     }
 }

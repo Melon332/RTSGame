@@ -14,9 +14,10 @@ public class SupplyStation : Factory
 
     public override void OnClicked()
     {
+
+        base.OnClicked();
         if (hasFinishedBuilding)
         {
-            base.OnClicked();
             if (!PlayerManager.Instance.hasEnoughPower) return;
             UIManager.Instance.ShowPanels(true, 2);
             UIManager.Instance.ShowPanels(false,1);

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Interactable;
 using Managers;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -72,6 +73,7 @@ public class PlayerManager : MonoBehaviour
 
    public IEnumerator RemoveMoney(Entity obj)
    {
+
        var objectCost =+ obj.objectCost;
        Debug.Log(objectCost +" Starting value");
        while(objectCost > 0 && AmountOfMoneyPlayerHas > 0)
@@ -82,6 +84,21 @@ public class PlayerManager : MonoBehaviour
            yield return new WaitForSeconds(0.00010f);
        }
         Debug.Log("Construction complete!");
+   }
+
+   public IEnumerator AddMoney(Entity obj)
+   {
+       var objectCost =+ obj.objectCost;
+       Debug.Log(objectCost +" Starting value");
+       while(objectCost > 0 && AmountOfMoneyPlayerHas > 0)
+       {
+           Debug.Log("hell");
+           AmountOfMoneyPlayerHas += 5;
+           objectCost -= 5;
+           UIManager.Instance.UpdatePlayerMoney();
+           yield return new WaitForSeconds(0.00010f);
+       }
+       Debug.Log("Construction complete!");
    }
 
 }

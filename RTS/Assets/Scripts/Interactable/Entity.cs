@@ -91,4 +91,12 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
     {
         Debug.Log("There is no power!");
     }
+
+    private void OnDisable()
+    {
+        UIManager.Instance.PictureOfSelectedUnits(null);
+        UnitManager.SelectableUnits.Remove(gameObject);
+        UnitManager.Instance.selectedAttackingUnits.Remove(gameObject);
+        UnitManager.Instance.selectedNonLethalUnits.Remove(gameObject);
+    }
 }

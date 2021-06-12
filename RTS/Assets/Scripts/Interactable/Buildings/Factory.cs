@@ -17,7 +17,6 @@ public class Factory : Buildings
     private Coroutine createUnitCoroutine;
     
     private Coroutine ConstructUnit;
-    private GameObject textObject;
 
     private Vector3 rallyPointPosition;
 
@@ -133,11 +132,15 @@ public class Factory : Buildings
 
     public override void OnClicked()
     {
-            base.OnClicked();
-            if (!PlayerManager.Instance.hasEnoughPower) return;
+
+        base.OnClicked();
+        if (!PlayerManager.Instance.hasEnoughPower) return;
+        if (hasFinishedBuilding)
+        {
             UIManager.Instance.ShowPanels(true, 1);
             Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
-    }
+        }
+}
 
     public override void OnDeselect()
     {
