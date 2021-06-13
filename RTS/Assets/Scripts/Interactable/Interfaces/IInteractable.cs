@@ -4,6 +4,5 @@
     {
         void OnClicked();
         void OnDeselect();
-        void OnNoPower();
     }
 }

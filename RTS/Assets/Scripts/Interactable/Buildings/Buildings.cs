@@ -10,7 +10,7 @@ using UnityEngine;
 using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshObstacle))]
 [RequireComponent(typeof(BoxCollider))]
-public class Buildings : Entity
+public class Buildings : Entity, IPowerConsumption
 {
     private readonly List<GameObject> builders = new List<GameObject>();
     
@@ -217,7 +217,6 @@ public class Buildings : Entity
                 if (transform.position == target)
                 {
                     hitPoints = maxHitPoints;
-                    equation = 100;
                 }
                 else if (hitPoints >= maxHitPoints)
                 {
@@ -227,13 +226,15 @@ public class Buildings : Entity
             transform.position = Vector3.MoveTowards(transform.position, targetToMoveBuilding, step);
             yield return new WaitForSeconds(0.1f);
         }
+        //Incase the hit points aren't maxed, max it out.
         hitPoints = maxHitPoints;
+        //Enable colliders to make AI avoid buildings
         buildingCollider.isTrigger = false;
         buildingHitBox.enabled = true;
         buildingHitBox.carving = true;
         hasFinishedBuilding = true;
+        OnBuildingComplete();
         PlayerManager.Instance.playerMoneyRemoval  = null;
-        PlayerManager.Instance.CheckIfPowerIsSufficient(costOfPower);
         UIManager.Instance.UpdateRequiredPowerText();
         //Destroys the text box.
         Destroy(textObject);
@@ -248,15 +249,6 @@ public class Buildings : Entity
             worker.MoveBackAfterCompletingBuilding(position);
             worker.ClearBuildingID();
             worker.agent.isStopped = false;
-        }
-
-        if (gameObject.GetComponent<PowerReactor>())
-        {
-            gameObject.GetComponent<PowerReactor>().AddPowerToPlayer();
-        }
-        else if (gameObject.GetComponent<Turret>())
-        {
-            gameObject.GetComponent<Turret>().ActivateTurret();
         }
         yield return new WaitForSeconds(0.1f);
     }
@@ -346,5 +338,14 @@ public class Buildings : Entity
         }
         OnDeselect();
     }
-    
+
+    public virtual void OnBuildingComplete()
+    {
+        PlayerManager.Instance.CheckIfPowerIsSufficient(costOfPower);
+    }
+
+    public void OnNoPower()
+    {
+        throw new NotImplementedException();
+    }
 }

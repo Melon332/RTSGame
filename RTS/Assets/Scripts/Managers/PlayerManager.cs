@@ -70,6 +70,25 @@ public class PlayerManager : MonoBehaviour
            hasEnoughPower = false;
        }
    }
+   public void CheckIfPowerIsSufficient(int powerAmount, Action method)
+   {
+       RequiredPower += powerAmount;
+       //Checks if power is sufficient
+       if (RequiredPower < AmountOfPowerPlayerHas)
+       {
+           UIManager.Instance.MiniMapState(true);
+           Debug.Log("Enough Power");
+           hasEnoughPower = true;
+
+       }
+       else
+       {
+           Debug.Log("Insufficient power!");
+           UIManager.Instance.MiniMapState(false);
+           hasEnoughPower = false;
+           method();
+       }
+   }
 
    public IEnumerator RemoveMoney(Entity obj)
    {

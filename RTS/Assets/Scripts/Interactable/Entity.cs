@@ -58,9 +58,8 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
         if (hitPoints <= 0)
         {  
             isDead = true;
-            Debug.Log(isDead + " " +name);
             OnDeselect();
-            Destroy(gameObject,2f);
+            Destroy(gameObject,4f);
             gameObject.SetActive(false);
             UnitManager.SelectableUnits.Remove(gameObject);
             UnitManager.Instance.selectedAttackingUnits.Remove(gameObject);
@@ -88,12 +87,7 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
     public virtual void OnDeselect()
     {
        selectionBox.SetActive(false);
-       if (PlayerManager.Instance.hasSelectedUnits || PlayerManager.Instance.hasSelectedNonLethalUnits) return;
+       if (PlayerManager.Instance.hasSelectedUnits) return;
        UIManager.Instance.PictureOfSelectedUnits(null);
-    }
-
-    public void OnNoPower()
-    {
-        Debug.Log("There is no power!");
     }
 }

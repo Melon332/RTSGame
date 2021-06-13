@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class Workers : GroundUnits
 {
-    public int targetedBuilding;
+    [HideInInspector] public int targetedBuilding;
 
     public override void OnClicked()
     {

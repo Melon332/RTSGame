@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Managers;
 using UnityEngine;
 
@@ -28,7 +29,18 @@ public class BuildingManager : MonoBehaviour
     public Material cantPlaceBuildingMaterial;
     public Material normalBuildingMaterial;
 
+    public List<IPowerConsumption> powerBuildings = new List<IPowerConsumption>();
+
     public bool wantsToSetRallyPoint = false;
+
+    private void Awake()
+    {
+        var stuff = FindObjectsOfType<MonoBehaviour>().OfType<IPowerConsumption>();
+        foreach (var powerConsumption in stuff)
+        {
+            powerBuildings.Add(powerConsumption);
+        }
+    }
 
 
     public void SetRallyPoint()

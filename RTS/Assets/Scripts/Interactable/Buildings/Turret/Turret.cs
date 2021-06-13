@@ -20,7 +20,9 @@ public class Turret : Buildings
 
      private GameObject turretHead;
 
-     public TurretRange _turretRange;
+    [HideInInspector] public TurretRange _turretRange;
+
+     private Quaternion turretHeadOriginalRotation;
      
      
 
@@ -28,6 +30,7 @@ public class Turret : Buildings
     {
         base.Start();
         turretHead = transform.Find("TurretHead").gameObject;
+        turretHeadOriginalRotation = turretHead.transform.rotation;
         _turretRange = GetComponentInChildren<TurretRange>();
         _turretRange.gameObject.SetActive(false);
     }
@@ -35,20 +38,20 @@ public class Turret : Buildings
      public IEnumerator FireAtEnemies()
     {
         var randomTarget = Random.Range(0, attackableEnemies.Count);
-        
-        Debug.Log("Hello");
-        
+
         while (attackableEnemies.Any())
         {
             turretHead.transform.LookAt(attackableEnemies[randomTarget].transform.position);
             Attack();
+            yield return new WaitForSeconds(attackTimer);
             if (attackableEnemies[randomTarget].GetComponent<Entity>().isDead)
             {
                 attackableEnemies.Remove(attackableEnemies[randomTarget].gameObject);
                 randomTarget = Random.Range(0, attackableEnemies.Count);
             }
-            yield return new WaitForSeconds(attackTimer);
         }
+
+        turretHead.transform.rotation = turretHeadOriginalRotation;
     }
     protected void Attack()
     {
@@ -57,8 +60,14 @@ public class Turret : Buildings
         bulletObject.GetComponent<Bullet>().damageAmount = damageAmount;
     }
 
-    public void ActivateTurret()
+    private void ActivateTurret()
     {
         _turretRange.gameObject.SetActive(true); 
+    }
+
+    public override void OnBuildingComplete()
+    {
+        base.OnBuildingComplete();
+        ActivateTurret();
     }
 }

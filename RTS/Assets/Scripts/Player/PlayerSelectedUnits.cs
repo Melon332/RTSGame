@@ -174,7 +174,7 @@ namespace Player
                 if (hit.collider.GetComponent<Entity>().GetType() == units.GetComponent<Entity>().GetType() && units.GetComponent<Entity>().hasBeenConstructed)
                 {
 
-                    if (units.GetComponent<Entity>().canAttack)
+                    if (hit.collider.GetComponent<Entity>().canAttack)
                     {
                         if (UnitManager.Instance.selectedAttackingUnits.Contains(units.gameObject)) continue;
                         PlayerManager.Instance.hasSelectedUnits = true;
