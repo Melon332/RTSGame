@@ -27,8 +27,11 @@ public class SupplyStation : Factory
 
     public override void OnDeselect()
     {
-        base.OnDeselect();
-        UIManager.Instance.ShowPanels(false,2);
+        if (hasBeenActivated)
+        {
+            base.OnDeselect();
+            UIManager.Instance.ShowPanels(false, 2);
+        }
     }
 
     public override void OnTriggerEnter(Collider other)

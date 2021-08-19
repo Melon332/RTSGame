@@ -141,17 +141,6 @@ namespace Managers
             playerMoney.text = "Money: " + PlayerManager.Instance.AmountOfMoneyPlayerHas+ "$";
         }
 
-        public IEnumerator IncreasePlayerMoney(int money)
-        {
-            while (money > 0)
-            {
-                PlayerManager.Instance.AmountOfMoneyPlayerHas++;
-                money--;
-                playerMoney.text = "Money: " + PlayerManager.Instance.AmountOfMoneyPlayerHas+ "$";
-                yield return new WaitForSeconds(0.0001f);
-            } 
-        }
-
         public void PlayerPowerText()
         {
             playerPower.text = "Power: " + PlayerManager.Instance.AmountOfPowerPlayerHas;

@@ -15,6 +15,7 @@ public class SupplyDepo : Entity
         base.Start();
         isSelectable = false;
         depoBoxesAvaliableList = GetComponentsInChildren<MoneyPerBox>().ToList();
+        hasBeenConstructed = true;
     }
 
     private void OnTriggerStay(Collider other)

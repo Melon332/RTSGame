@@ -9,6 +9,7 @@ using TMPro;
 
 public class Factory : Buildings
 {
+    private ObjectPool _objectPool;
     [HideInInspector] public GameObject currentUnitConstructing;
     public List<GameObject> unitQueue = new List<GameObject>(9);
 
@@ -19,6 +20,11 @@ public class Factory : Buildings
     private Coroutine ConstructUnit;
 
     private Vector3 rallyPointPosition;
+    protected override void Start()
+    {
+        base.Start();
+        _objectPool = FindObjectOfType<ObjectPool>();
+    }
 
     public void StartConstructing()
     {
@@ -35,16 +41,19 @@ public class Factory : Buildings
         }
     }
 
-    protected virtual IEnumerator CreateUnit(GameObject textBox)
+    private IEnumerator CreateUnit(GameObject textBox)
     {
         while (unitQueue.Any())
         {
             if (!isConstructingUnit)
             {
                 //1. 
-                yield return new WaitForSeconds(0.5f);
-               currentUnitConstructing = Instantiate(unitQueue[0], transform.position, Quaternion.identity);
-               currentUnitConstructing.GetComponent<MeshRenderer>().enabled = false;
+                yield return new WaitForSeconds(0.5f); 
+                currentUnitConstructing = unitQueue[0];
+                currentUnitConstructing.SetActive(true);
+                Debug.Log(currentUnitConstructing);
+                currentUnitConstructing.transform.position = transform.position;
+                currentUnitConstructing.GetComponent<MeshRenderer>().enabled = false;
                isConstructingUnit = true;
                PlayerManager.Instance.MoneyPlayerHad = PlayerManager.Instance.AmountOfMoneyPlayerHas;
                textBox.SetActive(true);
@@ -144,12 +153,13 @@ public class Factory : Buildings
 
     public override void OnDeselect()
     {
-
-        base.OnDeselect();
-        UIManager.Instance.ShowPanels(false,1);
-        UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
-        BuildingManager.Instance.wantsToSetRallyPoint = false;
-        
+        if (hasBeenActivated)
+        {
+            base.OnDeselect();
+            UIManager.Instance.ShowPanels(false, 1);
+            UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
+            BuildingManager.Instance.wantsToSetRallyPoint = false;
+        }
     }
 
     public override void Subscribe(CharacterInput publisher)

@@ -34,13 +34,18 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
     [HideInInspector] public GameObject selectionBox;
     public bool hasBeenConstructed;
 
+    protected bool hasBeenActivated;
+
     protected virtual void Start()
     {
-        agent = GetComponent<NavMeshAgent>();
-        selectionBox = GetComponentInChildren<SelectionBox>().gameObject;
-        if (selectionBox == null) return;
-        selectionBox.SetActive(false);
-        selectionBox.transform.localScale = gameObject.transform.localScale * 2;
+        if (!hasBeenActivated)
+        {
+            agent = GetComponent<NavMeshAgent>();
+            selectionBox = GetComponentInChildren<SelectionBox>().gameObject;
+            if (selectionBox == null) return;
+            selectionBox.SetActive(false);
+            selectionBox.transform.localScale = gameObject.transform.localScale * 2;
+        }
     }
 
     public virtual void Subscribe(CharacterInput publisher)
@@ -86,8 +91,24 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
 
     public virtual void OnDeselect()
     {
-       selectionBox.SetActive(false);
-       if (PlayerManager.Instance.hasSelectedUnits) return;
-       UIManager.Instance.PictureOfSelectedUnits(null);
+        if (hasBeenActivated || hasBeenConstructed)
+        {
+            selectionBox.SetActive(false);
+            if (PlayerManager.Instance.hasSelectedUnits) return;
+            UIManager.Instance.PictureOfSelectedUnits(null);
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (hasBeenConstructed)
+        {
+            hasBeenActivated = true;
+            agent = GetComponent<NavMeshAgent>();
+            selectionBox = GetComponentInChildren<SelectionBox>().gameObject;
+            if (selectionBox == null) return;
+            selectionBox.SetActive(false);
+            selectionBox.transform.localScale = gameObject.transform.localScale * 2;
+        }
     }
 }

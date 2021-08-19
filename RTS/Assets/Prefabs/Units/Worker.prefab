@@ -166,7 +166,7 @@ MonoBehaviour:
   canAttack: 0
   agent: {fileID: 0}
   selectionBox: {fileID: 0}
-  hasBeenConstructed: 1
+  hasBeenConstructed: 0
   amountOfHpPerSecond: 15
   bullet: {fileID: 0}
   bulletSpawnPosition: {fileID: 0}

@@ -8,10 +8,7 @@ namespace Interactable
     {
         protected override void Start()
         {
-            selectionBox = GetComponentInChildren<SelectionBox>().gameObject;
-            if (selectionBox == null) return;
-            selectionBox.SetActive(false);
-            selectionBox.transform.localScale = gameObject.transform.localScale * 2;
+            base.Start();
             canBeAttacked = true;
         }
 

@@ -16,13 +16,7 @@ public class Enemy : Units
         {
             selectionBox.SetActive(false);
         }
-
         isSelectable = false;
-    }
-
-    protected override void ClickToDoAction(bool hasClicked)
-    {
-        
     }
 
     public override void OnClicked()

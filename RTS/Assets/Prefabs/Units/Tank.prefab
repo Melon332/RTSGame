@@ -155,7 +155,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3914474247965226806}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.36, z: 0}
+  m_LocalPosition: {x: 2.8688917, y: 0.5, z: 0.827446}
   m_LocalScale: {x: 0.75172, y: 0.75172, z: 0.75172}
   m_Children:
   - {fileID: 2339999316218564954}
@@ -263,7 +263,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHitPoints: 150
   hitPoints: 0
-  nameOfUnit: Tanks
+  nameOfUnit: Tank
   objectCost: 1500
   costOfPower: 0
   canBeAttacked: 0
@@ -347,6 +347,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SelectionBox
+      objectReference: {fileID: 0}
+    - target: {fileID: 8048508859873732235, guid: 5d35ea2f3e8421141987d5d90568f941,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d35ea2f3e8421141987d5d90568f941, type: 3}

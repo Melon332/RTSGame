@@ -97,7 +97,7 @@ public class PlayerInputMouse : CharacterInput
 /// <summary>
 /// Checks if you have a lethal unit and is hovering over a enemy
 /// </summary>
-/// <returns>1 if enemy is under mouse cursor and has lethal unit 0 if there is no enemy</returns>
+/// <returns>1 if enemy is under mouse cursor and has lethal unit. 0 if there is no enemy</returns>
     public static bool IsMouseOverEnemy()
     {
         bool hasFoundEnemy = false;

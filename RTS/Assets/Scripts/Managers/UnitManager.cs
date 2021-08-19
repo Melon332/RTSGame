@@ -8,6 +8,7 @@ namespace Managers
     
     public class UnitManager : MonoBehaviour
     {
+        private ObjectPool _objectPool;
         private static UnitManager _instance;
 
         public static UnitManager Instance
@@ -33,15 +34,16 @@ namespace Managers
         private void Start()
         {
             UIManager.Instance.UpdateUnitCount();
+            _objectPool = FindObjectOfType<ObjectPool>();
         }
-        public void BuildUnit(int unitIndex)
+        public void BuildUnit(string unitName)
         {
-            if (PlayerManager.Instance.AmountOfMoneyPlayerHas >= buildableUnits[unitIndex].GetComponent<Entity>().objectCost)
+            if (PlayerManager.Instance.AmountOfMoneyPlayerHas >= _objectPool.GetAvaliableObject(unitName).GetComponent<Entity>().objectCost)
             {
                 if (BuildingManager.Instance.currentSelectedBuilding.GetComponent<Factory>().unitQueue.Count < 9)
                 {
                     BuildingManager.Instance.currentSelectedBuilding.GetComponent<Factory>().unitQueue
-                        .Add(buildableUnits[unitIndex]);
+                        .Add(_objectPool.GetAvaliableObject(unitName));
                 }
                 BuildingManager.Instance.currentSelectedBuilding.GetComponent<Factory>().StartConstructing();
             }

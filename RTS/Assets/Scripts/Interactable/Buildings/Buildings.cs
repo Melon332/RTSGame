@@ -114,9 +114,12 @@ public class Buildings : Entity, IPowerConsumption
 
     public override void OnDeselect()
     {
-        base.OnDeselect();
-        UIManager.Instance.ShowPanels(false,3);
-        BuildingManager.Instance.currentSelectedBuilding = null;
+        if (hasBeenActivated)
+        {
+            base.OnDeselect();
+            UIManager.Instance.ShowPanels(false, 3);
+            BuildingManager.Instance.currentSelectedBuilding = null;
+        }
     }
 
     private void CanPlaceBuilding(RaycastHit mousePos)
@@ -324,21 +327,19 @@ public class Buildings : Entity, IPowerConsumption
 
     protected virtual void OnDestroy()
     {
-        if (this != null)
+        if (this == null) return;
+        if (textObject != null)
         {
-            if (textObject != null)
-            {
-                Destroy(textObject);
-            }
-
-            if (hasPlacedBuilding)
-            {
-                PlayerManager.Instance.CheckIfPowerIsSufficient(costOfPower, true);
-                UIManager.Instance.UpdateRequiredPowerText();
-            }
-
-            OnDeselect();
+            Destroy(textObject);
         }
+
+        if (hasFinishedBuilding)
+        {
+            PlayerManager.Instance.CheckIfPowerIsSufficient(costOfPower, true);
+            UIManager.Instance.UpdateRequiredPowerText();
+        }
+
+        OnDeselect();
     }
 
     public virtual void OnBuildingComplete()
