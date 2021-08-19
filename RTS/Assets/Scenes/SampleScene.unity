@@ -3332,7 +3332,7 @@ MonoBehaviour:
   canBeAttacked: 1
   isBuilding: 0
   pictureOfObject: {fileID: 0}
-  isSelectable: 1
+  isSelectable: 0
   isDead: 0
   canAttack: 0
   agent: {fileID: 0}

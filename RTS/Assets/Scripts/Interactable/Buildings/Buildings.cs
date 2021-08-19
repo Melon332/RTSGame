@@ -186,11 +186,11 @@ public class Buildings : Entity, IPowerConsumption
         targetToMoveBuilding = new Vector3(transform.position.x, Mathf.Abs(dropBuildingIntoFloor.y), transform.position.z);
         var positionToSpawnTextObject = new Vector3(transform.position.x, 3f, transform.position.z);
         textObject = Instantiate(floatingText, positionToSpawnTextObject, Quaternion.Euler(90, 0, 0));
+        var buildingText = textObject.GetComponent<TextMeshPro>();
         PlayerManager.Instance.playerMoneyRemoval = PlayerManager.Instance.StartCoroutine(PlayerManager.Instance.RemoveMoney(this));
 
-
-        var target = new Vector3(transform.position.x, targetToMoveBuilding.y, transform.position.z);
-        while (transform.position != target && hitPoints < maxHitPoints)
+        
+        while (hitPoints < maxHitPoints)
         {
             if (isDead)
             {
@@ -208,20 +208,12 @@ public class Buildings : Entity, IPowerConsumption
             }
 
             hitPoints = Mathf.Clamp(hitPoints, 0, maxHitPoints);
-            if (hitPoints < maxHitPoints)
+            if (hitPoints <= maxHitPoints)
             {
                 hitPoints += amountOfHpPerSecond;
                 var equation = (hitPoints / maxHitPoints) * 100;
-                textObject.GetComponent<TextMeshPro>().text = "Building: " + equation.ToString("F0") + "%";
                 Mathf.Clamp(equation, 0, 100);
-                if (transform.position == target)
-                {
-                    hitPoints = maxHitPoints;
-                }
-                else if (hitPoints >= maxHitPoints)
-                {
-                    transform.position = target;
-                }
+                buildingText.text = "Building: " + equation.ToString("F0") + "%";
             }
             transform.position = Vector3.MoveTowards(transform.position, targetToMoveBuilding, step);
             yield return new WaitForSeconds(0.1f);
@@ -332,16 +324,29 @@ public class Buildings : Entity, IPowerConsumption
 
     protected virtual void OnDestroy()
     {
-        if (textObject != null)
+        if (this != null)
         {
-            Destroy(textObject);
+            if (textObject != null)
+            {
+                Destroy(textObject);
+            }
+
+            if (hasPlacedBuilding)
+            {
+                PlayerManager.Instance.CheckIfPowerIsSufficient(costOfPower, true);
+                UIManager.Instance.UpdateRequiredPowerText();
+            }
+
+            OnDeselect();
         }
-        OnDeselect();
     }
 
     public virtual void OnBuildingComplete()
     {
-        PlayerManager.Instance.CheckIfPowerIsSufficient(costOfPower);
+        if (hasFinishedBuilding)
+        {
+            PlayerManager.Instance.CheckIfPowerIsSufficient(costOfPower, false);
+        }
     }
 
     public void OnNoPower()

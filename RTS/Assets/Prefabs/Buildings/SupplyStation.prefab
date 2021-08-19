@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de4237effca11614199c3e017da28fac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHitPoints: 1500
+  maxHitPoints: 1600
   hitPoints: 0
   nameOfUnit: Supply Station
   objectCost: 9999
@@ -68,8 +68,10 @@ MonoBehaviour:
   dropBuildingIntoFloor: {x: 0, y: -0.5, z: 0}
   floatingText: {fileID: 6182403648814924256, guid: 323a8abd9a11abe41b6d3974294c53af,
     type: 3}
+  buildingRenderer: []
   buildingSpeed: 6
   amountOfHpPerSecond: 30
+  textObject: {fileID: 0}
   currentUnitConstructing: {fileID: 0}
   unitQueue: []
 --- !u!208 &4672544396843426732

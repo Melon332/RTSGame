@@ -4,7 +4,7 @@ using Managers;
 public class CameraController : MonoBehaviour, ISubscriber
 {
     [SerializeField] float panSpeed;
-    [SerializeField] private Vector2 panLimit;
+    private Vector2 panLimit;
     [SerializeField] private float scrollSpeed;
     private Vector2 _cameraDirection;
     private Vector3 _cameraPos;

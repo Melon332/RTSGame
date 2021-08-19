@@ -8,9 +8,10 @@ public class PowerReactor : Buildings
 {
     [SerializeField] private int powerProduced;
 
-    public void AddPowerToPlayer()
+    private void AddPowerToPlayer()
     {
         PlayerManager.Instance.AmountOfPowerPlayerHas += powerProduced;
+        PlayerManager.Instance.CheckIfPowerIsSufficient(costOfPower,false);
         UIManager.Instance.PlayerPowerText();
     }
 
@@ -20,6 +21,7 @@ public class PowerReactor : Buildings
         if (PlayerManager.Instance != null && hasFinishedBuilding)
         {
             PlayerManager.Instance.AmountOfPowerPlayerHas -= powerProduced;
+            PlayerManager.Instance.CheckIfPowerIsSufficient(0,false);
             UIManager.Instance.PlayerPowerText();
         }
     }

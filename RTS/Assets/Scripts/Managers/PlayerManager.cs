@@ -24,8 +24,7 @@ public class PlayerManager : MonoBehaviour
     }
 
 
-    
-    [HideInInspector] public bool hasSelectedUnits = false;
+   [HideInInspector] public bool hasSelectedUnits = false;
    [HideInInspector] public bool hasSelectedNonLethalUnits = false;
    [HideInInspector] public bool hasSelectedBuilding = false;
    [HideInInspector] public bool hasBuildingInHand = false;
@@ -52,16 +51,23 @@ public class PlayerManager : MonoBehaviour
        UIManager.Instance.UpdateRequiredPowerText();
    }
 
-   public void CheckIfPowerIsSufficient(int powerAmount)
+   public void CheckIfPowerIsSufficient(int powerAmount, bool removePower)
    {
-       RequiredPower += powerAmount;
+       if (!removePower)
+       {
+           RequiredPower += powerAmount;
+       }
+       else
+       {
+           RequiredPower -= powerAmount;
+       }
        //Checks if power is sufficient
        if (RequiredPower < AmountOfPowerPlayerHas)
        {
            UIManager.Instance.MiniMapState(true);
            Debug.Log("Enough Power");
+           Debug.Log(RequiredPower);
            hasEnoughPower = true;
-
        }
        else
        {
@@ -70,26 +76,6 @@ public class PlayerManager : MonoBehaviour
            hasEnoughPower = false;
        }
    }
-   public void CheckIfPowerIsSufficient(int powerAmount, Action method)
-   {
-       RequiredPower += powerAmount;
-       //Checks if power is sufficient
-       if (RequiredPower < AmountOfPowerPlayerHas)
-       {
-           UIManager.Instance.MiniMapState(true);
-           Debug.Log("Enough Power");
-           hasEnoughPower = true;
-
-       }
-       else
-       {
-           Debug.Log("Insufficient power!");
-           UIManager.Instance.MiniMapState(false);
-           hasEnoughPower = false;
-           method();
-       }
-   }
-
    public IEnumerator RemoveMoney(Entity obj)
    {
 
@@ -117,7 +103,7 @@ public class PlayerManager : MonoBehaviour
            UIManager.Instance.UpdatePlayerMoney();
            yield return new WaitForSeconds(0.00010f);
        }
-       Debug.Log("Construction complete!");
+       Debug.Log("Building destroyed!");
    }
 
 }

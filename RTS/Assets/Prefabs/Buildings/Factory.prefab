@@ -312,7 +312,7 @@ MonoBehaviour:
   hitPoints: 0
   nameOfUnit: Factory
   objectCost: 2000
-  costOfPower: 20
+  costOfPower: 25
   canBeAttacked: 0
   isBuilding: 1
   pictureOfObject: {fileID: 21300000, guid: f7d1f9ac2d988a24781b91403aa85617, type: 3}
@@ -327,8 +327,10 @@ MonoBehaviour:
   dropBuildingIntoFloor: {x: 0, y: -0.5, z: 0}
   floatingText: {fileID: 6182403648814924256, guid: 323a8abd9a11abe41b6d3974294c53af,
     type: 3}
+  buildingRenderer: []
   buildingSpeed: 5
   amountOfHpPerSecond: 95
+  textObject: {fileID: 0}
   currentUnitConstructing: {fileID: 0}
   unitQueue: []
 --- !u!208 &-5708718613309771517
