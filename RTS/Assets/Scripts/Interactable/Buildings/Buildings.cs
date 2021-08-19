@@ -342,8 +342,6 @@ public class Buildings : Entity, IPowerConsumption
             PlayerManager.Instance.CheckIfPowerIsSufficient(costOfPower, true);
             UIManager.Instance.UpdateRequiredPowerText();
         }
-
-        OnDeselect();
     }
 
     public virtual void OnBuildingComplete()

@@ -34,8 +34,6 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
     public GameObject selectionBox;
     public bool hasBeenConstructed;
 
-    protected bool hasBeenActivated;
-
     protected virtual void Awake()
     {
         agent = GetComponent<NavMeshAgent>();

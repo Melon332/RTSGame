@@ -51,7 +51,6 @@ public class Factory : Buildings
                 yield return new WaitForSeconds(0.5f); 
                 currentUnitConstructing = unitQueue[0];
                 currentUnitConstructing.SetActive(true);
-                Debug.Log(currentUnitConstructing);
                 currentUnitConstructing.transform.position = transform.position;
                 currentUnitConstructing.GetComponent<MeshRenderer>().enabled = false;
                isConstructingUnit = true;
@@ -61,13 +60,14 @@ public class Factory : Buildings
             else
             {
                 var unitComponent = currentUnitConstructing.GetComponent<Units>();
+                var buildingText = textObject.GetComponent<TextMeshPro>();
                 while(unitComponent.hitPoints < unitComponent.maxHitPoints)
                 {
                     //Checks hit points and does an equation to convert it into % and set it into a text box
                     unitComponent.hitPoints = Mathf.Clamp(unitComponent.hitPoints, 0, unitComponent.maxHitPoints); 
                     unitComponent.hitPoints += unitComponent.amountOfHpPerSecond;
                     var equation = (unitComponent.hitPoints / unitComponent.maxHitPoints) * 100;
-                    textBox.GetComponent<TextMeshPro>().text = "Constructing: " + equation.ToString("F0") + "%";
+                    buildingText.text = "Constructing: " + equation.ToString("F0") + "%";
                     if (PlayerManager.Instance.playerMoneyRemoval  == null)
                     {
                         PlayerManager.Instance.playerMoneyRemoval  = PlayerManager.Instance.StartCoroutine(PlayerManager.Instance.RemoveMoney(unitComponent));
