@@ -95,10 +95,10 @@ namespace Managers
             }
         }
 
-        public void BuildFactoryBuilding(int buildingIndex)
+        public void BuildBuilding(string buildingName)
         {
             if(PlayerManager.Instance.hasBuildingInHand) return;
-            BuildingManager.Instance.CreateBuilding(buildingIndex);
+            BuildingManager.Instance.CreateBuilding(buildingName);
         }
 
         public void PullPanelDown()

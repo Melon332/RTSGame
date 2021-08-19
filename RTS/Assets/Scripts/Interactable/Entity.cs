@@ -31,21 +31,24 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
     #endregion
 
     [HideInInspector] public NavMeshAgent agent;
-    [HideInInspector] public GameObject selectionBox;
+    public GameObject selectionBox;
     public bool hasBeenConstructed;
 
     protected bool hasBeenActivated;
 
+    protected virtual void Awake()
+    {
+        agent = GetComponent<NavMeshAgent>();
+        selectionBox = GetComponentInChildren<SelectionBox>().gameObject;
+        if (selectionBox == null) return;
+        selectionBox.SetActive(false);
+        Debug.Log("Hello");
+        selectionBox.transform.localScale = gameObject.transform.localScale * 2;
+    }
+
     protected virtual void Start()
     {
-        if (!hasBeenActivated)
-        {
-            agent = GetComponent<NavMeshAgent>();
-            selectionBox = GetComponentInChildren<SelectionBox>().gameObject;
-            if (selectionBox == null) return;
-            selectionBox.SetActive(false);
-            selectionBox.transform.localScale = gameObject.transform.localScale * 2;
-        }
+        
     }
 
     public virtual void Subscribe(CharacterInput publisher)
@@ -64,7 +67,6 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
         {  
             isDead = true;
             OnDeselect();
-            Destroy(gameObject,4f);
             gameObject.SetActive(false);
             UnitManager.SelectableUnits.Remove(gameObject);
             UnitManager.Instance.selectedAttackingUnits.Remove(gameObject);
@@ -91,24 +93,8 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
 
     public virtual void OnDeselect()
     {
-        if (hasBeenActivated || hasBeenConstructed)
-        {
-            selectionBox.SetActive(false);
-            if (PlayerManager.Instance.hasSelectedUnits) return;
-            UIManager.Instance.PictureOfSelectedUnits(null);
-        }
-    }
-
-    private void OnEnable()
-    {
-        if (hasBeenConstructed)
-        {
-            hasBeenActivated = true;
-            agent = GetComponent<NavMeshAgent>();
-            selectionBox = GetComponentInChildren<SelectionBox>().gameObject;
-            if (selectionBox == null) return;
-            selectionBox.SetActive(false);
-            selectionBox.transform.localScale = gameObject.transform.localScale * 2;
-        }
+        selectionBox.SetActive(false);
+        if (PlayerManager.Instance.hasSelectedUnits) return;
+        UIManager.Instance.PictureOfSelectedUnits(null);
     }
 }

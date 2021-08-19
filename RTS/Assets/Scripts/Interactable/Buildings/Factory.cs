@@ -153,13 +153,10 @@ public class Factory : Buildings
 
     public override void OnDeselect()
     {
-        if (hasBeenActivated)
-        {
-            base.OnDeselect();
-            UIManager.Instance.ShowPanels(false, 1);
-            UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
-            BuildingManager.Instance.wantsToSetRallyPoint = false;
-        }
+        base.OnDeselect();
+        UIManager.Instance.ShowPanels(false, 1);
+        UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
+        BuildingManager.Instance.wantsToSetRallyPoint = false;
     }
 
     public override void Subscribe(CharacterInput publisher)

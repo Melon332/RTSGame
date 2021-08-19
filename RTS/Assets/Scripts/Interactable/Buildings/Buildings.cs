@@ -41,8 +41,7 @@ public class Buildings : Entity, IPowerConsumption
 
         buildingRenderer = GetComponentsInChildren<MeshRenderer>();
         
-
-        Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
+        
         selectionBox.transform.localScale = transform.localScale * 3;
         isBuilding = true;
         //References the obstacle collider for other agents to avoid
@@ -53,7 +52,15 @@ public class Buildings : Entity, IPowerConsumption
         buildingCollider = GetComponentInChildren<BoxCollider>();
         isSelectable = true;
     }
-
+    private void OnDisable()
+    {
+        UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
+        hitPoints = 0;
+        if (textObject != null)
+        {
+            Destroy(textObject);
+        }
+    }
 
     public override void Subscribe(CharacterInput publisher)
     {
@@ -114,12 +121,9 @@ public class Buildings : Entity, IPowerConsumption
 
     public override void OnDeselect()
     {
-        if (hasBeenActivated)
-        {
-            base.OnDeselect();
-            UIManager.Instance.ShowPanels(false, 3);
-            BuildingManager.Instance.currentSelectedBuilding = null;
-        }
+        base.OnDeselect();
+        UIManager.Instance.ShowPanels(false, 3);
+        BuildingManager.Instance.currentSelectedBuilding = null;
     }
 
     private void CanPlaceBuilding(RaycastHit mousePos)
@@ -198,7 +202,7 @@ public class Buildings : Entity, IPowerConsumption
             if (isDead)
             {
                 StopCoroutine(BuildBuilding());
-                Destroy(gameObject);
+                gameObject.SetActive(false);
             }
 
             while (builders.Count == 0) {
@@ -258,7 +262,7 @@ public class Buildings : Entity, IPowerConsumption
             if (isDead)
             {
                 StopCoroutine(RepairBuilding());
-                Destroy(gameObject);
+                gameObject.SetActive(false);
             }
 
             while (builders.Count == 0) {
@@ -289,7 +293,7 @@ public class Buildings : Entity, IPowerConsumption
             UIManager.Instance.UpdatePlayerMoney();
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
             PlayerManager.Instance.hasBuildingInHand = false;
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 
@@ -353,5 +357,11 @@ public class Buildings : Entity, IPowerConsumption
     public void OnNoPower()
     {
         throw new NotImplementedException();
+    }
+
+    private void OnEnable()
+    {
+        Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
+        Debug.Log("I am building");
     }
 }

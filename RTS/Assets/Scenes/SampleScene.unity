@@ -208,14 +208,14 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 596871332}
         m_TargetAssemblyTypeName: Managers.UIManager, Assembly-CSharp
-        m_MethodName: BuildFactoryBuilding
-        m_Mode: 3
+        m_MethodName: BuildBuilding
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 1
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Supply Station
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &50825014
@@ -1699,6 +1699,7 @@ MonoBehaviour:
   agent: {fileID: 0}
   selectionBox: {fileID: 0}
   hasBeenConstructed: 0
+  hasBeenActivated: 0
   amountOfHpPerSecond: 0
   bullet: {fileID: 0}
   bulletSpawnPosition: {fileID: 0}
@@ -2533,14 +2534,14 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 596871332}
         m_TargetAssemblyTypeName: Managers.UIManager, Assembly-CSharp
-        m_MethodName: BuildFactoryBuilding
-        m_Mode: 3
+        m_MethodName: BuildBuilding
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 2
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Power Reactor
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &557201569
@@ -3294,14 +3295,14 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 596871332}
         m_TargetAssemblyTypeName: Managers.UIManager, Assembly-CSharp
-        m_MethodName: BuildFactoryBuilding
-        m_Mode: 3
+        m_MethodName: BuildBuilding
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 3
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Turret
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &738296222
@@ -3388,6 +3389,7 @@ MonoBehaviour:
   agent: {fileID: 0}
   selectionBox: {fileID: 0}
   hasBeenConstructed: 0
+  hasBeenActivated: 0
 --- !u!136 &822282110
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -6257,14 +6259,14 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 596871332}
         m_TargetAssemblyTypeName: Managers.UIManager, Assembly-CSharp
-        m_MethodName: BuildFactoryBuilding
-        m_Mode: 3
+        m_MethodName: BuildBuilding
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Factory
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &2142685181
@@ -6428,6 +6430,11 @@ PrefabInstance:
       propertyPath: hitPoints
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 2191556375563506985, guid: e74a7d8052196a441b05dd7644ab2e14,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e74a7d8052196a441b05dd7644ab2e14, type: 3}
 --- !u!1001 &2497345008406400891
@@ -6437,6 +6444,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1511902823261568787, guid: b8189223757d3c64aacfe8f6f4be3be2,
+        type: 3}
+      propertyPath: hasBeenConstructed
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1511902823261568792, guid: b8189223757d3c64aacfe8f6f4be3be2,
         type: 3}
       propertyPath: m_RootOrder
@@ -6664,6 +6676,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1238389154671613909, guid: 438f8e432936a7844a1ec966c6e1de05,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9123633643452154792, guid: 438f8e432936a7844a1ec966c6e1de05,
         type: 3}
       propertyPath: m_RootOrder

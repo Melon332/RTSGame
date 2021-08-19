@@ -30,15 +30,16 @@ namespace Interactable
 
         private MeshRenderer[] meshes;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             UnitManager.SelectableUnits.Add(gameObject);
         }
 
         protected override void Start()
         {
             base.Start();
-            canBeAttacked = false;
+            canBeAttacked = true;
             isSelectable = true;
             //Disable all the meshes to make the unit invisible
             meshes = GetComponentsInChildren<MeshRenderer>();

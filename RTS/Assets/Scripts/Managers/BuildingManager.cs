@@ -32,6 +32,7 @@ public class BuildingManager : MonoBehaviour
     public List<IPowerConsumption> powerBuildings = new List<IPowerConsumption>();
 
     public bool wantsToSetRallyPoint = false;
+    private ObjectPool _objectPool;
 
     private void Awake()
     {
@@ -40,6 +41,8 @@ public class BuildingManager : MonoBehaviour
         {
             powerBuildings.Add(powerConsumption);
         }
+
+        _objectPool = FindObjectOfType<ObjectPool>();
     }
 
 
@@ -47,13 +50,13 @@ public class BuildingManager : MonoBehaviour
     {
         wantsToSetRallyPoint = true;
     }
-    public void CreateBuilding(int buildingIndex)
+    public void CreateBuilding(string buildingName)
     {
-        if (PlayerManager.Instance.AmountOfMoneyPlayerHas>= BuildableBuildings[buildingIndex].GetComponent<Entity>().objectCost )
+        if (PlayerManager.Instance.AmountOfMoneyPlayerHas>= _objectPool.GetAvaliableObject(buildingName).GetComponent<Entity>().objectCost )
         {
             if (PlayerManager.Instance.hasBuildingInHand) return;
             PlayerManager.Instance.hasBuildingInHand = true;
-            Instantiate(BuildableBuildings[buildingIndex]);
+            _objectPool.GetAvaliableObject(buildingName).SetActive(true);
         }
         else
         {
@@ -64,7 +67,7 @@ public class BuildingManager : MonoBehaviour
     public void DestroyBuilding()
     {
         StartCoroutine(PlayerManager.Instance.AddMoney(currentSelectedBuilding.GetComponent<Entity>()));
-        Destroy(currentSelectedBuilding);
+        currentSelectedBuilding.SetActive(false);
         currentSelectedBuilding = null;
     }
 }

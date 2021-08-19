@@ -23,16 +23,8 @@ public class ObjectPool : MonoBehaviour
         pooledObjects.Add("SupplyStation", BuildingManager.Instance.BuildableBuildings[1]);
         pooledObjects.Add("PowerReactor", BuildingManager.Instance.BuildableBuildings[2]);
         pooledObjects.Add("Turret", BuildingManager.Instance.BuildableBuildings[3]);
-        
-        foreach (var objectToSpawn in pooledObjects)
-        {
-            for (int i = 0; i < poolDepth; i++)
-            {
-                GameObject go = Instantiate(objectToSpawn.Value,placeToStoreObjects.transform);
-                storedObjects.Add(go);
-                go.SetActive(false);
-            }
-        }
+
+        StartCoroutine(AddObjectsToPool());
     }
 
     public GameObject GetAvaliableObject(string nameOfObject)
@@ -45,5 +37,19 @@ public class ObjectPool : MonoBehaviour
             }
         }
         return null;
+    }
+
+    IEnumerator AddObjectsToPool()
+    {
+        foreach (var objectToSpawn in pooledObjects)
+        {
+            for (int i = 0; i < poolDepth; i++)
+            {
+                GameObject go = Instantiate(objectToSpawn.Value,placeToStoreObjects.transform);
+                storedObjects.Add(go);
+                yield return new WaitForSeconds(0.01f);
+                go.SetActive(false);
+            }
+        }
     }
 }

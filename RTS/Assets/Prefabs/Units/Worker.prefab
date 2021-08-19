@@ -165,8 +165,10 @@ MonoBehaviour:
   isDead: 0
   canAttack: 0
   agent: {fileID: 0}
-  selectionBox: {fileID: 0}
+  selectionBox: {fileID: 8048508859873732235, guid: 5d35ea2f3e8421141987d5d90568f941,
+    type: 3}
   hasBeenConstructed: 0
+  hasBeenActivated: 0
   amountOfHpPerSecond: 15
   bullet: {fileID: 0}
   bulletSpawnPosition: {fileID: 0}
