@@ -39,7 +39,7 @@ namespace Interactable
         protected override void Start()
         {
             base.Start();
-            canBeAttacked = true;
+            canBeAttacked = false;
             isSelectable = true;
             //Disable all the meshes to make the unit invisible
             meshes = GetComponentsInChildren<MeshRenderer>();
