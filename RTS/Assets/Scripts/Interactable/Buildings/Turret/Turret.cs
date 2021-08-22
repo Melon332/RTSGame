@@ -20,7 +20,7 @@ public class Turret : Buildings
 
      private GameObject turretHead;
 
-    [HideInInspector] public TurretRange _turretRange;
+    [HideInInspector] public TurretRange turretRange;
 
      private Quaternion turretHeadOriginalRotation;
      
@@ -31,8 +31,8 @@ public class Turret : Buildings
         base.Start();
         turretHead = transform.Find("TurretHead").gameObject;
         turretHeadOriginalRotation = turretHead.transform.rotation;
-        _turretRange = GetComponentInChildren<TurretRange>();
-        _turretRange.gameObject.SetActive(false);
+        turretRange = GetComponentInChildren<TurretRange>();
+        turretRange.gameObject.SetActive(false);
     }
 
      public IEnumerator FireAtEnemies()
@@ -62,7 +62,7 @@ public class Turret : Buildings
 
     private void ActivateTurret()
     {
-        _turretRange.gameObject.SetActive(true); 
+        turretRange.gameObject.SetActive(true); 
     }
 
     public override void OnBuildingComplete()

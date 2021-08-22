@@ -29,15 +29,15 @@ public class BuildingManager : MonoBehaviour
     public Material cantPlaceBuildingMaterial;
     public Material normalBuildingMaterial;
 
-    public List<IPowerConsumption> powerBuildings = new List<IPowerConsumption>();
+    private List<IPowerConsumption> powerBuildings = new List<IPowerConsumption>();
 
     public bool wantsToSetRallyPoint = false;
     private ObjectPool _objectPool;
 
     private void Awake()
     {
-        var stuff = FindObjectsOfType<MonoBehaviour>().OfType<IPowerConsumption>();
-        foreach (var powerConsumption in stuff)
+        var powerConsumptions = FindObjectsOfType<MonoBehaviour>().OfType<IPowerConsumption>();
+        foreach (var powerConsumption in powerConsumptions)
         {
             powerBuildings.Add(powerConsumption);
         }
@@ -52,7 +52,7 @@ public class BuildingManager : MonoBehaviour
     }
     public void CreateBuilding(string buildingName)
     {
-        if (PlayerManager.Instance.AmountOfMoneyPlayerHas>= _objectPool.GetAvaliableObject(buildingName).GetComponent<Entity>().objectCost )
+        if (PlayerManager.Instance.AmountOfMoneyPlayerHas >= _objectPool.GetAvaliableObject(buildingName).GetComponent<Entity>().objectCost )
         {
             if (PlayerManager.Instance.hasBuildingInHand) return;
             PlayerManager.Instance.hasBuildingInHand = true;
