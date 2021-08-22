@@ -15,7 +15,7 @@ public class Buildings : Entity, IPowerConsumption
     private readonly List<GameObject> builders = new List<GameObject>();
     
     //BUILDING BOOL;
-    protected bool canPlace = true;
+    private bool canPlace = true;
     [HideInInspector] public bool hasFinishedBuilding = false;
     [HideInInspector] public bool hasPlacedBuilding;
 
@@ -52,13 +52,21 @@ public class Buildings : Entity, IPowerConsumption
         buildingCollider = GetComponentInChildren<BoxCollider>();
         isSelectable = true;
     }
-    private void OnDisable()
+    public override void OnDisable()
     {
         UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
         hitPoints = 0;
+        //Destroys the text object incase it's being built.
         if (textObject != null)
         {
             Destroy(textObject);
+        }
+        if (this == null) return;
+        //Incase that it is a finished building, remove power and check if the player has enough power
+        if (hasFinishedBuilding)
+        {
+            PlayerManager.Instance.CheckIfPowerIsSufficient(costOfPower, true);
+            UIManager.Instance.UpdateRequiredPowerText();
         }
     }
 
@@ -329,21 +337,6 @@ public class Buildings : Entity, IPowerConsumption
         buildingCollider.isTrigger = true;
     }
 
-    protected virtual void OnDestroy()
-    {
-        if (this == null) return;
-        if (textObject != null)
-        {
-            Destroy(textObject);
-        }
-
-        if (hasFinishedBuilding)
-        {
-            PlayerManager.Instance.CheckIfPowerIsSufficient(costOfPower, true);
-            UIManager.Instance.UpdateRequiredPowerText();
-        }
-    }
-
     public virtual void OnBuildingComplete()
     {
         if (hasFinishedBuilding)
@@ -360,6 +353,5 @@ public class Buildings : Entity, IPowerConsumption
     private void OnEnable()
     {
         Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
-        Debug.Log("I am building");
     }
 }

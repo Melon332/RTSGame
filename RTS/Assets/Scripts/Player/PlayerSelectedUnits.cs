@@ -12,7 +12,6 @@ namespace Player
     public class PlayerSelectedUnits : MonoBehaviour, ISubscriber
     {
         [SerializeField] private RectTransform selectionBox;
-        private Ray _ray;
         private Camera _rtsCamera;
 
         private Vector2 _startPos;
@@ -35,7 +34,6 @@ namespace Player
             if (!PlayerInputMouse.IsPointerOverUIObject())
             {
                 //Shoots a ray from the mouse position
-                _ray = _rtsCamera.ScreenPointToRay(Input.mousePosition);
                 if (PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out var hit))
                 {
                     if (hit.collider.GetComponent<Entity>())

@@ -40,7 +40,6 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
         selectionBox = GetComponentInChildren<SelectionBox>().gameObject;
         if (selectionBox == null) return;
         selectionBox.SetActive(false);
-        Debug.Log("Hello");
         selectionBox.transform.localScale = gameObject.transform.localScale * 2;
     }
 
@@ -94,5 +93,10 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
         selectionBox.SetActive(false);
         if (PlayerManager.Instance.hasSelectedUnits) return;
         UIManager.Instance.PictureOfSelectedUnits(null);
+    }
+
+    public virtual void OnDisable()
+    {
+        
     }
 }

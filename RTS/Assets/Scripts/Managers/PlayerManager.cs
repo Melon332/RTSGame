@@ -65,13 +65,10 @@ public class PlayerManager : MonoBehaviour
        if (RequiredPower < AmountOfPowerPlayerHas)
        {
            UIManager.Instance.MiniMapState(true);
-           Debug.Log("Enough Power");
-           Debug.Log(RequiredPower);
            hasEnoughPower = true;
        }
        else
        {
-           Debug.Log("Insufficient power!");
            UIManager.Instance.MiniMapState(false);
            hasEnoughPower = false;
        }
@@ -80,7 +77,6 @@ public class PlayerManager : MonoBehaviour
    {
 
        var objectCost =+ obj.objectCost;
-       Debug.Log(objectCost +" Starting value");
        while(objectCost > 0 && AmountOfMoneyPlayerHas > 0)
        {
            AmountOfMoneyPlayerHas -= 5;

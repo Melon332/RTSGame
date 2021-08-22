@@ -184,9 +184,10 @@ namespace Interactable
             hasSubscribed = false;
         }
 
-        private void OnDisable()
+        public override void OnDisable()
         {
             if (!gameObject.activeSelf) return;
+            base.OnDisable();
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
             agent = null;
         }
