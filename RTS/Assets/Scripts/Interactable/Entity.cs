@@ -99,4 +99,9 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
     {
         
     }
+
+    public virtual void OnEnable()
+    {
+        
+    }
 }

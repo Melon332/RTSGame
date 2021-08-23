@@ -191,5 +191,11 @@ namespace Interactable
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
             agent = null;
         }
+
+        public void ActivateUnit()
+        {
+            hitPoints = maxHitPoints;
+            hasBeenConstructed = true;
+        }
     }
 }

@@ -90,10 +90,6 @@ public class Harvester : Units
         {
             FindNearestSupplyDepo();
         }
-        else
-        {
-            Debug.Log("I have target " + targetedDepo.name);
-        }
     }
 
     private void GiveMoneyToPlayer()

@@ -51,7 +51,7 @@ public class Factory : Buildings
                 yield return new WaitForSeconds(0.5f); 
                 currentUnitConstructing = unitQueue[0];
                 currentUnitConstructing.SetActive(true);
-                currentUnitConstructing.transform.position = transform.position;
+                currentUnitConstructing.transform.position = transform.position; 
                 currentUnitConstructing.GetComponent<MeshRenderer>().enabled = false;
                isConstructingUnit = true;
                PlayerManager.Instance.MoneyPlayerHad = PlayerManager.Instance.AmountOfMoneyPlayerHas;
@@ -80,15 +80,14 @@ public class Factory : Buildings
                     }
                     yield return new WaitForSeconds(0.2f);
                 }
-                isConstructingUnit = false;
                 if (rallyPointPosition != Vector3.zero)
                 {
                     unitComponent.MoveForward(rallyPointPosition);
                 }
                 else
                 {
-                    var position = new Vector3(unitComponent.transform.position.x, unitComponent.transform.position.y,
-                        5f); 
+                    var position = new Vector3(transform.position.x, transform.position.y,
+                        transform.position.z + 5); 
                     unitComponent.MoveForward(position);
                 }
                 //1. Makes the unit interactable
@@ -99,7 +98,6 @@ public class Factory : Buildings
                 unitComponent.hasBeenConstructed = true;
                 unitComponent.ActivateAllMesh();
                 currentUnitConstructing = null;
-                unitQueue.RemoveAt(0);
                 textBox.SetActive(false);
                 PlayerManager.Instance.playerMoneyRemoval  = null;
                 UIManager.Instance.UpdateUnitCount();
@@ -115,6 +113,8 @@ public class Factory : Buildings
                     createUnitCoroutine = null;
                     Destroy(textBox);
                 }
+                isConstructingUnit = false;
+                unitQueue.RemoveAt(0);
                 yield return new WaitForSeconds(0.1f);
             }
         }

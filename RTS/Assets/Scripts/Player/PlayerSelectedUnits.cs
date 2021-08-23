@@ -82,10 +82,6 @@ namespace Player
                             {
                                 PlayerManager.Instance.hasSelectedNonLethalUnits = true;
                             }
-                            else if (hit.collider.GetComponent<Entity>().isBuilding)
-                            {
-                                PlayerManager.Instance.hasSelectedBuilding = true;
-                            }
 
                             if (!UnitManager.Instance.selectedNonLethalUnits.Contains(hit.collider.gameObject))
                             {

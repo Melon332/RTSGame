@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Interactable;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -29,6 +30,7 @@ namespace Managers
         private SupplyDepo[] _supplyDepos;
 
         public GameObject currentlyActiveMap;
+        private GameObject _placeToSpawnPlayer;
 
         // Start is called before the first frame update
         void Awake()
@@ -48,6 +50,8 @@ namespace Managers
             var mapChosen = mapsToChooseFrom[mapSelected];
             mapChosen.SetActive(true);
             currentlyActiveMap = mapChosen;
+            _placeToSpawnPlayer = GameObject.FindGameObjectWithTag("PlayerStart");
+            Invoke(nameof(SpawnPlayerWorker),2);
         }
 
         /// <summary>
@@ -68,6 +72,16 @@ namespace Managers
         public SupplyDepo[] GetAllSupplyDepos()
         {
             return _supplyDepos;
+        }
+
+        private void SpawnPlayerWorker()
+        {
+            var objectPooler = FindObjectOfType<ObjectPool>();
+            var workerFound = objectPooler.GetAvaliableObject("Worker");
+            workerFound.SetActive(true);
+            workerFound.GetComponent<Units>().ActivateUnit();
+            workerFound.GetComponent<Units>().ActivateAllMesh();
+            workerFound.transform.position = _placeToSpawnPlayer.transform.position;
         }
     }
 

@@ -61,13 +61,14 @@ public class Buildings : Entity, IPowerConsumption
         {
             Destroy(textObject);
         }
-        if (this == null) return;
+
         //Incase that it is a finished building, remove power and check if the player has enough power
         if (hasFinishedBuilding)
         {
             PlayerManager.Instance.CheckIfPowerIsSufficient(costOfPower, true);
             UIManager.Instance.UpdateRequiredPowerText();
         }
+        
     }
 
     public override void Subscribe(CharacterInput publisher)
@@ -113,8 +114,6 @@ public class Buildings : Entity, IPowerConsumption
             }
 
             HUD.SetCursor(CursorStates.Select);
-            
-            Debug.Log("This is a building");
         }
         else
         {
@@ -245,6 +244,10 @@ public class Buildings : Entity, IPowerConsumption
         UIManager.Instance.UpdateRequiredPowerText();
         //Destroys the text box.
         Destroy(textObject);
+        if (GetComponent<SupplyStation>())
+        {
+            GetComponent<SupplyStation>().SpawnHarvester();
+        }
 
         //Moves the builder away from the building
         foreach (var builder in builders)
@@ -347,10 +350,10 @@ public class Buildings : Entity, IPowerConsumption
 
     public void OnNoPower()
     {
-        throw new NotImplementedException();
+        OnDeselect();
     }
 
-    private void OnEnable()
+    public override void OnEnable()
     {
         Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
     }
