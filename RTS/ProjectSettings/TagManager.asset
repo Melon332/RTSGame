@@ -10,6 +10,7 @@ TagManager:
   - Worker
   - Buildings
   - Debris
+  - PlayerStart
   layers:
   - Default
   - TransparentFX

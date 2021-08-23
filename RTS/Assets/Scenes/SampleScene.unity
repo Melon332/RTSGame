@@ -791,7 +791,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 156476737}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -37.2, y: 0, z: 90.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 963194228}
@@ -980,7 +980,7 @@ PrefabInstance:
     - target: {fileID: 3914474247965226806, guid: 4161cd0bfcfd1d94ab8c36370f7e886e,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3914474247965226807, guid: 4161cd0bfcfd1d94ab8c36370f7e886e,
         type: 3}
@@ -3030,6 +3030,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SupplyDepo (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 9123633643452154799, guid: 438f8e432936a7844a1ec966c6e1de05,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 438f8e432936a7844a1ec966c6e1de05, type: 3}
 --- !u!1 &707671913
@@ -3762,7 +3767,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 055058041ada3ba48b5cf7f92d5d491b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panBorderThickness: 55
+  panBorderThickness: 25
 --- !u!114 &963194231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4573,7 +4578,7 @@ PrefabInstance:
     - target: {fileID: 3914474247965226806, guid: 4161cd0bfcfd1d94ab8c36370f7e886e,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3914474247965226807, guid: 4161cd0bfcfd1d94ab8c36370f7e886e,
         type: 3}
@@ -4763,7 +4768,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hasSelectedUnits: 0
   hasSelectedNonLethalUnits: 0
-  hasSelectedBuilding: 0
   hasBuildingInHand: 0
   hasSelectedHarvester: 0
   hasEnoughPower: 0
@@ -4838,7 +4842,7 @@ PrefabInstance:
     - target: {fileID: 3914474247965226806, guid: 4161cd0bfcfd1d94ab8c36370f7e886e,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3914474247965226807, guid: 4161cd0bfcfd1d94ab8c36370f7e886e,
         type: 3}
@@ -5573,6 +5577,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SupplyDepo (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 9123633643452154799, guid: 438f8e432936a7844a1ec966c6e1de05,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 438f8e432936a7844a1ec966c6e1de05, type: 3}
 --- !u!1001 &1812604620
@@ -5660,7 +5669,7 @@ PrefabInstance:
     - target: {fileID: 3914474247965226806, guid: 4161cd0bfcfd1d94ab8c36370f7e886e,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3914474247965226807, guid: 4161cd0bfcfd1d94ab8c36370f7e886e,
         type: 3}
@@ -6106,7 +6115,7 @@ PrefabInstance:
     - target: {fileID: 3914474247965226806, guid: 4161cd0bfcfd1d94ab8c36370f7e886e,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7527830751576967965, guid: 4161cd0bfcfd1d94ab8c36370f7e886e,
         type: 3}
@@ -6391,6 +6400,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cube
       objectReference: {fileID: 0}
+    - target: {fileID: 1983499340796504889, guid: e74a7d8052196a441b05dd7644ab2e14,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1983499340796504894, guid: e74a7d8052196a441b05dd7644ab2e14,
         type: 3}
       propertyPath: hitPoints
@@ -6474,6 +6488,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Worker
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511902823261568796, guid: b8189223757d3c64aacfe8f6f4be3be2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1511902823261568797, guid: b8189223757d3c64aacfe8f6f4be3be2,
         type: 3}
@@ -6721,6 +6740,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SupplyDepo
+      objectReference: {fileID: 0}
+    - target: {fileID: 9123633643452154799, guid: 438f8e432936a7844a1ec966c6e1de05,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 438f8e432936a7844a1ec966c6e1de05, type: 3}
