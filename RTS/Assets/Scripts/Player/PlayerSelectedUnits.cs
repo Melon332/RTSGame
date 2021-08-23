@@ -179,7 +179,6 @@ namespace Player
                         if (UnitManager.Instance.selectedNonLethalUnits.Contains(units.gameObject)) continue;
                         PlayerManager.Instance.hasSelectedNonLethalUnits = true;
                         UnitManager.Instance.selectedNonLethalUnits.Add(units.gameObject);
-                        Debug.Log("Hello");
                     }
                     units.GetComponent<IInteractable>().OnClicked();
                 }

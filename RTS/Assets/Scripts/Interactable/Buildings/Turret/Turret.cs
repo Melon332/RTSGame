@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Player;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -23,6 +24,8 @@ public class Turret : Buildings
     [HideInInspector] public TurretRange turretRange;
 
      private Quaternion turretHeadOriginalRotation;
+
+     public bool isEnemyTurret = false;
      
      
 
@@ -32,7 +35,10 @@ public class Turret : Buildings
         turretHead = transform.Find("TurretHead").gameObject;
         turretHeadOriginalRotation = turretHead.transform.rotation;
         turretRange = GetComponentInChildren<TurretRange>();
-        turretRange.gameObject.SetActive(false);
+        if (!isEnemyTurret)
+        {
+            turretRange.gameObject.SetActive(false);
+        }
     }
 
      public IEnumerator FireAtEnemies()
@@ -53,7 +59,7 @@ public class Turret : Buildings
 
         turretHead.transform.rotation = turretHeadOriginalRotation;
     }
-    protected void Attack()
+    private void Attack()
     {
         var bulletObject = Instantiate(bullet, bulletSpawnPosition.transform);
         bulletObject.GetComponent<Bullet>().Setup(bulletSpawnPosition.transform.forward);
@@ -69,5 +75,21 @@ public class Turret : Buildings
     {
         base.OnBuildingComplete();
         ActivateTurret();
+    }
+
+    public override void Subscribe(CharacterInput publisher)
+    {
+        if (!isEnemyTurret)
+        {
+            base.Subscribe(publisher);
+        }
+    }
+
+    public override void UnSubscribe(CharacterInput publisher)
+    {
+        if (!isEnemyTurret)
+        {
+            base.UnSubscribe(publisher);
+        }
     }
 }

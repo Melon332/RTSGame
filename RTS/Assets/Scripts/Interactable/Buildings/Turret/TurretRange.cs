@@ -17,16 +17,32 @@ public class TurretRange : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.CompareTag("Ground")) return;
-        Debug.Log(other.name);
         if (other.GetComponent<Entity>())
         {
-            if (other.gameObject.GetComponent<Entity>().canBeAttacked &&
-                !mainTurret.attackableEnemies.Contains(other.gameObject))
+            Debug.Log(other.name);
+            if (!mainTurret.isEnemyTurret)
             {
-                mainTurret.attackableEnemies.Add(other.gameObject);
-                if (mainTurretAttackCoroutine == null)
+                if (other.gameObject.GetComponent<Entity>().canBeAttacked &&
+                    !mainTurret.attackableEnemies.Contains(other.gameObject))
                 {
-                    mainTurretAttackCoroutine = StartCoroutine(mainTurret.FireAtEnemies());
+                    mainTurret.attackableEnemies.Add(other.gameObject);
+                    if (mainTurretAttackCoroutine == null)
+                    {
+                        mainTurretAttackCoroutine = StartCoroutine(mainTurret.FireAtEnemies());
+                    }
+                }
+            }
+            else
+            {
+                Debug.Log("Hello");
+                if (!other.gameObject.GetComponent<Entity>().canBeAttacked &&
+                    !mainTurret.attackableEnemies.Contains(other.gameObject))
+                {
+                    mainTurret.attackableEnemies.Add(other.gameObject);
+                    if (mainTurretAttackCoroutine == null)
+                    {
+                        mainTurretAttackCoroutine = StartCoroutine(mainTurret.FireAtEnemies());
+                    }
                 }
             }
         }

@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using Player;
 using Managers;
+using UnityEngine.AI;
 
 namespace Interactable
 {
+    [RequireComponent(typeof(NavMeshObstacle))]
     public class Debris : Entity
     {
         protected override void Start()

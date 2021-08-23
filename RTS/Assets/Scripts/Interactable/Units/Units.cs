@@ -149,7 +149,7 @@ namespace Interactable
             }
         }
 
-        protected virtual void Attack()
+        protected void Attack()
         {
             var bulletObject = Instantiate(bullet, bulletSpawnPosition.transform);
             bulletObject.GetComponent<Bullet>().Setup(bulletSpawnPosition.transform.forward);
@@ -188,9 +188,15 @@ namespace Interactable
         {
             if (!gameObject.activeSelf) return;
             base.OnDisable();
+            UnitManager.SelectableUnits.Remove(gameObject);
             if (!hasSubscribed) return;
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
-            agent = null;
+        }
+
+        public override void OnEnable()
+        {
+            base.OnEnable();
+            UnitManager.SelectableUnits.Add(gameObject);
         }
 
         public void ActivateUnit()
