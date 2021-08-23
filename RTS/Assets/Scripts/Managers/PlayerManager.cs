@@ -83,7 +83,6 @@ public class PlayerManager : MonoBehaviour
            UIManager.Instance.UpdatePlayerMoney();
            yield return new WaitForSeconds(0.00010f);
        }
-        Debug.Log("Construction complete!");
    }
 
    public IEnumerator AddMoney(Entity obj)

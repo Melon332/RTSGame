@@ -19,7 +19,7 @@ public class CameraController : MonoBehaviour, ISubscriber
     {
         SetCameraPanLimit();
         rtsCamera = GetComponent<Camera>();
-        maxYScroll = transform.position.y;
+        maxYScroll = transform.position.y + 10;
     }
 
     private void SetCameraPanLimit()

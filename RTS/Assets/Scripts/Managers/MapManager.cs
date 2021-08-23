@@ -30,7 +30,7 @@ namespace Managers
         private SupplyDepo[] _supplyDepos;
 
         public GameObject currentlyActiveMap;
-        private GameObject _placeToSpawnPlayer;
+        public static GameObject _placeToSpawnPlayer;
 
         // Start is called before the first frame update
         void Awake()
@@ -72,6 +72,11 @@ namespace Managers
         public SupplyDepo[] GetAllSupplyDepos()
         {
             return _supplyDepos;
+        }
+
+        public static GameObject FindPlayerPosition()
+        {
+            return _placeToSpawnPlayer;
         }
 
         private void SpawnPlayerWorker()

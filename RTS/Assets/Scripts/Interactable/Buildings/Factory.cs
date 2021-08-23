@@ -34,7 +34,6 @@ public class Factory : Buildings
             textObject = Instantiate(floatingText, positionToSpawnTextObject, Quaternion.Euler(90, 0, 0),
             transform);
         }
-
         if (createUnitCoroutine == null)
         {
             createUnitCoroutine = StartCoroutine(CreateUnit(textObject));
@@ -48,7 +47,7 @@ public class Factory : Buildings
             if (!isConstructingUnit)
             {
                 //1. 
-                yield return new WaitForSeconds(0.5f); 
+                yield return new WaitForSeconds(0.1f); 
                 currentUnitConstructing = unitQueue[0];
                 currentUnitConstructing.SetActive(true);
                 currentUnitConstructing.transform.position = transform.position; 
@@ -98,9 +97,11 @@ public class Factory : Buildings
                 unitComponent.hasBeenConstructed = true;
                 unitComponent.ActivateAllMesh();
                 currentUnitConstructing = null;
+                isConstructingUnit = false;
                 textBox.SetActive(false);
                 PlayerManager.Instance.playerMoneyRemoval  = null;
                 UIManager.Instance.UpdateUnitCount();
+                unitQueue.RemoveAt(0);
                 if (unitComponent.GetComponent<Harvester>())
                 {
                     unitComponent.GetComponent<Harvester>().targetedSupplyStation = gameObject;
@@ -112,10 +113,9 @@ public class Factory : Buildings
                     StopCoroutine(createUnitCoroutine);
                     createUnitCoroutine = null;
                     Destroy(textBox);
+                    Debug.Log("Hello");
                 }
-                isConstructingUnit = false;
-                unitQueue.RemoveAt(0);
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(0.5f);
             }
         }
     }

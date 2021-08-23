@@ -61,7 +61,6 @@ public class Buildings : Entity, IPowerConsumption
         {
             Destroy(textObject);
         }
-
         //Incase that it is a finished building, remove power and check if the player has enough power
         if (hasFinishedBuilding)
         {

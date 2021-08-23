@@ -30,6 +30,8 @@ namespace Managers
         {
             DontDestroyOnLoad(gameObject);
             player = GameObject.Find("Main Camera");
+            player.transform.position = new Vector3(MapManager.FindPlayerPosition().transform.position.x,
+                10, MapManager.FindPlayerPosition().transform.position.z);
         }
     }
 }
