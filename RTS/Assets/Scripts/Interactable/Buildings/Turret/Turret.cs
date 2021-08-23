@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Managers;
 using Player;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -25,9 +26,7 @@ public class Turret : Buildings
 
      private Quaternion turretHeadOriginalRotation;
 
-     public bool isEnemyTurret = false;
-     
-     
+
 
      protected override void Start()
     {
@@ -35,7 +34,7 @@ public class Turret : Buildings
         turretHead = transform.Find("TurretHead").gameObject;
         turretHeadOriginalRotation = turretHead.transform.rotation;
         turretRange = GetComponentInChildren<TurretRange>();
-        if (!isEnemyTurret)
+        if (!isEnemy)
         {
             turretRange.gameObject.SetActive(false);
         }
@@ -66,6 +65,26 @@ public class Turret : Buildings
         bulletObject.GetComponent<Bullet>().damageAmount = damageAmount;
     }
 
+    public override void OnClicked()
+    {
+        if (!isEnemy)
+        {
+            base.OnClicked();
+        }
+        else
+        {
+            if (pictureOfObject != null)
+            {
+                UIManager.Instance.PictureOfSelectedUnits(pictureOfObject);
+            }
+            else
+            {
+                Debug.Log("Sorry, you are missing a picture for this unit " + nameOfUnit + " Maybe you forgot to add it?");
+            }
+            selectionBox.SetActive(true);
+        }
+    }
+
     private void ActivateTurret()
     {
         turretRange.gameObject.SetActive(true); 
@@ -79,7 +98,7 @@ public class Turret : Buildings
 
     public override void Subscribe(CharacterInput publisher)
     {
-        if (!isEnemyTurret)
+        if (!isEnemy)
         {
             base.Subscribe(publisher);
         }
@@ -87,7 +106,7 @@ public class Turret : Buildings
 
     public override void UnSubscribe(CharacterInput publisher)
     {
-        if (!isEnemyTurret)
+        if (!isEnemy)
         {
             base.UnSubscribe(publisher);
         }

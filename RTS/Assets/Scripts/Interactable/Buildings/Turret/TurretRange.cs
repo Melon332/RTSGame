@@ -19,8 +19,7 @@ public class TurretRange : MonoBehaviour
         if (other.gameObject.CompareTag("Ground")) return;
         if (other.GetComponent<Entity>())
         {
-            Debug.Log(other.name);
-            if (!mainTurret.isEnemyTurret)
+            if (!mainTurret.isEnemy)
             {
                 if (other.gameObject.GetComponent<Entity>().canBeAttacked &&
                     !mainTurret.attackableEnemies.Contains(other.gameObject))

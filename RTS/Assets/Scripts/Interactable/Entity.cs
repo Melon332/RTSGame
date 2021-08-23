@@ -28,6 +28,7 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
     public bool isSelectable;
     [HideInInspector] public bool isDead = false;
     public bool canAttack;
+    public bool isEnemy;
     #endregion
 
     [HideInInspector] public NavMeshAgent agent;

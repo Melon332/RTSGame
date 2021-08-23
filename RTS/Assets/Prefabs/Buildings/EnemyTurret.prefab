@@ -254,6 +254,7 @@ MonoBehaviour:
   isSelectable: 0
   isDead: 0
   canAttack: 1
+  isEnemy: 1
   agent: {fileID: 0}
   selectionBox: {fileID: 8048508859873732235, guid: 5d35ea2f3e8421141987d5d90568f941,
     type: 3}
@@ -273,7 +274,6 @@ MonoBehaviour:
   bulletSpawnPosition: {fileID: 5890893516257375452}
   attackTimer: 1.5
   turretRange: {fileID: 0}
-  isEnemyTurret: 1
 --- !u!1 &2660712585127574284
 GameObject:
   m_ObjectHideFlags: 0
@@ -472,7 +472,7 @@ Transform:
   m_GameObject: {fileID: 8390513066646506357}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0.032, y: -0, z: 0.2473}
-  m_LocalScale: {x: 3.3091273, y: 2.4246588, z: 1.99}
+  m_LocalScale: {x: 7.7681766, y: 5.392199, z: 1.99}
   m_Children: []
   m_Father: {fileID: 2000472380548685966}
   m_RootOrder: 2
