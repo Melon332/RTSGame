@@ -273,9 +273,10 @@ MonoBehaviour:
   isSelectable: 0
   isDead: 0
   canAttack: 1
+  isEnemy: 0
   agent: {fileID: 0}
   selectionBox: {fileID: 0}
-  hasBeenConstructed: 1
+  hasBeenConstructed: 0
   amountOfHpPerSecond: 5
   bullet: {fileID: 7999903933720480626, guid: c50fc26f167691f4b976156d6791b5bf, type: 3}
   bulletSpawnPosition: {fileID: 1431557599070158896}

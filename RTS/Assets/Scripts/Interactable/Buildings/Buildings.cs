@@ -38,24 +38,26 @@ public class Buildings : Entity, IPowerConsumption
     protected override void Start()
     {
         base.Start();
+        if (!isEnemy)
+        {
+            buildingRenderer = GetComponentsInChildren<MeshRenderer>();
 
-        buildingRenderer = GetComponentsInChildren<MeshRenderer>();
-        
-        
+            isBuilding = true;
+            //References the obstacle collider for other agents to avoid
+            buildingHitBox = GetComponent<NavMeshObstacle>();
+            buildingHitBox.enabled = false;
+            buildingHitBox.carving = false;
+
+            buildingCollider = GetComponentInChildren<BoxCollider>();
+            isSelectable = true;
+        }
         selectionBox.transform.localScale = transform.localScale * 3;
-        isBuilding = true;
-        //References the obstacle collider for other agents to avoid
-        buildingHitBox = GetComponent<NavMeshObstacle>();
-        buildingHitBox.enabled = false;
-        buildingHitBox.carving = false;
-        
-        buildingCollider = GetComponentInChildren<BoxCollider>();
-        isSelectable = true;
     }
     public override void OnDisable()
     {
-        UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
         hitPoints = 0;
+        if (isEnemy) return;
+        UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
         //Destroys the text object incase it's being built.
         if (textObject != null)
         {
@@ -72,6 +74,7 @@ public class Buildings : Entity, IPowerConsumption
 
     public override void Subscribe(CharacterInput publisher)
     {
+        if (isEnemy) return;
         publisher.hasClicked += PlaceBuilding;
         publisher.mousePosition += CanPlaceBuilding;
         publisher.hasLeftClickedMouse += CancelBuilding;
@@ -79,6 +82,7 @@ public class Buildings : Entity, IPowerConsumption
 
     public override void UnSubscribe(CharacterInput publisher)
     {
+        if (isEnemy) return;
         publisher.mousePosition -= CanPlaceBuilding;
         publisher.hasLeftClickedMouse -= CancelBuilding;
         publisher.hasClicked -= PlaceBuilding;
@@ -86,48 +90,53 @@ public class Buildings : Entity, IPowerConsumption
 
     public override void OnClicked()
     {
-        if (hasFinishedBuilding)
+        if (!isEnemy)
         {
-            //Will be used later
-           // if (!PlayerManager.Instance.hasEnoughPower) return;
-            //Checks if the player has units selected.
-            if (PlayerManager.Instance.hasSelectedUnits || PlayerManager.Instance.hasSelectedNonLethalUnits)
+            if (hasFinishedBuilding)
             {
-                //Resets the units selection list so that the player can focus on the building
-                foreach (var lethalUnits in UnitManager.Instance.selectedAttackingUnits)
+                //Will be used later
+                // if (!PlayerManager.Instance.hasEnoughPower) return;
+                //Checks if the player has units selected.
+                if (PlayerManager.Instance.hasSelectedUnits || PlayerManager.Instance.hasSelectedNonLethalUnits)
                 {
-                    lethalUnits.GetComponent<Entity>().OnDeselect();
-                }
+                    //Resets the units selection list so that the player can focus on the building
+                    foreach (var lethalUnits in UnitManager.Instance.selectedAttackingUnits)
+                    {
+                        lethalUnits.GetComponent<Entity>().OnDeselect();
+                    }
 
-                foreach (var nonLethalUnit in UnitManager.Instance.selectedNonLethalUnits)
-                {
-                    nonLethalUnit.GetComponent<Entity>().OnDeselect();
+                    foreach (var nonLethalUnit in UnitManager.Instance.selectedNonLethalUnits)
+                    {
+                        nonLethalUnit.GetComponent<Entity>().OnDeselect();
+                        PlayerManager.Instance.hasSelectedNonLethalUnits = false;
+                    }
+
+                    //Clears the list and tells the player it has no units selected.
+                    PlayerManager.Instance.hasSelectedUnits = false;
                     PlayerManager.Instance.hasSelectedNonLethalUnits = false;
+                    UnitManager.Instance.selectedAttackingUnits.Clear();
+                    UnitManager.Instance.selectedNonLethalUnits.Clear();
                 }
 
-                //Clears the list and tells the player it has no units selected.
-                PlayerManager.Instance.hasSelectedUnits = false;
+                HUD.SetCursor(CursorStates.Select);
+            }
+            else
+            {
+                HUD.SetCursor(CursorStates.Select);
+                UnitManager.Instance.selectedNonLethalUnits.Remove(gameObject);
                 PlayerManager.Instance.hasSelectedNonLethalUnits = false;
-                UnitManager.Instance.selectedAttackingUnits.Clear();
-                UnitManager.Instance.selectedNonLethalUnits.Clear();
             }
 
-            HUD.SetCursor(CursorStates.Select);
+            BuildingManager.Instance.currentSelectedBuilding = gameObject;
+            UIManager.Instance.ShowPanels(true, 3);
         }
-        else
-        {
-            HUD.SetCursor(CursorStates.Select);
-            UnitManager.Instance.selectedNonLethalUnits.Remove(gameObject);
-            PlayerManager.Instance.hasSelectedNonLethalUnits = false;
-        }
-        BuildingManager.Instance.currentSelectedBuilding = gameObject;
-        UIManager.Instance.ShowPanels(true,3);
         base.OnClicked();
     }
 
     public override void OnDeselect()
     {
         base.OnDeselect();
+        if (isEnemy) return;
         UIManager.Instance.ShowPanels(false, 3);
         BuildingManager.Instance.currentSelectedBuilding = null;
     }

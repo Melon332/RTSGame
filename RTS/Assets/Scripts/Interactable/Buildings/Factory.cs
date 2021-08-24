@@ -113,7 +113,6 @@ public class Factory : Buildings
                     StopCoroutine(createUnitCoroutine);
                     createUnitCoroutine = null;
                     Destroy(textBox);
-                    Debug.Log("Hello");
                 }
                 yield return new WaitForSeconds(0.5f);
             }
@@ -161,12 +160,14 @@ public class Factory : Buildings
 
     public override void Subscribe(CharacterInput publisher)
     {
+        if (isEnemy) return;
         base.Subscribe(publisher);
         publisher.hasClicked += SetRallyPoint;
     }
 
     public override void UnSubscribe(CharacterInput publisher)
     {
+        if (isEnemy) return;
         base.UnSubscribe(publisher);
         publisher.hasClicked -= SetRallyPoint;
     }

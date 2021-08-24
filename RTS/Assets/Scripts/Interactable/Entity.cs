@@ -42,6 +42,10 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
         if (selectionBox == null) return;
         selectionBox.SetActive(false);
         selectionBox.transform.localScale = gameObject.transform.localScale * 2;
+        if (isEnemy)
+        {
+            canBeAttacked = true;
+        }
     }
 
     protected virtual void Start()
