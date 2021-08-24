@@ -22,18 +22,19 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
     public int costOfPower;
     [Header("Is it a building and is it friendly?")]
     public bool canBeAttacked;
+    public bool isEnemy;
     public bool isBuilding = false;
     [Header("Can be clicked by player? Picture of player")]
     public Sprite pictureOfObject;
     public bool isSelectable;
     [HideInInspector] public bool isDead = false;
     public bool canAttack;
-    public bool isEnemy;
     #endregion
 
     [HideInInspector] public NavMeshAgent agent;
     public GameObject selectionBox;
     public bool hasBeenConstructed;
+    [HideInInspector] public bool hasBeenPickedUpByPool;
 
     protected virtual void Awake()
     {
@@ -42,15 +43,14 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
         if (selectionBox == null) return;
         selectionBox.SetActive(false);
         selectionBox.transform.localScale = gameObject.transform.localScale * 2;
-        if (isEnemy)
-        {
-            canBeAttacked = true;
-        }
     }
 
     protected virtual void Start()
     {
-        
+        if (!isEnemy) return;
+        canBeAttacked = true;
+        hitPoints = maxHitPoints;
+        GameManager._enemyManager.AddEnemyToList(this);
     }
 
     public virtual void Subscribe(CharacterInput publisher)
@@ -66,13 +66,24 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
     public virtual void OnHit(int damage)
     {
         if (hitPoints <= 0)
-        {  
-            isDead = true;
-            OnDeselect();
-            gameObject.SetActive(false);
-            UnitManager.SelectableUnits.Remove(gameObject);
-            UnitManager.Instance.selectedAttackingUnits.Remove(gameObject);
-            UnitManager.Instance.selectedNonLethalUnits.Remove(gameObject);
+        {
+            if (!isEnemy)
+            {
+                isDead = true;
+                OnDeselect();
+                gameObject.SetActive(false);
+                UnitManager.SelectableUnits.Remove(gameObject);
+                UnitManager.Instance.selectedAttackingUnits.Remove(gameObject);
+                UnitManager.Instance.selectedNonLethalUnits.Remove(gameObject);
+                hasBeenPickedUpByPool = false;
+            }
+            else
+            {
+                isDead = true;
+                OnDeselect();
+                gameObject.SetActive(false);
+                GameManager._enemyManager.RemoveEnemyFromList(this);
+            }
         }
         else
         {

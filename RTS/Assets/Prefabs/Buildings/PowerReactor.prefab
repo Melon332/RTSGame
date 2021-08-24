@@ -248,6 +248,7 @@ MonoBehaviour:
   objectCost: 2500
   costOfPower: 0
   canBeAttacked: 0
+  isEnemy: 0
   isBuilding: 1
   pictureOfObject: {fileID: 21300000, guid: e06e37ca908cd2c4f82f552dff6cee96, type: 3}
   isSelectable: 0
@@ -256,13 +257,16 @@ MonoBehaviour:
   agent: {fileID: 0}
   selectionBox: {fileID: 0}
   hasBeenConstructed: 0
+  hasBeenPickedUpByPool: 0
   hasFinishedBuilding: 0
   hasPlacedBuilding: 0
   dropBuildingIntoFloor: {x: 0, y: -1, z: 0}
   floatingText: {fileID: 6182403648814924256, guid: 323a8abd9a11abe41b6d3974294c53af,
     type: 3}
-  buildingSpeed: 4
+  buildingRenderer: []
+  buildingSpeed: 7
   amountOfHpPerSecond: 22.5
+  textObject: {fileID: 0}
   powerProduced: 25
 --- !u!1 &8043767036560098174
 GameObject:
@@ -361,12 +365,12 @@ PrefabInstance:
     - target: {fileID: 4495864516188569681, guid: 5d35ea2f3e8421141987d5d90568f941,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 2.9612586
+      value: 3.747177
       objectReference: {fileID: 0}
     - target: {fileID: 4495864516188569681, guid: 5d35ea2f3e8421141987d5d90568f941,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 2.3471184
+      value: 3.111575
       objectReference: {fileID: 0}
     - target: {fileID: 4495864516188569681, guid: 5d35ea2f3e8421141987d5d90568f941,
         type: 3}
@@ -376,7 +380,7 @@ PrefabInstance:
     - target: {fileID: 4495864516188569681, guid: 5d35ea2f3e8421141987d5d90568f941,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0
+      value: -2e-15
       objectReference: {fileID: 0}
     - target: {fileID: 4495864516188569681, guid: 5d35ea2f3e8421141987d5d90568f941,
         type: 3}

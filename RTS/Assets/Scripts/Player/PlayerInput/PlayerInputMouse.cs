@@ -100,13 +100,12 @@ public class PlayerInputMouse : CharacterInput
 /// <returns>1 if enemy is under mouse cursor and has lethal unit. 0 if there is no enemy</returns>
     public static bool IsMouseOverEnemy()
     {
-        bool hasFoundEnemy = false;
         if (!PlayerManager.Instance.hasSelectedUnits || !IsMouseInGameView()) return false;
         PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out var hit);
         var entity = hit.collider.GetComponent<Entity>();
         if (entity != null)
         {
-            hasFoundEnemy = entity.canBeAttacked;
+            var hasFoundEnemy = entity.canBeAttacked;
             return hasFoundEnemy;
         }
 

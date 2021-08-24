@@ -10,7 +10,6 @@ namespace Interactable
     {
         protected override void Start()
         {
-            base.Start();
             canBeAttacked = true;
         }
 

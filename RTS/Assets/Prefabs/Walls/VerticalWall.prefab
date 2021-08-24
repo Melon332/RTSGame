@@ -94,7 +94,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2712513222153596108}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -111,12 +111,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05fc4a992d54c594199299ee3076fede, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHitPoints: 0
+  maxHitPoints: 300
   hitPoints: 300
   nameOfUnit: Debris
   objectCost: 0
   costOfPower: 0
   canBeAttacked: 0
+  isEnemy: 1
   isBuilding: 0
   pictureOfObject: {fileID: 0}
   isSelectable: 0

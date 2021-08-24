@@ -31,7 +31,7 @@ public class ObjectPool : MonoBehaviour
     {
         foreach (var objectToSearchFor in storedObjects)
         {
-            if (objectToSearchFor.activeInHierarchy == false && objectToSearchFor.GetComponent<Entity>().nameOfUnit == nameOfObject)
+            if (objectToSearchFor.activeInHierarchy == false && objectToSearchFor.GetComponent<Entity>().nameOfUnit == nameOfObject && !objectToSearchFor.GetComponent<Entity>().hasBeenPickedUpByPool)
             {
                 return objectToSearchFor;
             }

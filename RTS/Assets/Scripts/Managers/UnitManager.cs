@@ -44,6 +44,7 @@ namespace Managers
                 {
                     BuildingManager.Instance.currentSelectedBuilding.GetComponent<Factory>().unitQueue
                         .Add(_objectPool.GetAvaliableObject(unitName));
+                    _objectPool.GetAvaliableObject(unitName).GetComponent<Entity>().hasBeenPickedUpByPool = true;
                 }
                 BuildingManager.Instance.currentSelectedBuilding.GetComponent<Factory>().StartConstructing();
             }

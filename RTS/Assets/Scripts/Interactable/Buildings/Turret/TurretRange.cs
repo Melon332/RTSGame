@@ -33,7 +33,6 @@ public class TurretRange : MonoBehaviour
             }
             else
             {
-                Debug.Log("Hello");
                 if (!other.gameObject.GetComponent<Entity>().canBeAttacked &&
                     !mainTurret.attackableEnemies.Contains(other.gameObject))
                 {

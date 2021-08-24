@@ -29,13 +29,7 @@ namespace Interactable
         private bool hasSubscribed = false;
 
         private MeshRenderer[] meshes;
-
-        protected override void Awake()
-        {
-            base.Awake();
-            UnitManager.SelectableUnits.Add(gameObject);
-        }
-
+        
         protected override void Start()
         {
             base.Start();
@@ -186,6 +180,7 @@ namespace Interactable
 
         public override void OnDisable()
         {
+            UnitManager.SelectableUnits.Remove(gameObject);
             if (!gameObject.activeSelf) return;
             base.OnDisable();
             UnitManager.SelectableUnits.Remove(gameObject);

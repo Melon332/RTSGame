@@ -71,6 +71,7 @@ public class PlayerManager : MonoBehaviour
            UIManager.Instance.MiniMapState(false);
            hasEnoughPower = false;
        }
+       Debug.Log(RequiredPower);
    }
    public IEnumerator RemoveMoney(Entity obj)
    {
@@ -91,7 +92,6 @@ public class PlayerManager : MonoBehaviour
        Debug.Log(objectCost +" Starting value");
        while(objectCost > 0 && AmountOfMoneyPlayerHas > 0)
        {
-           Debug.Log("hell");
            AmountOfMoneyPlayerHas += 5;
            objectCost -= 5;
            UIManager.Instance.UpdatePlayerMoney();

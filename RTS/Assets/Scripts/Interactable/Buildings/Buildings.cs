@@ -12,7 +12,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(BoxCollider))]
 public class Buildings : Entity, IPowerConsumption
 {
-    private readonly List<GameObject> builders = new List<GameObject>();
+    public readonly List<GameObject> builders = new List<GameObject>();
     
     //BUILDING BOOL;
     private bool canPlace = true;
@@ -57,19 +57,26 @@ public class Buildings : Entity, IPowerConsumption
     {
         hitPoints = 0;
         if (isEnemy) return;
-        UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
+        //Incase that it is a finished building, remove power and check if the player has enough power
+        if (PlayerHandler.PlayerHandlerInstance.characterInput != null)
+        {
+            UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
+            if (hasFinishedBuilding)
+            {
+                PlayerManager.Instance.CheckIfPowerIsSufficient(costOfPower, true);
+                UIManager.Instance.UpdateRequiredPowerText();
+            }
+            hasPlacedBuilding = false;
+            hasFinishedBuilding = false;
+            isDead = true;
+        }
+
         //Destroys the text object incase it's being built.
         if (textObject != null)
         {
             Destroy(textObject);
         }
-        //Incase that it is a finished building, remove power and check if the player has enough power
-        if (hasFinishedBuilding)
-        {
-            PlayerManager.Instance.CheckIfPowerIsSufficient(costOfPower, true);
-            UIManager.Instance.UpdateRequiredPowerText();
-        }
-        
+
     }
 
     public override void Subscribe(CharacterInput publisher)
@@ -345,6 +352,7 @@ public class Buildings : Entity, IPowerConsumption
     public override void OnHit(int damage)
     {
         base.OnHit(damage);
+        if (isEnemy) return;
         buildingCollider.isTrigger = true;
     }
 
@@ -364,5 +372,14 @@ public class Buildings : Entity, IPowerConsumption
     public override void OnEnable()
     {
         Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
+        if (buildingHitBox == null)
+        {
+            buildingHitBox = GetComponent<NavMeshObstacle>();
+        }
+        canPlace = true;
+        isDead = false;
+        buildingHitBox.enabled = false;
+        buildingHitBox.carving = false;
+        Debug.Log("Hello");
     }
 }

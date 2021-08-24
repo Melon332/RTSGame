@@ -18,6 +18,7 @@ public class PowerReactor : Buildings
     public override void OnDisable()
     {
         base.OnDisable();
+        if (isEnemy) return;
         if (PlayerManager.Instance != null && hasFinishedBuilding)
         {
             PlayerManager.Instance.AmountOfPowerPlayerHas -= powerProduced;
