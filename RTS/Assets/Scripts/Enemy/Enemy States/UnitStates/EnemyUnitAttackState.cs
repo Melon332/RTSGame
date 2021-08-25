@@ -13,9 +13,5 @@ public class EnemyUnitAttackState : EnemyUnitBaseState
 
     public override void Update(Units entity)
     {
-        if(entity.unitToAttack == null)
-        {
-            entity.TransisitonToState(entity.moveState);
-        } ;
     }
 }

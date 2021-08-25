@@ -172,8 +172,7 @@ namespace Interactable
         }
         public IEnumerator EnemyAttack()
         {
-            if (unitToAttack == null) yield break;
-            while (!unitToAttack.isDead)
+            while (!unitToAttack.isDead && unitToAttack != null)
             {
                 var distance = (transform.position - unitToAttack.transform.position).sqrMagnitude;
                 if (distance > minRangeToAttack)
@@ -190,15 +189,17 @@ namespace Interactable
                     Attack();
                     yield return new WaitForSeconds(attackTimer);
                 }
+                if (AttackAndMove != null && unitToAttack.isDead)
+                {
+                    StopCoroutine(AttackAndMove);
+                    AttackAndMove = null;
+                    unitToAttack = null;
+                    agent.isStopped = false;
+                    TransisitonToState(moveState);
+                }
+                if (unitToAttack == null) yield break;
             }
-
-            if (AttackAndMove != null)
-            {
-                StopCoroutine(AttackAndMove);
-                AttackAndMove = null;
-                unitToAttack = null;
-                TransisitonToState(moveState);
-            }
+            
         }
 
         private void Attack()
@@ -251,6 +252,7 @@ namespace Interactable
         {
             currentState = state;
             currentState.EnterState(this);
+            Debug.Log(currentState);
         }
 
         public override void OnEnable()
