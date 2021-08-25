@@ -24,7 +24,7 @@ namespace Interactable
         public RaycastHit hit;
         private RaycastHit enemyHit;
 
-        private Coroutine AttackAndMove;
+        public Coroutine AttackAndMove;
 
         private bool hasSubscribed = false;
 
@@ -36,6 +36,11 @@ namespace Interactable
         public readonly EnemyUnitAttackState attackState = new EnemyUnitAttackState();
 
         public NavMeshPath path;
+
+        private RangeDetection DetectionRangeScript;
+        private BoxCollider DetectionRange;
+
+        [HideInInspector] public Entity unitToAttack;
         
         protected override void Start()
         {
@@ -57,6 +62,9 @@ namespace Interactable
                 TransisitonToState(moveState);
                 canBeAttacked = true;
                 path = new NavMeshPath();
+                DetectionRangeScript = GetComponentInChildren<RangeDetection>();
+                DetectionRange = DetectionRangeScript._collider;
+                DetectionRangeScript.ChangeSizeOfRangeDetector(DetectionRange,(int)minRangeToAttack);
             }
         }
 
@@ -79,40 +87,38 @@ namespace Interactable
 
         protected virtual void ClickToDoAction(bool hasClicked)
         {
-            if (hasClicked)
-            {
-                //Gets the mouse position whenever you click
-                var found = PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out hit);
-                var entityClicked = hit.collider.GetComponent<Entity>();
 
-                if (!gameObject.activeSelf) return;
-                if (!found) return;
-                if (entityClicked && entityClicked.canBeAttacked)
+            //Gets the mouse position whenever you click
+            var found = PlayerHandler.PlayerHandlerInstance.cameraController.GetMousePosition(out hit);
+            var entityClicked = hit.collider.GetComponent<Entity>();
+
+            if (!gameObject.activeSelf) return;
+            if (!found) return;
+            if (entityClicked && entityClicked.canBeAttacked)
+            {
+                if (canAttack)
                 {
-                    if (canAttack)
+                    enemyHit = hit;
+                    //Sets the coroutine variable to store it and stop it.
+                    if (AttackAndMove == null)
                     {
-                        enemyHit = hit;
-                        //Sets the coroutine variable to store it and stop it.
-                        if (AttackAndMove == null)
-                        {
-                            AttackAndMove = StartCoroutine(MoveToTargetThenAttack());
-                        }
-                    }
-                    else
-                    {
-                        MoveToTarget(hit);
+                        AttackAndMove = StartCoroutine(MoveToTargetThenAttack());
                     }
                 }
-                else if (!PlayerSelectedUnits.holdingDownButton && !PlayerInputMouse.IsPointerOverUIObject())
+                else
                 {
                     MoveToTarget(hit);
-                    enemyHit = new RaycastHit();
-                    if (AttackAndMove != null)
-                    {
-                        StopCoroutine(AttackAndMove);
-                        AttackAndMove = null;
-                    }
                 }
+            }
+            else if (!PlayerSelectedUnits.holdingDownButton && !PlayerInputMouse.IsPointerOverUIObject())
+            {
+                MoveToTarget(hit);
+                enemyHit = new RaycastHit();
+                if (AttackAndMove != null)
+                {
+                    StopCoroutine(AttackAndMove);
+                    AttackAndMove = null;
+                } 
             }
         }
 
@@ -134,7 +140,7 @@ namespace Interactable
             agent.isStopped = false;
         }
 
-        public IEnumerator MoveToTargetThenAttack()
+        private IEnumerator MoveToTargetThenAttack()
         {
             if (enemyHit.collider.GetComponent<Entity>())
             {
@@ -164,8 +170,38 @@ namespace Interactable
                 AttackAndMove = null;
             }
         }
+        public IEnumerator EnemyAttack()
+        {
+            if (unitToAttack == null) yield break;
+            while (!unitToAttack.isDead)
+            {
+                var distance = (transform.position - unitToAttack.transform.position).sqrMagnitude;
+                if (distance > minRangeToAttack)
+                {
+                    agent.isStopped = false;
+                    agent.destination = unitToAttack.transform.position;
+                    yield return new WaitForSeconds(0.0001f);
+                }
+                else
+                {
 
-        protected void Attack()
+                    transform.LookAt(unitToAttack.transform.position);
+                    agent.isStopped = true;
+                    Attack();
+                    yield return new WaitForSeconds(attackTimer);
+                }
+            }
+
+            if (AttackAndMove != null)
+            {
+                StopCoroutine(AttackAndMove);
+                AttackAndMove = null;
+                unitToAttack = null;
+                TransisitonToState(moveState);
+            }
+        }
+
+        private void Attack()
         {
             var bulletObject = Instantiate(bullet, bulletSpawnPosition.transform);
             bulletObject.GetComponent<Bullet>().Setup(bulletSpawnPosition.transform.forward);
@@ -203,10 +239,9 @@ namespace Interactable
 
         public override void OnDisable()
         {
-            UnitManager.SelectableUnits.Remove(gameObject);
-            if (!gameObject.activeSelf) return;
             base.OnDisable();
             UnitManager.SelectableUnits.Remove(gameObject);
+            if (!gameObject.activeSelf) return;
             if (!hasSubscribed) return;
             if (isEnemy) return;
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);

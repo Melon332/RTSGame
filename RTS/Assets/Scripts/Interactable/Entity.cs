@@ -69,9 +69,7 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
         {
             if (!isEnemy)
             {
-                isDead = true;
                 OnDeselect();
-                gameObject.SetActive(false);
                 UnitManager.SelectableUnits.Remove(gameObject);
                 UnitManager.Instance.selectedAttackingUnits.Remove(gameObject);
                 UnitManager.Instance.selectedNonLethalUnits.Remove(gameObject);
@@ -79,11 +77,11 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
             }
             else
             {
-                isDead = true;
                 OnDeselect();
-                gameObject.SetActive(false);
                 GameManager._enemyManager.RemoveEnemyFromList(this);
             }
+            gameObject.SetActive(false);
+            isDead = true;
         }
         else
         {
@@ -113,11 +111,13 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
 
     public virtual void OnDisable()
     {
-        
+        if (isEnemy) return;
+        PlayerManager.Instance.playerUnits.Remove(this);
     }
 
     public virtual void OnEnable()
     {
-        
+        if (isEnemy) return;
+        PlayerManager.Instance.playerUnits.Add(this);
     }
 }

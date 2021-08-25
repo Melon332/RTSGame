@@ -18,6 +18,11 @@ public class SupplyDepo : Entity
         hasBeenConstructed = true;
     }
 
+    public override void OnEnable()
+    {
+        
+    }
+
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.GetComponent<Harvester>() && other.gameObject.GetComponent<Harvester>().wantsToCollectMoney && other.GetComponent<Harvester>().targetedDepo == gameObject)

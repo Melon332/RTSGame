@@ -55,6 +55,7 @@ public class Buildings : Entity, IPowerConsumption
     }
     public override void OnDisable()
     {
+        base.OnDisable();
         hitPoints = 0;
         if (isEnemy) return;
         //Incase that it is a finished building, remove power and check if the player has enough power
@@ -371,6 +372,7 @@ public class Buildings : Entity, IPowerConsumption
 
     public override void OnEnable()
     {
+        base.OnEnable();
         Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
         if (buildingHitBox == null)
         {

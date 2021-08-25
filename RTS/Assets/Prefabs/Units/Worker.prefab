@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 1511902823261568796}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.11, y: 0.36, z: 0}
-  m_LocalScale: {x: 1.0318719, y: 0.75172, z: 1.0662397}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
   - {fileID: 202946718941485424}
   - {fileID: 9201689028502114564}
@@ -159,6 +159,7 @@ MonoBehaviour:
   objectCost: 0
   costOfPower: 0
   canBeAttacked: 0
+  isEnemy: 0
   isBuilding: 0
   pictureOfObject: {fileID: 21300000, guid: 16512f55bdbc4964087080a7febce029, type: 3}
   isSelectable: 1
@@ -168,13 +169,14 @@ MonoBehaviour:
   selectionBox: {fileID: 8048508859873732235, guid: 5d35ea2f3e8421141987d5d90568f941,
     type: 3}
   hasBeenConstructed: 0
-  hasBeenActivated: 0
+  hasBeenPickedUpByPool: 0
   amountOfHpPerSecond: 15
   bullet: {fileID: 0}
   bulletSpawnPosition: {fileID: 0}
   minRangeToAttack: 0
   attackTimer: 0
   damageAmount: 0
+  unitToAttack: {fileID: 0}
   targetedBuilding: 0
 --- !u!1 &2601836108452762091
 GameObject:

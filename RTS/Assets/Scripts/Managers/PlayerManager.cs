@@ -36,6 +36,8 @@ public class PlayerManager : MonoBehaviour
    public int RequiredPower {  get; private set; }
    public int startingMoney;
 
+   public List<Entity> playerUnits = new List<Entity>();
+
    private void Awake()
    {
        hasEnoughPower = true;
