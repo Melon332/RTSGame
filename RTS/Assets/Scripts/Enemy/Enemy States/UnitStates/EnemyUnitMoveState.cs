@@ -5,13 +5,20 @@ using UnityEngine;
 
 public class EnemyUnitMoveState : EnemyUnitBaseState
 {
+    private Vector3 posToMoveTo;
     public override void EnterState(Units entity)
     {
-        throw new System.NotImplementedException();
+        posToMoveTo = new Vector3(Random.Range(entity.transform.position.x, 100), 0,
+            Random.Range(entity.transform.position.z, 100));
+        entity.agent.SetDestination(posToMoveTo);
     }
 
     public override void Update(Units entity)
     {
-        throw new System.NotImplementedException();
+        if(entity.agent.hasPath) return;
+        posToMoveTo = new Vector3(Random.Range(entity.transform.position.x, 100), 0,
+                Random.Range(entity.transform.position.z, 100));
+            entity.agent.SetDestination(posToMoveTo);
+        
     }
 }

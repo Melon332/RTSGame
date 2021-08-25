@@ -29,6 +29,11 @@ namespace Interactable
         private bool hasSubscribed = false;
 
         private MeshRenderer[] meshes;
+
+        private EnemyUnitBaseState currentState;
+
+        public readonly EnemyUnitMoveState moveState = new EnemyUnitMoveState();
+        public readonly EnemyUnitAttackState attackState = new EnemyUnitAttackState();
         
         protected override void Start()
         {
@@ -43,6 +48,20 @@ namespace Interactable
                 {
                     mesh.enabled = false;
                 }
+            }
+
+            if (isEnemy)
+            {
+                TransisitonToState(moveState);
+                canBeAttacked = true;
+            }
+        }
+
+        private void Update()
+        {
+            if (isEnemy)
+            {
+                currentState.Update(this);
             }
         }
 
@@ -112,7 +131,7 @@ namespace Interactable
             agent.isStopped = false;
         }
 
-        protected virtual IEnumerator MoveToTargetThenAttack()
+        public IEnumerator MoveToTargetThenAttack()
         {
             if (enemyHit.collider.GetComponent<Entity>())
             {
@@ -186,6 +205,12 @@ namespace Interactable
             UnitManager.SelectableUnits.Remove(gameObject);
             if (!hasSubscribed) return;
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
+        }
+
+        public void TransisitonToState(EnemyUnitBaseState state)
+        {
+            currentState = state;
+            currentState.EnterState(this);
         }
 
         public override void OnEnable()

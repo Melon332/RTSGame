@@ -380,6 +380,5 @@ public class Buildings : Entity, IPowerConsumption
         isDead = false;
         buildingHitBox.enabled = false;
         buildingHitBox.carving = false;
-        Debug.Log("Hello");
     }
 }

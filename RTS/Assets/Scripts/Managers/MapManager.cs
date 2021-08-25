@@ -30,7 +30,7 @@ namespace Managers
         private SupplyDepo[] _supplyDepos;
 
         public GameObject currentlyActiveMap;
-        public static GameObject _placeToSpawnPlayer;
+        private static GameObject _placeToSpawnPlayer;
 
         // Start is called before the first frame update
         void Awake()

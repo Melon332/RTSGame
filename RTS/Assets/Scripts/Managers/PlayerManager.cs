@@ -71,7 +71,6 @@ public class PlayerManager : MonoBehaviour
            UIManager.Instance.MiniMapState(false);
            hasEnoughPower = false;
        }
-       Debug.Log(RequiredPower);
    }
    public IEnumerator RemoveMoney(Entity obj)
    {

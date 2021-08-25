@@ -12,6 +12,6 @@ public class EnemyUnitAttackState : EnemyUnitBaseState
 
     public override void Update(Units entity)
     {
-        throw new System.NotImplementedException();
+        
     }
 }
