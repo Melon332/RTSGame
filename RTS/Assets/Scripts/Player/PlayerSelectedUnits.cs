@@ -68,13 +68,21 @@ namespace Player
                         hit.collider.GetComponent<IInteractable>().OnClicked();
                         //Calls a OnClicked Method to the clicked unit
                         //Adds it to a list but if it already exists on the list, continue
+                        //if the clicked target is an enemy, don't add it.
                         if (!UnitManager.Instance.selectedAttackingUnits.Contains(hit.collider.gameObject))
                         {
                             //If it's a unit that you can attack with, add it to the lethal units list.
                             if (hit.collider.CompareTag("Units"))
                             {
-                                PlayerManager.Instance.hasSelectedUnits = true;
-                                UnitManager.Instance.selectedAttackingUnits.Add(hit.collider.gameObject);
+                                if (!hit.collider.GetComponent<Entity>().isEnemy)
+                                {
+                                    PlayerManager.Instance.hasSelectedUnits = true;
+                                    UnitManager.Instance.selectedAttackingUnits.Add(hit.collider.gameObject);
+                                }
+                                else
+                                {
+                                    UnitManager.Instance.selectedNonLethalUnits.Add(hit.collider.gameObject);
+                                }
                             }
                             else if (hit.collider.GetComponent<Entity>().isSelectable &&
                                      !hit.collider.GetComponent<Entity>().canAttack &&

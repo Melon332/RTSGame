@@ -34,6 +34,8 @@ namespace Interactable
 
         public readonly EnemyUnitMoveState moveState = new EnemyUnitMoveState();
         public readonly EnemyUnitAttackState attackState = new EnemyUnitAttackState();
+
+        public NavMeshPath path;
         
         protected override void Start()
         {
@@ -54,6 +56,7 @@ namespace Interactable
             {
                 TransisitonToState(moveState);
                 canBeAttacked = true;
+                path = new NavMeshPath();
             }
         }
 
@@ -174,6 +177,7 @@ namespace Interactable
             if (hasBeenConstructed)
             {
                 base.OnClicked();
+                if (isEnemy) return;
                 Subscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
             }
         }
@@ -204,6 +208,7 @@ namespace Interactable
             base.OnDisable();
             UnitManager.SelectableUnits.Remove(gameObject);
             if (!hasSubscribed) return;
+            if (isEnemy) return;
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
         }
 

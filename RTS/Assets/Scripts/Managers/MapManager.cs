@@ -31,6 +31,7 @@ namespace Managers
 
         public GameObject currentlyActiveMap;
         private static GameObject _placeToSpawnPlayer;
+        
 
         // Start is called before the first frame update
         void Awake()
