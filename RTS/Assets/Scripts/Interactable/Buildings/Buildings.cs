@@ -59,6 +59,7 @@ public class Buildings : Entity, IPowerConsumption
         hitPoints = 0;
         if (isEnemy) return;
         //Incase that it is a finished building, remove power and check if the player has enough power
+        if (PlayerHandler.PlayerHandlerInstance == null) return;
         if (PlayerHandler.PlayerHandlerInstance.characterInput != null)
         {
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
@@ -330,7 +331,6 @@ public class Buildings : Entity, IPowerConsumption
         if (other.CompareTag("Ground")) return;
         canPlace = false;
         if (!other.CompareTag("Worker")) return;
-        Debug.Log(other.gameObject.GetComponent<Workers>().targetedBuilding);
         if (other.gameObject.GetComponent<Workers>().targetedBuilding == gameObject.GetInstanceID())
         {
             builders.Add(other.gameObject);

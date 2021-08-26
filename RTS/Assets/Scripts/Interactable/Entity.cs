@@ -112,7 +112,12 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
     public virtual void OnDisable()
     {
         if (isEnemy) return;
-        PlayerManager.Instance.playerUnits.Remove(this);
+        if (PlayerManager.Instance == null) return;
+        if (PlayerManager.Instance.playerUnits.Contains(this))
+        {
+            PlayerManager.Instance.playerUnits.Remove(this);
+        }
+
         if (UnitManager.Instance.selectedAttackingUnits.Count == 0 ||
             UnitManager.Instance.selectedNonLethalUnits.Count == 0)
         {
