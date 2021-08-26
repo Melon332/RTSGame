@@ -11,6 +11,8 @@ public class Bullet : MonoBehaviour
 
     private Vector3 shootDir;
 
+    [HideInInspector] public Entity instigator;
+
     private void Start()
     {
         Destroy(gameObject,5f);
@@ -29,7 +31,7 @@ public class Bullet : MonoBehaviour
     {
         if (other.GetComponent<Entity>())
         {
-            other.GetComponent<Entity>().OnHit(damageAmount);
+            other.GetComponent<Entity>().OnHit(damageAmount,instigator);
             Destroy(gameObject);
         }
     }

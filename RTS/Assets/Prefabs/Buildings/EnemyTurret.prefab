@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 2000472380548685961}
   m_Layer: 0
   m_Name: EnemyTurret
-  m_TagString: Untagged
+  m_TagString: Buildings
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -244,21 +244,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHitPoints: 2500
-  hitPoints: 2500
+  hitPoints: 0
   nameOfUnit: Turret
   objectCost: 3000
   costOfPower: 30
-  canBeAttacked: 1
+  canBeAttacked: 0
+  isEnemy: 0
   isBuilding: 1
   pictureOfObject: {fileID: 0}
   isSelectable: 0
   isDead: 0
   canAttack: 1
-  isEnemy: 1
   agent: {fileID: 0}
   selectionBox: {fileID: 8048508859873732235, guid: 5d35ea2f3e8421141987d5d90568f941,
     type: 3}
   hasBeenConstructed: 0
+  hasBeenPickedUpByPool: 0
   hasFinishedBuilding: 0
   hasPlacedBuilding: 0
   dropBuildingIntoFloor: {x: 0, y: -0.5, z: 0}

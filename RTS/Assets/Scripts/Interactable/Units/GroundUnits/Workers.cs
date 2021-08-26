@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Workers : GroundUnits
 {
-    [HideInInspector] public int targetedBuilding;
+    public int targetedBuilding;
 
     public override void OnClicked()
     {
@@ -44,8 +44,12 @@ public class Workers : GroundUnits
 
     protected override void MoveToTarget(RaycastHit target)
     {
+        if (!target.collider.GetComponent<Buildings>())
+        {
+            ClearBuildingID();
+            Debug.Log("I am clearing my number now.");
+        }
         base.MoveToTarget(target);
-        ClearBuildingID();
     }
 
     private void ContinueBuilding(RaycastHit target)

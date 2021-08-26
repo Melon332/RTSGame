@@ -561,6 +561,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2000472380548685961, guid: 9052fc65a53c50143afa7a4b37430514,
         type: 3}
+      propertyPath: isEnemy
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2000472380548685961, guid: 9052fc65a53c50143afa7a4b37430514,
+        type: 3}
       propertyPath: hitPoints
       value: 20
       objectReference: {fileID: 0}
@@ -1344,6 +1349,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3930359681585273088}
     m_Modifications:
+    - target: {fileID: 2000472380548685961, guid: 9052fc65a53c50143afa7a4b37430514,
+        type: 3}
+      propertyPath: isEnemy
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2000472380548685961, guid: 9052fc65a53c50143afa7a4b37430514,
         type: 3}
       propertyPath: hitPoints

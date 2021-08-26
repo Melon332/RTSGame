@@ -4,6 +4,6 @@ namespace Interactable
 {
     public interface IDestructable
     {
-        void OnHit(int damage);
+        void OnHit(int damage,Entity instigator);
     }
 }

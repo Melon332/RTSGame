@@ -170,7 +170,7 @@ namespace Interactable
                 AttackAndMove = null;
             }
         }
-        public IEnumerator EnemyAttack()
+        public IEnumerator AggroAttack()
         {
             while (!unitToAttack.isDead && unitToAttack != null)
             {
@@ -199,7 +199,6 @@ namespace Interactable
                 }
                 if (unitToAttack == null) yield break;
             }
-            
         }
 
         private void Attack()
@@ -207,6 +206,7 @@ namespace Interactable
             var bulletObject = Instantiate(bullet, bulletSpawnPosition.transform);
             bulletObject.GetComponent<Bullet>().Setup(bulletSpawnPosition.transform.forward);
             bulletObject.GetComponent<Bullet>().damageAmount = damageAmount;
+            bulletObject.GetComponent<Bullet>().instigator = this;
         }
 
         public override void OnClicked()
@@ -265,6 +265,17 @@ namespace Interactable
         {
             hitPoints = maxHitPoints;
             hasBeenConstructed = true;
+        }
+
+        public override void OnHit(int damage, Entity instigator)
+        {
+            base.OnHit(damage, instigator);
+            if (isEnemy) return;
+            if (AttackAndMove == null)
+            {
+                unitToAttack = instigator;
+                AttackAndMove = StartCoroutine(AggroAttack());
+            }
         }
     }
 }

@@ -23,6 +23,11 @@ public class SupplyDepo : Entity
         
     }
 
+    public override void OnDisable()
+    {
+       
+    }
+
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.GetComponent<Harvester>() && other.gameObject.GetComponent<Harvester>().wantsToCollectMoney && other.GetComponent<Harvester>().targetedDepo == gameObject)

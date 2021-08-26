@@ -23,8 +23,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1431557599070158896}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.012, y: 0.374, z: 1.716}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.012000084, y: 0.029999971, z: 1.716}
   m_LocalScale: {x: -0.12852, y: 0.17604, z: 1}
   m_Children: []
   m_Father: {fileID: 3914474247965226802}
@@ -57,7 +57,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1809337502925164925}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.012, y: 0.374, z: 1.04}
+  m_LocalPosition: {x: -0.012, y: 0.03, z: 1.04}
   m_LocalScale: {x: -0.12852, y: 0.17604, z: 1}
   m_Children: []
   m_Father: {fileID: 3914474247965226802}
@@ -269,7 +269,7 @@ MonoBehaviour:
   objectCost: 1500
   costOfPower: 0
   canBeAttacked: 0
-  isEnemy: 1
+  isEnemy: 0
   isBuilding: 0
   pictureOfObject: {fileID: 21300000, guid: 8b29b4cdcec655d48aa5fc9d91f6a791, type: 3}
   isSelectable: 0
@@ -277,7 +277,7 @@ MonoBehaviour:
   canAttack: 1
   agent: {fileID: 0}
   selectionBox: {fileID: 0}
-  hasBeenConstructed: 1
+  hasBeenConstructed: 0
   hasBeenPickedUpByPool: 0
   amountOfHpPerSecond: 5
   bullet: {fileID: 7999903933720480626, guid: c50fc26f167691f4b976156d6791b5bf, type: 3}

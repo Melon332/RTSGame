@@ -20,9 +20,9 @@ namespace Interactable
             Debug.Log("I am a debris look at me!");
         }
 
-        public override void OnHit(int damage)
+        public override void OnHit(int damage, Entity instigator)
         {
-            base.OnHit(damage);
+            base.OnHit(damage,instigator);
             UnitManager.SelectableUnits.Remove(gameObject);
             UnitManager.Instance.selectedAttackingUnits.Remove(gameObject);
         }

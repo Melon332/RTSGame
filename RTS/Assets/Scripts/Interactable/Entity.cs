@@ -63,7 +63,7 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
         
     }
 
-    public virtual void OnHit(int damage)
+    public virtual void OnHit(int damage, Entity instigator)
     {
         if (hitPoints <= 0)
         {
@@ -113,6 +113,11 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
     {
         if (isEnemy) return;
         PlayerManager.Instance.playerUnits.Remove(this);
+        if (UnitManager.Instance.selectedAttackingUnits.Count == 0 ||
+            UnitManager.Instance.selectedNonLethalUnits.Count == 0)
+        {
+            OnDeselect();
+        }
     }
 
     public virtual void OnEnable()

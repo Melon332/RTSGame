@@ -207,10 +207,11 @@ public class Buildings : Entity, IPowerConsumption
         }
     }
 
-    protected virtual IEnumerator BuildBuilding()
+    private IEnumerator BuildBuilding()
     {
         PlayerManager.Instance.MoneyPlayerHad = PlayerManager.Instance.AmountOfMoneyPlayerHas;
         UIManager.Instance.DecreasePlayerMoney();
+        PlayerManager.Instance.playerUnits.Add(this);
 
         float step = buildingSpeed * Time.deltaTime;
         targetToMoveBuilding = new Vector3(transform.position.x, Mathf.Abs(dropBuildingIntoFloor.y), transform.position.z);
@@ -329,6 +330,7 @@ public class Buildings : Entity, IPowerConsumption
         if (other.CompareTag("Ground")) return;
         canPlace = false;
         if (!other.CompareTag("Worker")) return;
+        Debug.Log(other.gameObject.GetComponent<Workers>().targetedBuilding);
         if (other.gameObject.GetComponent<Workers>().targetedBuilding == gameObject.GetInstanceID())
         {
             builders.Add(other.gameObject);
@@ -350,9 +352,9 @@ public class Buildings : Entity, IPowerConsumption
         builders.Remove(other.gameObject);
     }
 
-    public override void OnHit(int damage)
+    public override void OnHit(int damage, Entity instigator)
     {
-        base.OnHit(damage);
+        base.OnHit(damage,instigator);
         if (isEnemy) return;
         buildingCollider.isTrigger = true;
     }

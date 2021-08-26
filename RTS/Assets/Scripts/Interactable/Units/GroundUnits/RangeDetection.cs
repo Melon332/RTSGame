@@ -20,11 +20,11 @@ public class RangeDetection : MonoBehaviour
         collider.size = new Vector3(value, 1, value);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         foreach (var playerUnits in PlayerManager.Instance.playerUnits)
         {
-            if (other.gameObject == playerUnits.gameObject && playerUnits.hasBeenConstructed)
+            if (other.gameObject == playerUnits.gameObject && playerUnits.hasBeenConstructed && unit.AttackAndMove == null)
             {
                 unit.unitToAttack = playerUnits;
                 unit.TransisitonToState(unit.attackState);

@@ -7,11 +7,11 @@ public class EnemyUnitAttackState : EnemyUnitBaseState
 {
     public override void EnterState(Units entity)
     {
-        Debug.Log("Hello");
-        entity.AttackAndMove = entity.StartCoroutine(entity.EnemyAttack());
+        entity.AttackAndMove = entity.StartCoroutine(entity.AggroAttack());
     }
 
     public override void Update(Units entity)
     {
+
     }
 }
