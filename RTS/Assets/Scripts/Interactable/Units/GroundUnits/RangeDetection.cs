@@ -13,11 +13,12 @@ public class RangeDetection : MonoBehaviour
     {
         _collider = GetComponent<BoxCollider>();
         unit = GetComponentInParent<Units>();
+        ChangeSizeOfRangeDetector(_collider,25);
     }
 
     public void ChangeSizeOfRangeDetector(BoxCollider collider, int value)
     {
-        collider.size = new Vector3(value / 2, 1, value / 2);
+        collider.size = new Vector3(value, 1, value);
     }
 
     private void OnTriggerStay(Collider other)

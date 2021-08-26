@@ -37,8 +37,8 @@ namespace Interactable
 
         public NavMeshPath path;
 
-        private RangeDetection DetectionRangeScript;
-        private BoxCollider DetectionRange;
+        [HideInInspector] public RangeDetection DetectionRangeScript;
+        [HideInInspector] public BoxCollider DetectionRange;
 
         [HideInInspector] public Entity unitToAttack;
         protected override void Start()
@@ -47,9 +47,6 @@ namespace Interactable
             if (isEnemy)
             {
                 path = new NavMeshPath();
-                DetectionRangeScript = GetComponentInChildren<RangeDetection>();
-                DetectionRange = DetectionRangeScript._collider;
-                DetectionRangeScript.ChangeSizeOfRangeDetector(DetectionRange, (int) minRangeToAttack);
             }
         }
 
@@ -207,6 +204,7 @@ namespace Interactable
         public override void OnDeselect()
         {
             base.OnDeselect();
+            if (isEnemy) return;
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
         }
 
@@ -237,13 +235,11 @@ namespace Interactable
         {
             currentState = state;
             currentState.EnterState(this);
-            Debug.Log(currentState);
         }
 
         public override void OnEnable()
         {
             base.OnEnable();
-            UnitManager.SelectableUnits.Add(gameObject);
             canBeAttacked = false;
             isSelectable = true;
             //Disable all the meshes to make the unit invisible
@@ -257,8 +253,14 @@ namespace Interactable
             }
             if (isEnemy)
             {
+                EnemyManager.Instance.enemiesOnMap.Add(this);
+                path = new NavMeshPath();
                 canBeAttacked = true;
                 TransisitonToState(moveState);
+            }
+            else
+            {
+                UnitManager.SelectableUnits.Add(gameObject);
             }
         }
 
@@ -272,7 +274,7 @@ namespace Interactable
         {
             base.OnHit(damage, instigator);
             if (isEnemy) return;
-            if (AttackAndMove == null)
+            if (AttackAndMove == null && canAttack)
             {
                 unitToAttack = instigator;
                 AttackAndMove = StartCoroutine(AggroAttack());

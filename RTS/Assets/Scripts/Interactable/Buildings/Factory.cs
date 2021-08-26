@@ -20,10 +20,22 @@ public class Factory : Buildings
     private Coroutine ConstructUnit;
 
     private Vector3 rallyPointPosition;
+    
+    private EnemyBuildingBaseState currentState;
+    
+    public readonly EnemyBuildingCheckUnitState checkForUnits = new EnemyBuildingCheckUnitState();
+    public readonly EnemyBuildingStateConstructUnits constructUnits = new EnemyBuildingStateConstructUnits();
+
+    [SerializeField] private GameObject spawnPosition;
+    
     protected override void Start()
     {
         base.Start();
         _objectPool = FindObjectOfType<ObjectPool>();
+        if (isEnemy)
+        {
+            InvokeRepeating(nameof(TransisitonToState),5,10);
+        }
     }
 
     public void StartConstructing()
@@ -39,6 +51,18 @@ public class Factory : Buildings
             createUnitCoroutine = StartCoroutine(CreateUnit(textObject));
         }
     }
+    
+    public void TransisitonToState()
+    {
+        currentState = checkForUnits;
+        currentState.EnterState(this);
+    }
+    public void TransisitonToState(EnemyBuildingBaseState state)
+    {
+        currentState = state;
+        currentState.EnterState(this);
+    }
+
 
     private IEnumerator CreateUnit(GameObject textBox)
     {
@@ -49,8 +73,14 @@ public class Factory : Buildings
                 //1. 
                 yield return new WaitForSeconds(0.1f); 
                 currentUnitConstructing = unitQueue[0];
-                currentUnitConstructing.SetActive(true);
                 currentUnitConstructing.transform.position = transform.position; 
+                if (isEnemy)
+                {
+                    currentUnitConstructing.GetComponent<Units>().isEnemy = true;
+                    currentUnitConstructing.GetComponent<Units>().isSelectable = false;
+                    currentUnitConstructing.transform.position = spawnPosition.transform.position;
+                }
+                currentUnitConstructing.SetActive(true);
                 currentUnitConstructing.GetComponent<MeshRenderer>().enabled = false;
                isConstructingUnit = true;
                PlayerManager.Instance.MoneyPlayerHad = PlayerManager.Instance.AmountOfMoneyPlayerHas;
@@ -85,9 +115,12 @@ public class Factory : Buildings
                 }
                 else
                 {
-                    var position = new Vector3(transform.position.x, transform.position.y,
-                        transform.position.z + 5); 
-                    unitComponent.MoveForward(position);
+                    if (!unitComponent.isEnemy)
+                    {
+                        var position = new Vector3(transform.position.x, transform.position.y,
+                            transform.position.z + 5);
+                        unitComponent.MoveForward(position);
+                    }
                 }
                 //1. Makes the unit interactable
                 //2. Sets the current unit to null

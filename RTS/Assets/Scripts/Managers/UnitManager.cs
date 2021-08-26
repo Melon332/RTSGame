@@ -53,6 +53,16 @@ namespace Managers
                 Debug.Log("Sorry, you need more money!");
             }
         }
+        public void EnemyBuildUnits(string unitName, Factory factoryToBuildOn)
+        {
+            if (factoryToBuildOn.unitQueue.Count < 9)
+            {
+                factoryToBuildOn.unitQueue
+                    .Add(_objectPool.GetAvaliableObject(unitName));
+                _objectPool.GetAvaliableObject(unitName).GetComponent<Entity>().hasBeenPickedUpByPool = true;
+            }
+            factoryToBuildOn.StartConstructing();
+        }
     }
 }
 
