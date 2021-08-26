@@ -5,11 +5,13 @@ using UnityEngine;
 
 public class EnemyBuildingStateConstructUnits : EnemyBuildingBaseState
 {
-    public override void EnterState(Factory entity)
+    public override void EnterState(Factory factory)
     {
-        while (entity.GetComponent<Factory>().unitQueue.Count < 5)
+        //Construct 5 units
+        while (factory.GetComponent<Factory>().unitQueue.Count < 5)
         {
-            UnitManager.Instance.EnemyBuildUnits("Tank", entity.GetComponent<Factory>());
+            UnitManager.Instance.EnemyBuildUnits("Tank", factory.GetComponent<Factory>());
         }
+        
     }
 }

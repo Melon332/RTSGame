@@ -35,6 +35,7 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
     public GameObject selectionBox;
     public bool hasBeenConstructed;
     [HideInInspector] public bool hasBeenPickedUpByPool;
+    protected bool hasBeenSelected;
 
     protected virtual void Awake()
     {
@@ -100,17 +101,24 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
             Debug.Log("Sorry, you are missing a picture for this unit " + nameOfUnit + " Maybe you forgot to add it?");
         }
         selectionBox.SetActive(true);
+        hasBeenSelected = true;
     }
 
     public virtual void OnDeselect()
     {
         selectionBox.SetActive(false);
+        hasBeenSelected = false;
         if (PlayerManager.Instance.hasSelectedUnits) return;
         UIManager.Instance.PictureOfSelectedUnits(null);
     }
 
     public virtual void OnDisable()
     {
+        if (isEnemy)
+        {
+            EnemyManager.Instance.enemiesOnMap.Remove(this);
+        }
+
         if (isEnemy) return;
         if (PlayerManager.Instance == null) return;
         if (PlayerManager.Instance.playerUnits.Contains(this))

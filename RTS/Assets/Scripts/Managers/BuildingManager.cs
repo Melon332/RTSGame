@@ -67,13 +67,13 @@ public class BuildingManager : MonoBehaviour
     public void DestroyBuilding()
     {
         StartCoroutine(PlayerManager.Instance.AddMoney(currentSelectedBuilding.GetComponent<Entity>()));
-        currentSelectedBuilding.SetActive(false);
         var currentBuilding = currentSelectedBuilding.GetComponent<Buildings>();
         currentBuilding.hitPoints = 0;
         currentBuilding.hasPlacedBuilding = false;
         currentBuilding.hasFinishedBuilding = false;
         currentBuilding.builders.Clear();
         currentBuilding = null;
+        currentSelectedBuilding.SetActive(false);
         currentSelectedBuilding = null;
     }
 }

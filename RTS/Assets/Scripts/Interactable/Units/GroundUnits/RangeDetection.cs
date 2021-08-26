@@ -16,7 +16,7 @@ public class RangeDetection : MonoBehaviour
         ChangeSizeOfRangeDetector(_collider,25);
     }
 
-    public void ChangeSizeOfRangeDetector(BoxCollider collider, int value)
+    private void ChangeSizeOfRangeDetector(BoxCollider collider, int value)
     {
         collider.size = new Vector3(value, 1, value);
     }

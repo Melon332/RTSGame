@@ -5,12 +5,14 @@ using UnityEngine;
 
 public class EnemyUnitAttackState : EnemyUnitBaseState
 {
-    public override void EnterState(Units entity)
+    public override void EnterState(Units unit)
     {
-        entity.AttackAndMove = entity.StartCoroutine(entity.AggroAttack());
+        //Start attacking an unit
+        if (!unit.hasBeenConstructed) return;
+        unit.AttackAndMove = unit.StartCoroutine(unit.AggroAttack());
     }
 
-    public override void Update(Units entity)
+    public override void Update(Units unit)
     {
 
     }

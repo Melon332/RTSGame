@@ -4,5 +4,5 @@ using UnityEngine;
 
 public abstract class EnemyBuildingBaseState
 {
-    public abstract void EnterState(Factory entity);
+    public abstract void EnterState(Factory factory);
 }

@@ -6,19 +6,27 @@ using UnityEngine;
 
 public class EnemyBuildingCheckUnitState : EnemyBuildingBaseState
 {
-    public override void EnterState(Factory entity)
+    int tanksOnMap;
+    public override void EnterState(Factory factory)
     {
+        tanksOnMap += factory.unitQueue.Count;
+        //Check if there is less than 4 units on the map. If there is, switch state.
         Debug.Log("I am now checking how many tanks there are: ");
-        foreach (var amountOfTanks in EnemyManager.Instance.enemiesOnMap)
+        foreach (var enemyTanks in EnemyManager.Instance.enemiesOnMap)
         {
-            var tanksOnMap = 0;
-            if (!amountOfTanks.GetComponent<Tank>()) continue;
+            if (!enemyTanks.GetComponent<Tank>()) continue;
             tanksOnMap++;
-            if (tanksOnMap <= 4)
-            {
-                   entity.TransisitonToState(entity.constructUnits);
-            }
             Debug.Log(tanksOnMap);
         }
+        if (tanksOnMap <= 4)
+        {
+            factory.TransisitonToState(factory.constructUnits);
+        }
+
+        if (tanksOnMap <= 0)
+        {
+            factory.TransisitonToState(factory.constructUnits);
+        }
+        tanksOnMap = 0;
     }
 }

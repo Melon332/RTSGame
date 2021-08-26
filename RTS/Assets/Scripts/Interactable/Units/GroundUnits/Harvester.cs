@@ -71,6 +71,7 @@ public class Harvester : Units
     private void MoveToCollectMoney()
     {
         if (agent == null) return;
+        if (!hasBeenConstructed) return;
         transform.Rotate(targetedDepo.transform.position);
         agent.SetDestination(targetedDepo.transform.position);
         wantsToCollectMoney = true;

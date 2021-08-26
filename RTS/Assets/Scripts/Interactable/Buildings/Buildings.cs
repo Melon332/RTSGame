@@ -383,7 +383,15 @@ public class Buildings : Entity, IPowerConsumption
         }
         canPlace = true;
         isDead = false;
-        buildingHitBox.enabled = false;
-        buildingHitBox.carving = false;
+        if (isEnemy)
+        {
+            buildingHitBox.enabled = true;
+            buildingHitBox.carving = true;
+        }
+        else
+        {
+            buildingHitBox.enabled = false;
+            buildingHitBox.carving = false;
+        }
     }
 }

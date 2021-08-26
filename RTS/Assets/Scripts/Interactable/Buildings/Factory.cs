@@ -97,16 +97,17 @@ public class Factory : Buildings
                     unitComponent.hitPoints += unitComponent.amountOfHpPerSecond;
                     var equation = (unitComponent.hitPoints / unitComponent.maxHitPoints) * 100;
                     buildingText.text = "Constructing: " + equation.ToString("F0") + "%";
-                    if (PlayerManager.Instance.playerMoneyRemoval  == null)
+                    if (!isEnemy)
                     {
-                        PlayerManager.Instance.playerMoneyRemoval  = PlayerManager.Instance.StartCoroutine(PlayerManager.Instance.RemoveMoney(unitComponent));
+                        if (PlayerManager.Instance.playerMoneyRemoval == null)
+                        {
+                            PlayerManager.Instance.playerMoneyRemoval =
+                                PlayerManager.Instance.StartCoroutine(
+                                    PlayerManager.Instance.RemoveMoney(unitComponent));
+                        }
                     }
+
                     UIManager.Instance.DecreasePlayerMoney();
-                    //If money is less than or equal zero, pause the routine.
-                    while (PlayerManager.Instance.AmountOfMoneyPlayerHas <= 0)
-                    {
-                        yield return new WaitForSeconds(0.5f);
-                    }
                     yield return new WaitForSeconds(0.2f);
                 }
                 if (rallyPointPosition != Vector3.zero)
@@ -129,6 +130,10 @@ public class Factory : Buildings
                 //5. Update unit count
                 unitComponent.hasBeenConstructed = true;
                 unitComponent.ActivateAllMesh();
+                if (unitComponent.isEnemy)
+                {
+                    EnemyManager.Instance.enemiesOnMap.Add(unitComponent);
+                }
                 currentUnitConstructing = null;
                 isConstructingUnit = false;
                 textBox.SetActive(false);

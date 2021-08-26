@@ -205,6 +205,7 @@ namespace Interactable
         {
             base.OnDeselect();
             if (isEnemy) return;
+            if (!hasBeenSelected) return;
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
         }
 
@@ -253,7 +254,6 @@ namespace Interactable
             }
             if (isEnemy)
             {
-                EnemyManager.Instance.enemiesOnMap.Add(this);
                 path = new NavMeshPath();
                 canBeAttacked = true;
                 TransisitonToState(moveState);
