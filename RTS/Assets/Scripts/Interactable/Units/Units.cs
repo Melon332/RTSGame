@@ -41,30 +41,15 @@ namespace Interactable
         private BoxCollider DetectionRange;
 
         [HideInInspector] public Entity unitToAttack;
-        
         protected override void Start()
         {
             base.Start();
-            canBeAttacked = false;
-            isSelectable = true;
-            //Disable all the meshes to make the unit invisible
-            meshes = GetComponentsInChildren<MeshRenderer>();
-            if (!hasBeenConstructed)
-            {
-                foreach (var mesh in meshes)
-                {
-                    mesh.enabled = false;
-                }
-            }
-
             if (isEnemy)
             {
-                TransisitonToState(moveState);
-                canBeAttacked = true;
                 path = new NavMeshPath();
                 DetectionRangeScript = GetComponentInChildren<RangeDetection>();
                 DetectionRange = DetectionRangeScript._collider;
-                DetectionRangeScript.ChangeSizeOfRangeDetector(DetectionRange,(int)minRangeToAttack);
+                DetectionRangeScript.ChangeSizeOfRangeDetector(DetectionRange, (int) minRangeToAttack);
             }
         }
 
@@ -259,6 +244,22 @@ namespace Interactable
         {
             base.OnEnable();
             UnitManager.SelectableUnits.Add(gameObject);
+            canBeAttacked = false;
+            isSelectable = true;
+            //Disable all the meshes to make the unit invisible
+            meshes = GetComponentsInChildren<MeshRenderer>();
+            if (!hasBeenConstructed)
+            {
+                foreach (var mesh in meshes)
+                {
+                    mesh.enabled = false;
+                }
+            }
+            if (isEnemy)
+            {
+                canBeAttacked = true;
+                TransisitonToState(moveState);
+            }
         }
 
         public void ActivateUnit()

@@ -258,6 +258,7 @@ public class Buildings : Entity, IPowerConsumption
         buildingHitBox.carving = true;
         hasFinishedBuilding = true;
         OnBuildingComplete();
+        hasBeenConstructed = true;
         PlayerManager.Instance.playerMoneyRemoval  = null;
         UIManager.Instance.UpdateRequiredPowerText();
         //Destroys the text box.
