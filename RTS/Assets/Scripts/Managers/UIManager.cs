@@ -44,7 +44,12 @@ namespace Managers
         [SerializeField] private TextMeshProUGUI playerUnit;
         [SerializeField] private TextMeshProUGUI playerPower;
         [SerializeField] private TextMeshProUGUI requiredPower;
+        [SerializeField] private TextMeshProUGUI endingText;
+        
         [SerializeField] private RawImage minimapHUD;
+
+        
+        
 
         private bool panelIsDown;
         void Awake()
@@ -163,6 +168,25 @@ namespace Managers
         public void MiniMapState(bool state)
         {
             minimapHUD.gameObject.SetActive(state);
+        }
+        public void CheckEndingCondition()
+        {
+            if (GameManager.WinCondition())
+            {
+                endingText.text = "Congratz! You won! If you want to restart, press R";
+                Time.timeScale = 0;
+                ShowPanels(true,4);
+            }
+            else if (GameManager.LoseCondition())
+            {
+                endingText.text = "Unfortanately! You lost! If you want to restart, press R";
+                Time.timeScale = 0;
+                ShowPanels(true,4);
+            }
+            else
+            {
+                Debug.Log("No one won yet");
+            }
         }
     }
 }

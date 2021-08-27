@@ -92,6 +92,7 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
 
     public virtual void OnClicked()
     {
+        hasBeenSelected = true;
         if (pictureOfObject != null)
         {
             UIManager.Instance.PictureOfSelectedUnits(pictureOfObject);
@@ -101,7 +102,6 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
             Debug.Log("Sorry, you are missing a picture for this unit " + nameOfUnit + " Maybe you forgot to add it?");
         }
         selectionBox.SetActive(true);
-        hasBeenSelected = true;
     }
 
     public virtual void OnDeselect()
@@ -114,23 +114,26 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
 
     public virtual void OnDisable()
     {
-        if (isEnemy)
+        if (EnemyManager.Instance != null && isEnemy && EnemyManager.Instance.enemiesOnMap.Contains(this))
         {
             EnemyManager.Instance.enemiesOnMap.Remove(this);
         }
-
-        if (isEnemy) return;
-        if (PlayerManager.Instance == null) return;
-        if (PlayerManager.Instance.playerUnits.Contains(this))
+        else
         {
-            PlayerManager.Instance.playerUnits.Remove(this);
-        }
 
-        if (UnitManager.Instance.selectedAttackingUnits.Count == 0 ||
-            UnitManager.Instance.selectedNonLethalUnits.Count == 0)
-        {
-            OnDeselect();
+            if (PlayerManager.Instance == null) return;
+            if (PlayerManager.Instance.playerUnits.Contains(this))
+            {
+                PlayerManager.Instance.playerUnits.Remove(this);
+            }
+
+            if (UnitManager.Instance.selectedAttackingUnits.Count == 0 ||
+                UnitManager.Instance.selectedNonLethalUnits.Count == 0)
+            {
+                OnDeselect();
+            }
         }
+        UIManager.Instance.CheckEndingCondition();
     }
 
     public virtual void OnEnable()

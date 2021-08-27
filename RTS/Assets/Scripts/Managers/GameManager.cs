@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Managers
 {
@@ -31,11 +32,24 @@ namespace Managers
         void Awake()
         {
             _enemyManager = FindObjectOfType<EnemyManager>();
-            DontDestroyOnLoad(gameObject);
             player = GameObject.Find("Main Camera");
             player.transform.position = new Vector3(MapManager.FindPlayerPosition().transform.position.x,
                 10, MapManager.FindPlayerPosition().transform.position.z);
         }
-        
+
+        public static bool WinCondition()
+        {
+            return _enemyManager.enemiesOnMap.Count <= 0;
+        }
+
+        public static bool LoseCondition()
+        {
+            return UnitManager.SelectableUnits.Count <= 0;
+        }
+
+        public void RestartScene()
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 }

@@ -203,10 +203,13 @@ namespace Interactable
 
         public override void OnDeselect()
         {
-            base.OnDeselect();
-            if (isEnemy) return;
+            if (isEnemy)
+            {
+                base.OnDeselect();
+            }
             if (!hasBeenSelected) return;
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
+            base.OnDeselect();
         }
 
         public override void Subscribe(CharacterInput publisher)

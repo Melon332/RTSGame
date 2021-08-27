@@ -54,6 +54,7 @@ public class Factory : Buildings
     
     public void TransisitonToState()
     {
+        if (isDead) return;
         currentState = checkForUnits;
         currentState.EnterState(this);
     }
