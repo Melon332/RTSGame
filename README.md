@@ -36,6 +36,12 @@ I have been working on the project for about a week now and I have achieved:
 
 -Workers will now have their own "job", they won't interfere with other buildings aslong as they have a job.
 
+-Object pool implemented.
+
+-Enemy AI has been started on.
+
+-The AI can build their own units and the units that they produce will walk around randomly, attack the player and also get aggro'ed incase they get attacked.
+
 -This is fan project dedicated to the C&C Franchise aswell as developing my skills as a game developer further.
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
