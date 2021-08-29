@@ -119,6 +119,9 @@ namespace Player
                 var width = currMousePos.x - _startPos.x;
                 var height = currMousePos.y - _startPos.y;
                 
+                Debug.Log(currMousePos);
+                Debug.Log("startpos:" + _startPos);
+                
                 if (!selectionBox.gameObject.activeInHierarchy)
                     selectionBox.gameObject.SetActive(true);
 
@@ -175,7 +178,6 @@ namespace Player
                 //Checks if the unit is in any list, if it isn't continue
                 if (hit.collider.GetComponent<Entity>().GetType() == units.GetComponent<Entity>().GetType() && units.GetComponent<Entity>().hasBeenConstructed)
                 {
-                    Debug.Log(units.GetComponent<Entity>().canAttack);
                     if (units.GetComponent<Entity>().canAttack)
                     {
                         if (UnitManager.Instance.selectedAttackingUnits.Contains(units.gameObject)) continue;

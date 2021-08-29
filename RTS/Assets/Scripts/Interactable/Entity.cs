@@ -43,7 +43,7 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
         selectionBox = GetComponentInChildren<SelectionBox>().gameObject;
         if (selectionBox == null) return;
         selectionBox.SetActive(false);
-        selectionBox.transform.localScale = gameObject.transform.localScale * 2;
+        selectionBox.transform.localScale = gameObject.transform.lossyScale * 2;
     }
 
     protected virtual void Start()
@@ -106,6 +106,7 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
 
     public virtual void OnDeselect()
     {
+        if (UIManager.Instance == null) return;
         selectionBox.SetActive(false);
         hasBeenSelected = false;
         if (PlayerManager.Instance.hasSelectedUnits) return;
@@ -127,12 +128,14 @@ public abstract class Entity : MonoBehaviour, IInteractable,ISubscriber,IDestruc
                 PlayerManager.Instance.playerUnits.Remove(this);
             }
 
+            if (UnitManager.Instance == null) return;
             if (UnitManager.Instance.selectedAttackingUnits.Count == 0 ||
                 UnitManager.Instance.selectedNonLethalUnits.Count == 0)
             {
                 OnDeselect();
             }
         }
+        if (UIManager.Instance == null) return;
         UIManager.Instance.CheckEndingCondition();
     }
 

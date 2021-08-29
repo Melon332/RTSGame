@@ -332,7 +332,7 @@ MonoBehaviour:
     type: 3}
   buildingRenderer: []
   buildingSpeed: 5
-  amountOfHpPerSecond: 95
+  amountOfHpPerSecond: 100
   textObject: {fileID: 0}
   currentUnitConstructing: {fileID: 0}
   unitQueue: []

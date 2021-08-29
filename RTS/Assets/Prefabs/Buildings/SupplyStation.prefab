@@ -55,6 +55,7 @@ MonoBehaviour:
   objectCost: 9999
   costOfPower: 10
   canBeAttacked: 1
+  isEnemy: 0
   isBuilding: 1
   pictureOfObject: {fileID: 21300000, guid: 961ebba49385b3a4fb8f4ca2fc03a01a, type: 3}
   isSelectable: 0
@@ -63,6 +64,7 @@ MonoBehaviour:
   agent: {fileID: 0}
   selectionBox: {fileID: 0}
   hasBeenConstructed: 0
+  hasBeenPickedUpByPool: 0
   hasFinishedBuilding: 0
   hasPlacedBuilding: 0
   dropBuildingIntoFloor: {x: 0, y: -0.5, z: 0}
@@ -70,10 +72,11 @@ MonoBehaviour:
     type: 3}
   buildingRenderer: []
   buildingSpeed: 6
-  amountOfHpPerSecond: 30
+  amountOfHpPerSecond: 20
   textObject: {fileID: 0}
   currentUnitConstructing: {fileID: 0}
   unitQueue: []
+  spawnPosition: {fileID: 0}
 --- !u!208 &4672544396843426732
 NavMeshObstacle:
   m_ObjectHideFlags: 0

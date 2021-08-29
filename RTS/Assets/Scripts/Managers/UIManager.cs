@@ -123,7 +123,8 @@ namespace Managers
             }
         }
         public void ShowBuildingsPanel(bool hasSelectedWorker)
-        {
+        { 
+            if(panels[0] == null) return;
            panels[0].SetActive(hasSelectedWorker);
         }
         /// <summary>
@@ -133,6 +134,7 @@ namespace Managers
         /// <param name="panelNumber"></param>
         public void ShowPanels(bool wantsToShowPanel, int panelNumber)
         {
+            if(panels[panelNumber] == null) return;
             panels[panelNumber].SetActive(wantsToShowPanel);
         }
 

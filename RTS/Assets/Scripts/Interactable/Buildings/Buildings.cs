@@ -45,13 +45,13 @@ public class Buildings : Entity, IPowerConsumption
             isBuilding = true;
             //References the obstacle collider for other agents to avoid
             buildingHitBox = GetComponent<NavMeshObstacle>();
-            buildingHitBox.enabled = false;
-            buildingHitBox.carving = false;
+            buildingHitBox.enabled = true;
+            buildingHitBox.carving = true;
 
             buildingCollider = GetComponentInChildren<BoxCollider>();
             isSelectable = true;
         }
-        selectionBox.transform.localScale = transform.localScale * 3;
+        selectionBox.transform.localScale = transform.lossyScale * 3;
     }
     public override void OnDisable()
     {
@@ -63,7 +63,7 @@ public class Buildings : Entity, IPowerConsumption
         if (PlayerHandler.PlayerHandlerInstance.characterInput != null)
         {
             UnSubscribe(PlayerHandler.PlayerHandlerInstance.characterInput);
-            if (hasFinishedBuilding)
+            if (hasFinishedBuilding && PlayerManager.Instance != null)
             {
                 PlayerManager.Instance.CheckIfPowerIsSufficient(costOfPower, true);
                 UIManager.Instance.UpdateRequiredPowerText();
@@ -238,13 +238,12 @@ public class Buildings : Entity, IPowerConsumption
             {
                 yield return new WaitForSeconds(0.2f);
             }
-
-            hitPoints = Mathf.Clamp(hitPoints, 0, maxHitPoints);
+            
             if (hitPoints <= maxHitPoints)
             {
                 hitPoints += amountOfHpPerSecond;
+                Mathf.Clamp(hitPoints, 0, maxHitPoints);
                 var equation = (hitPoints / maxHitPoints) * 100;
-                Mathf.Clamp(equation, 0, 100);
                 buildingText.text = "Building: " + equation.ToString("F0") + "%";
             }
             transform.position = Vector3.MoveTowards(transform.position, targetToMoveBuilding, step);
@@ -330,6 +329,7 @@ public class Buildings : Entity, IPowerConsumption
     public virtual void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Ground")) return;
+        if (other.GetComponent<RangeDetection>()) return;
         canPlace = false;
         if (!other.CompareTag("Worker")) return;
         if (other.gameObject.GetComponent<Workers>().targetedBuilding == gameObject.GetInstanceID())
