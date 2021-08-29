@@ -4,6 +4,12 @@ This is suppose to be an RTS very similar to Command And Conquer: Generals
 
 https://www.youtube.com/watch?v=7vbHDHHu9UY
 
+To run it:
+
+- Download Unity Hub
+- Get Unity version 2021.1.9 (Link for older versions: https://unity3d.com/get-unity/download/archive)
+- Run Unity and select the project folder.
+
 I have been working on the project for about a week now and I have achieved:
 
 -Unit Selecting
@@ -35,6 +41,12 @@ I have been working on the project for about a week now and I have achieved:
 -Workers now move to the buildings and finishes them.
 
 -Workers will now have their own "job", they won't interfere with other buildings aslong as they have a job.
+
+-Object pool implemented.
+
+-Enemy AI has been started on.
+
+-The AI can build their own units and the units that they produce will walk around randomly, attack the player and also get aggro'ed incase they get attacked.
 
 -This is fan project dedicated to the C&C Franchise aswell as developing my skills as a game developer further.
 
