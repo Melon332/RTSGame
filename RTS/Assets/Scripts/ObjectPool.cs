@@ -27,6 +27,7 @@ public class ObjectPool : MonoBehaviour
         StartCoroutine(AddObjectsToPool());
     }
 
+    //Gets the first object with the name specified and returns it.
     public GameObject GetAvaliableObject(string nameOfObject)
     {
         foreach (var objectToSearchFor in storedObjects)
@@ -39,6 +40,7 @@ public class ObjectPool : MonoBehaviour
         return null;
     }
 
+    //Instantiates and caches objects
     IEnumerator AddObjectsToPool()
     {
         foreach (var objectToSpawn in pooledObjects)

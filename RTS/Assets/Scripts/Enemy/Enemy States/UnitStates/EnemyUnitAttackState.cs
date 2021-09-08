@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class EnemyUnitAttackState : EnemyUnitBaseState
 {
+    //Starts a coroutine to attack a unit
     public override void EnterState(Units unit)
     {
         //Start attacking an unit

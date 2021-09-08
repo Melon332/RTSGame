@@ -208,7 +208,7 @@ public class Buildings : Entity, IPowerConsumption
         }
     }
 
-    private IEnumerator BuildBuilding()
+    protected virtual IEnumerator BuildBuilding()
     {
         PlayerManager.Instance.MoneyPlayerHad = PlayerManager.Instance.AmountOfMoneyPlayerHas;
         UIManager.Instance.DecreasePlayerMoney();

@@ -64,6 +64,7 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
+    //Destroys the building and sets all the values to default
     public void DestroyBuilding()
     {
         StartCoroutine(PlayerManager.Instance.AddMoney(currentSelectedBuilding.GetComponent<Entity>()));

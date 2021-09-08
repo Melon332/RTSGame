@@ -23,10 +23,12 @@ public class Factory : Buildings
     
     private EnemyBuildingBaseState currentState;
     
-    public readonly EnemyBuildingCheckUnitState checkForUnits = new EnemyBuildingCheckUnitState();
+    private readonly EnemyBuildingCheckUnitState checkForUnits = new EnemyBuildingCheckUnitState();
     public readonly EnemyBuildingStateConstructUnits constructUnits = new EnemyBuildingStateConstructUnits();
 
     [SerializeField] private GameObject spawnPosition;
+
+    public int unitQueueMaximum = 9;
     
     protected override void Start()
     {
@@ -51,7 +53,17 @@ public class Factory : Buildings
             createUnitCoroutine = StartCoroutine(CreateUnit(textObject));
         }
     }
-    
+
+    //Changes the unit queue maximum to a higher number than enemies.
+    protected override IEnumerator BuildBuilding()
+    {
+        if (!isEnemy)
+        {
+            unitQueueMaximum = 9;
+        }
+        return base.BuildBuilding();
+    }
+
     public void TransisitonToState()
     {
         if (isDead) return;

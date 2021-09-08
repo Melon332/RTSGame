@@ -40,7 +40,7 @@ namespace Managers
         {
             if (PlayerManager.Instance.AmountOfMoneyPlayerHas >= _objectPool.GetAvaliableObject(unitName).GetComponent<Entity>().objectCost)
             {
-                if (BuildingManager.Instance.currentSelectedBuilding.GetComponent<Factory>().unitQueue.Count < 9)
+                if (BuildingManager.Instance.currentSelectedBuilding.GetComponent<Factory>().unitQueue.Count < BuildingManager.Instance.currentSelectedBuilding.GetComponent<Factory>().unitQueueMaximum)
                 {
                     BuildingManager.Instance.currentSelectedBuilding.GetComponent<Factory>().unitQueue
                         .Add(_objectPool.GetAvaliableObject(unitName));

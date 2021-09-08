@@ -337,6 +337,7 @@ MonoBehaviour:
   currentUnitConstructing: {fileID: 0}
   unitQueue: []
   spawnPosition: {fileID: 8192706323397051064}
+  unitQueueMaximum: 5
 --- !u!208 &-5708718613309771517
 NavMeshObstacle:
   m_ObjectHideFlags: 0

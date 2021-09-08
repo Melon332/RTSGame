@@ -91,6 +91,10 @@ namespace Managers
             }
         }
 
+        /// <summary>
+        /// This sets the current cursor state, number 8 will show the standard mouse cursor.
+        /// </summary>
+        /// <param name="currentlySelectedState"></param>
         public static void SetCursorState(int currentlySelectedState)
         {
             Cursor.SetCursor(_cursorsStatic[currentlySelectedState],Vector2.zero, CursorMode.ForceSoftware);
@@ -100,12 +104,14 @@ namespace Managers
             }
         }
 
+        //This is for buttons so that we can make multiple buttons with different buildings.
         public void BuildBuilding(string buildingName)
         {
             if(PlayerManager.Instance.hasBuildingInHand) return;
             BuildingManager.Instance.CreateBuilding(buildingName);
         }
 
+        //Puts the panel down so that the player can't interact with it.
         public void PullPanelDown()
         {
             var rectTransform = mainPanel.GetComponent<RectTransform>();
@@ -138,6 +144,7 @@ namespace Managers
             panels[panelNumber].SetActive(wantsToShowPanel);
         }
 
+        //Sets the picture to the selected unit
         public void PictureOfSelectedUnits(Sprite image)
         {
             imageOfUnit.sprite = image;
